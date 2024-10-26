@@ -1,0 +1,31 @@
+@startuml Authentications
+
+Title Authentication Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+
+package pkgAuthentications <<Frame>> {
+'ApiKeyAuthenticationAttribute
+    class ApiKeyAuthenticationAttribute <<(C,orchid) model>> {
+        + OnAuthorizationAsync() : void 
+        - IsValidApiKey() : bool 
+    }
+
+ 'AuthenAuthorJwtToken
+    class AuthenAuthorJwtToken <<(C,orchid) model>> {
+        - TokenLife : TimeSpan 
+        - GenerationToken(User user) : string 
+        - GetClaimsFromToken(string token) : IEnumerable<Claim>
+        + GetPropertyInTokenJwt(string token) : Dictionary<string, string>
+        + GenerateTokenJWTEndCode(User user) : string
+        + GetJWTTokenDeEncode(string jwtTokenEncode) : string
+    }
+}

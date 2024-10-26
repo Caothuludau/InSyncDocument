@@ -1,0 +1,165 @@
+@startuml Models
+
+Title Models Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+
+package pkgModels <<Frame>> {
+'Assets
+    class Asset <<(C,orchid) model>> {
+        - Id : Guid
+        - ProjectId : Guid
+        - AssestName : string
+        - Type : string
+        - FilePath : string
+        - DateCreated : DateTime
+        - DateUdpated : DateTime
+    }
+
+'Customer Review
+    class CustomerReview <<(C,orchid) model>> {
+        - Id : Guid
+        - Name : string
+        - ImageUrl : string
+        - JobTitle : string
+        - Review : string
+        - DateCreated : DateTime
+        - IsShow : bool
+    }
+
+'Privacy Policy
+    class PrivacyPolicy <<(C,orchid) model>> {
+        - Id : Guid
+        - Description : string
+        - Title : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+    }
+
+'Project
+    class Project <<(C,orchid) model>> {
+        - Id : Guid
+        - ProjectName : string
+        - Description : string
+        - UserId : Guid
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - IsPublish : bool
+    }
+
+'Scenario
+    class Scenario <<(C,orchid) model>> {
+        - Id : Guid
+        - ProjectId : Guid
+        - ScenarioName : string
+        - Description : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - StepsWeb : string
+        - StepsAndroid : string
+        - IsFavorites : bool
+        - ImageUrl : string
+        - CreatedBy : Guid
+    }
+
+'SubscriptionPlan
+    class SubscriptionPlan <<(C,orchid) model>> {
+        - Id : Guid
+        - SubscriptionsName : string
+        - Status : bool
+        - Price : decimal
+        - UserId : Guid
+        - Content : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - MaxProjects : int
+        - MaxAssets : long
+        - MaxScenarios : int
+        - MaxUsersAccess : int
+        - StorageLimit : long
+        - SupportLevel : string
+        - CustomFeaturesDescription : string
+        - DataRetentionPeriod : long
+        - PrioritySupport : bool
+        - MonthlyReporting : bool
+    }
+
+'Term
+    class Term <<(C,orchid) model>> {
+        - Id : Guid
+        - Question : string
+        - Answer : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+    }
+
+'Tutorial
+    class Tutorial <<(C,orchid) model>> {
+        - Id : Guid
+        - Title : string
+        - Content : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - IsShow : bool
+        - Order : long
+    }
+
+'User
+!startsub User
+    class User <<(C,orchid) model>> {
+        - Id : Guid
+        - UserIdClerk : string
+        - UserName : string
+        - PasswordHash : string
+        - Email : string
+        - DisplayName : string
+        - EmailConfirmed : bool
+        - PhoneNumber : string
+        - LockoutEnd : DateTime
+        - LockoutEnable : bool
+        - AccessFailCount : long
+        - ImageUrl : string
+        - Dob : DateTime
+        - Address : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - StatusUser : int
+        - Role : string
+    }
+!endsub
+
+
+'UserSubscription
+    class UserSubscription <<(C,orchid) model>> {
+        - Id : Guid
+        - SubscriptionPlanId : Guid
+        - UserId : Guid
+        - StripeCurrentPeriodEnd : DateTime
+        - StripeCustomerId : string
+        - StripeSubscriptionId : string
+        - StripePriceId : string
+        - DateCreated : DateTime
+    }
+
+    ' Relationships
+    User "1" --> "*" Project : owns
+    User "1" --> "*" Scenario : creates
+    User "1" --> "*" SubscriptionPlan : subscribes
+    User "1" --> "*" UserSubscription : has
+    Project "1" --> "0..*" Asset : contains
+    Project "1" --> "0..*" Scenario : contains
+    Scenario "1" --> "1" Project : belongs to
+    Scenario "1" --> "0..1" User : created by
+    SubscriptionPlan "1" --> "1" User : belongs to
+    SubscriptionPlan "1" --> "0..*" UserSubscription : has
+    UserSubscription "1" --> "1" SubscriptionPlan : belongs to
+    UserSubscription "1" --> "1" User : subscribed by
+}

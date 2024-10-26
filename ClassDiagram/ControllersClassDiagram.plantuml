@@ -1,0 +1,167 @@
+@startuml Controllers
+
+Title Controller Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+
+package pkgControllers <<Frame>> {     
+    class ControllerBase <<(C,orchid) abstract>>
+    class UsersController <<(C,orchid) controller>> {
+        - _userRepo : IUserRepository
+        - _mapper : IMapper
+        + CreateUser(userDto : CreateUserDto) : Task<IActionResult>
+        + UpdateUser(userDto : UpdateUserDto) :  Task<IActionResult>
+    }
+
+    class AssetsController <<(C,orchid) controller>> {
+        - _assestRepo : IAssetRepository
+        - _projectRepo : IProjectRepository
+        - ITEM_PAGES_DEFAULT : int
+        - INDEX_DEFAULT : int
+        - _mapper : IMapper
+        - includes : string[]
+        
+        + AssetsController(assestRepo : IAssetRepository, projectRepo : IProjectRepository, mapper : IMapper)
+        + GetAssets() : Task<IActionResult>
+        + GetAllAsset(index : int, size : int, keySearch : string) : Task<IActionResult>
+        + GetAllAssetOfProject(idProject : Guid, index : int, size : int, keySearch : string) : Task<IActionResult>
+        + GetAssetById(id : Guid) : Task<IActionResult>
+        + AddAsset(newAsset : AddAssetDto) : Task<IActionResult>
+        + UpdateAsset(id : Guid, updateAsset : UpdateAssetDto) : Task<IActionResult>
+        + DeleteAsset(id : Guid) : Task<IActionResult>
+    }
+
+    class CustomerReviewsController <<(C,orchid) controller>> {
+        - _customerReviewRepo : ICustomerReviewRepository
+        - _mapper : IMapper
+        + GetCustomerReviews() : Task<IActionResult>
+        + GetAllCustomerReview(index : int, size : int, keySearch : string = "") : Task<IActionResult>
+        + GetAllCustomerReviewIsPublish(index : int, size : int, isPublish : bool, keySearch : string = "") : Task<IActionResult>
+        + GetCustomerReviewById(id : Guid) : Task<IActionResult>
+        + AddCustomerReview(newReview : AddCustomerReviewDto) : Task<IActionResult>
+        + UpdateCustomerReview(id : Guid, updateReview : UpdateCustomerReviewDto) : Task<IActionResult>
+        + DeleteCustomerReview(id : Guid) : Task<IActionResult>
+    }
+
+    class PrivacyPolicysController <<(C,orchid) controller>> {
+        - _privacyPolicyRepo : IPrivacyPolicyRepository
+        - _mapper : IMapper
+        + GetPrivacyPolicys() : Task<IActionResult>
+        + GetAllPrivacyPolicy(index : int, size : int, keySearch : string = "") : Task<IActionResult>
+        + GetPrivacyPolicyById(id : Guid) : Task<IActionResult>
+        + AddPrivacyPolicy(newPrivacy : AddPrivacyPolicyDto) : Task<IActionResult>
+        + UpdatePrivacyPolicy(id : Guid, updatePrivacy : UpdatePrivacyPolicyDto) : Task<IActionResult>
+        + DeletePrivacyPolicy(id : Guid) : Task<IActionResult>
+    }
+
+    class ProjectsController <<(C,orchid) controller>> {
+        - _projectRepo : IProjectRepository
+        - _userRepo : IUserRepository
+        - ITEM_PAGES_DEFAULT : int
+        - INDEX_DEFAULT : int
+        - _mapper : IMapper
+        + includes : String[]
+        + ProjectsController(projectRepo : IProjectRepository, userRepo : IUserRepository, mapper : IMapper)
+        + GetProjects() : Task<IActionResult>
+        + GetAllProject(index : int, size : int, keySearch : String) : Task<IActionResult>
+        + GetAllProjectIsPublishOfUser(userId : Guid, index : int, size : int, isPublish : bool, keySearch : String) : Task<IActionResult>
+        + GetAllProjectIsPublishByUserIdClerk(userIdClerk : String, isPublish : bool, index : int, size : int, keySearch : String) : Task<IActionResult>
+        + GetProjectById(id : Guid) : Task<IActionResult>
+        + AddProject(newProject : AddProjectDto) : Task<IActionResult>
+        + AddProjectUserClerk(newProject : AddProjectClerkDto) : Task<IActionResult>
+        + UpdateProject(id : Guid, updateProject : UpdateProjectDto) : Task<IActionResult>
+    }
+
+    class ScenariosController <<(C,orchid) controller>> {
+        - _scenarioRepo : IScenarioRepository
+        - _projectRepo : IProjectRepository
+        - _userRepo : IUserRepository
+        - ITEM_PAGES_DEFAULT : int
+        - INDEX_DEFAULT : int
+        - _mapper : IMapper
+        - includes : string[]
+
+        + GetScenarios() : Task<IActionResult>
+        + GetAllScenarios(index : int, size : int, keySearch : string = "") : Task<IActionResult>
+        + GetScenarioById(id : Guid) : Task<IActionResult>
+        + GetScenarioOfProject(projectId : Guid, createdBy : Guid, index : int, size : int, keySearch : string = "") : Task<IActionResult>
+        + GetScenarioOfProjectByUserClerk(projectId : Guid, userIdClerk : string, index : int, size : int, keySearch : string = "") : Task<IActionResult>
+         + GetAllScenarioByUserIdClerk(userIdClerk : string, index : int, size : int, keySearch : string) : Task<IActionResult>
+        + GetAllScenarioByUserId(userId : Guid, keySearch : string, index : int, size : int) : Task<IActionResult>
+        + AddScenario(newScenario : AddScenarioDto) : Task<IActionResult>
+        + AddScenarioByUserClerk(newScenario : AddScenarioUserClerkDto) : Task<IActionResult>
+        + UpdateScenario(id : Guid, updateScenario : UpdateScenarioDto) : Task<IActionResult>
+        + ToggleFavoriteScenario(id : Guid) : Task<IActionResult>
+        + UpdateWebJsonScenario(id : Guid, webjson : string) : Task<IActionResult>
+        + UpdateAndroidJsonScenario(id : Guid, androidjson : string) : Task<IActionResult>
+    }
+
+    class SubscriptionPlansController <<(C,orchid) controller>> {
+        - _subscriptionPlanRepo : ISubscriptionPlanRepository
+        - _userRepository : IUserRepository
+        - ITEM_PAGES_DEFAULT : int
+        - INDEX_DEFAULT : int
+        - _mapper : IMapper
+        - includes : string[]
+        + GetSubscriptionPlans() : Task<IActionResult>
+        + GetAllSubsciptionPlan(index : int, size : int, keySearch : string) : Task<IActionResult>
+        + GetSubsciptionPlanById(id : Guid) : Task<IActionResult>
+        + AddSubsciptionPlan(newSubscription : AddSubscriptionPlanDto) : Task<IActionResult>
+        + AddSubsciptionPlanUserClerk(newSubscription : AddSubscriptionPlanUserClerkDto) : Task<IActionResult>
+        + UpdateSubscriptionPlan(id : Guid, updateSubsciption : UpdateSubscriptionPlanDto) : Task<IActionResult>
+        + DeleteSubsciptionPlan(id : Guid) : Task<IActionResult>
+    }
+
+    class TermsController <<(C,orchid) controller>> {
+            - _termRepo : ITermRepository
+            - _mapper : IMapper
+            - ITEM_PAGES_DEFAULT : int
+            - INDEX_DEFAULT : int
+            + GetTerms() : Task<IActionResult>
+            + GetAllTerms(index : int, size : int, keySearch : string) : Task<IActionResult>
+            + GetTermById(id : Guid) : Task<IActionResult>
+            + AddTerm(newTerm : AddTermsDto) : Task<IActionResult>
+            + UpdateTerm(id : Guid, updateTerm : UpdateTermsDto) : Task<IActionResult>
+            + DeleteTerm(id : Guid) : Task<IActionResult>
+    }
+
+    class TutorialsController <<(C,orchid) controller>> {
+        - _tutorialRepo : ITutorialRepository
+        - _mapper : IMapper
+        - ITEM_PAGES_DEFAULT : int
+        - INDEX_DEFAULT : int
+        + GetTutorials() : Task<IActionResult>
+        + GetAllTutorials(index : int, size : int, keySearch : string) : Task<IActionResult>
+        + GetTutorialById(id : Guid) : Task<IActionResult>
+        + AddTutorial(newTutorial : AddTutorialDto) : Task<IActionResult>
+        + UpdateTutorial(id : Guid, updateTutorial : UpdateTutorialDto) : Task<IActionResult>
+        + DeleteTutorial(id : Guid) : Task<IActionResult>
+    }
+
+    class UserSubscriptionsController <<(C,orchid) controller>> {
+        - _userSubRepo : IUserSubscriptionRepository
+        - _userRepo : IUserRepository
+        - _subRepo : ISubscriptionPlanRepository
+        - ITEM_PAGES_DEFAULT : int
+        - INDEX_DEFAULT : int
+        - _mapper : IMapper
+        - includes : string[]
+        + GetUserSubscriptions() : Task<IActionResult>
+        + GetAllUserSubscription(index : int, size : int) : Task<IActionResult>
+        + GetAllUserSubsciptionOfUser(userId : Guid, index : int, size : int) : Task<IActionResult>
+        + GetAllUserSubsciptionOfUserClerk(userIdClerk : string, index : int, size : int) : Task<IActionResult>
+        + GetUserSubsciptionOfUserNoExpired(userId : Guid) : Task<IActionResult>
+        + GetUserSubsciptionOfUserClerkNoExpired(userIdClerk : string) : Task<IActionResult>
+        + GetAllUserSubsciptionOfSubsciption(subId : Guid, index : int, size : int) : Task<IActionResult>
+        + GetUserSubsciptionById(id : Guid) : Task<IActionResult>
+        + AddUserSubsciption(newUserSub : AddUserSubsciptionDto) : Task<IActionResult>
+    }
+}

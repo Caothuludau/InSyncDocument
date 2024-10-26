@@ -1,0 +1,449 @@
+@startuml DTOs
+
+Title DTOs Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+package dtos <<Frame>> {
+
+'Assets Dto
+    class ViewAssetDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - ProjectId : Guid
+        - ProjectName : string
+        - AssestName : string
+        - Type : string
+        - FilePath : string
+        - DateCreated : DateTime
+        - DateUdpated : DateTime
+    }
+
+    class UpdateAssetDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - AssestName : string
+        - Type : string
+    }
+
+    class AddAssetDto <<(C,orchid) dtos>> {
+        - ProjectId : Guid
+        - AssestName: string
+        - Type : string
+        - FilePath : string
+    }
+
+    class ActionAssetResponse <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Message: string
+    }
+
+'CustomerReviewDto
+    class ViewCustomerReviewDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Name : string
+        - ImageUrl : string
+        - JobTitle : string
+        - Review : string
+        - DateCreated : DateTime
+        - IsShow : bool
+    }
+
+    class AddCustomerReviewDto <<(C,orchid) dtos>> {
+        - Name : string
+        - ImageUrl : string
+        - JobTitle : string
+        - Review : string
+    }
+
+    class UpdateCustomerReviewDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Name : string
+        - ImageUrl : string
+        - JobTitle : string
+        - Review : string
+        - IsShow : bool
+    }
+
+    class ActionCustomerReviewResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+'Privacy Policy Dto
+    class ViewPrivacyPolicyDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Description : string
+        - Title : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+    }
+
+    class AddPrivacyPolicyDto <<(C,orchid) dtos>> {
+        - Description : string
+        - Title : string
+    }
+
+    class UpdatePrivacyPolicyDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Description : string
+        - Title : string
+    }
+
+    class ActionPrivacyPolicyResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+    'Project Dto
+    class ViewProjectDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - ProjectName : string
+        - Description : string
+        - UserId : Guid
+        - displayName : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - IsPublish : bool
+    }
+
+    class AddProjectDto <<(C,orchid) dtos>> {
+        - ProjectName : string
+        - Description : string
+        - UserId : Guid
+        - IsPublish : bool
+    }
+
+    class AddProjectClerkDto <<(C,orchid) dtos>> {
+        - ProjectName : string
+        - Description : string
+        - UserIdClerk : string
+        - IsPublish : bool
+    }
+
+    class UpdateProjectDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - ProjectName : string
+        - Description : string
+        - IsPublish : bool
+    }
+
+    class ActionProjectResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+    'Scenario Dto
+    class ViewScenarioDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - ProjectId : Guid
+        - ProjectName : string
+        - Title : string
+        - Description : string
+        - CreatedAt : DateTime
+        - UpdatedAt : DateTime
+        - StepsWeb : string
+        - StepsAndroid : string
+        - IsFavorites : bool
+        - ImageUrl : string
+        - AuthorId : Guid
+        - AuthorName : string
+    }
+
+    class AddScenarioDto <<(C,orchid) dtos>> {
+        - ProjectId : Guid
+        - ScenarioName : string
+        - Description : string
+        - StepsWeb : string
+        - StepsAndroid : string
+        - IsFavorites : bool
+        - ImageUrl : string
+        - CreatedBy : Guid
+    }
+
+    class AddScenarioUserClerkDto <<(C,orchid) dtos>> {
+        - ProjectId : Guid
+        - ScenarioName : string
+        - Description : string
+        - StepsWeb : string
+        - StepsAndroid : string
+        - IsFavorites : bool
+        - ImageUrl : string
+        - UserIdClerk : string
+    }
+
+    class UpdateScenarioDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - ScenarioName : string
+        - Description : string
+        - StepsWeb : string
+        - StepsAndroid : string
+        - IsFavorites : bool
+        - ImageUrl : string
+    }
+
+    class UpdateRenameScenarioDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - ScenarioName : string
+    }
+
+    class ActionScenarioResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+'Subscription Plan Dtos
+    class ViewSubscriptionPlanDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - SubscriptionsName : string
+        - Status : bool
+        - Price : decimal
+        - UserId : Guid
+        - UserName : string
+        - Content : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - MaxProjects : int
+        - MaxAssets : long
+        - MaxScenarios : int
+        - MaxUsersAccess : int
+        - StorageLimit : long
+        - SupportLevel : string
+        - CustomFeaturesDescription : string
+        - DataRetentionPeriod : long
+        - PrioritySupport : bool
+        - MonthlyReporting : bool
+    }
+
+    class AddSubscriptionPlanDto <<(C,orchid) dtos>> {
+        - SubscriptionsName : string
+        - Status : bool
+        - Price : decimal
+        - UserId : Guid
+        - Content : string
+        - MaxProjects : int
+        - MaxAssets : long
+        - MaxScenarios : int
+        - MaxUsersAccess : int
+        - StorageLimit : long
+        - SupportLevel : string
+        - CustomFeaturesDescription : string
+        - DataRetentionPeriod : long
+        - PrioritySupport : bool
+        - MonthlyReporting : bool
+    }
+
+    class AddSubscriptionPlanUserClerkDto <<(C,orchid) dtos>> {
+        - SubscriptionsName : string
+        - Status : bool
+        - Price : decimal
+        - UserIdClerk : string
+        - Content : string
+        - MaxProjects : int
+        - MaxAssets : long
+        - MaxScenarios : int
+        - MaxUsersAccess : int
+        - StorageLimit : long
+        - SupportLevel : string
+        - CustomFeaturesDescription : string
+        - DataRetentionPeriod : long
+        - PrioritySupport : bool
+        - MonthlyReporting : bool
+    }
+
+    class UpdateSubscriptionPlanDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - SubscriptionsName : string
+        - Status : bool
+        - Price : decimal
+        - Content : string
+        - MaxProjects : int
+        - MaxAssets : long
+        - MaxScenarios : int
+        - MaxUsersAccess : int
+        - StorageLimit : long
+        - SupportLevel : string
+        - CustomFeaturesDescription : string
+        - DataRetentionPeriod : long
+        - PrioritySupport : bool
+        - MonthlyReporting : bool
+    }
+
+    class ActionSubscriptionPlanResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+    'Term Dtos
+    class ViewTermDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Question : string
+        - Answer : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+    }
+
+    class AddTermsDto <<(C,orchid) dtos>> {
+        - Question : string
+        - Answer : string
+    }
+
+    class UpdateTermsDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Question : string
+        - Answer : string
+    }
+
+    class ActionTermResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+    'Tutorial Dtos
+    class ViewTutorialDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Title : string
+        - Content : string
+        - DateCreated : DateTime
+        - DateUpdated : DateTime
+        - IsShow : bool
+        - Order : long
+    }
+
+    class AddTutorialDto <<(C,orchid) dtos>> {
+        - Title : string
+        - Content : string
+        - IsShow : bool
+        - Order : long
+    }
+
+    class UpdateTutorialDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - Title : string
+        - Content : string
+        - IsShow : bool
+        - Order : long
+    }
+
+    class ActionTutorialResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+    'User Dtos
+    class Data <<(C,orchid) dtos>> {
+        - Birthday : string
+        - Created_At : long
+        - Email_Addresses : EmailAddresses[]
+        - First_Name : string
+        - Gender : string
+        - Id : string
+        - Image_Url : string
+        - Last_Name : string
+        - Last_Sign_In_At : long
+        - Object : string
+        - Password_Enabled : bool
+        - Phone_Numbers : string[]
+        - Primary_Email_Address_Id : string
+        - Primary_Phone_Number_Id : string
+        - Primary_Web3_Wallet_Id : string
+        - Private_Metadata : Dictionary
+        - Profile_Image_Url : string
+        - Public_Metadata : Dictionary
+        - Two_Factor_Enabled : bool
+        - Unsafe_Metadata : Dictionary
+        - Updated_At : long
+        - Username : object
+        - Web3_Wallets : string[]
+    }
+
+    class EmailAddresses <<(C,orchid) dtos>> {
+        - Email_Address : string
+        - Id : string
+        - Linked_To : object[]
+        - Object : string
+        - Verification : Verification
+    }
+
+    class Verification <<(C,orchid) dtos>> {
+        - Status : string
+        - Strategy : string
+    }
+
+    class CreateUserDto <<(C,orchid) dtos>> {
+        - Data : Data
+        - Object : string
+        - Type : string
+    }
+
+    class UpdateUserDto <<(C,orchid) dtos>> {
+        - Data : Data
+        - Object : string
+        - Type : string
+    }
+    'Relationships
+    Data "1" --> "*" EmailAddresses
+    EmailAddresses "1" --> "1" Verification
+    CreateUserDto "1" --> "1" Data
+    UpdateUserDto "1" --> "1" Data
+
+'User Subscription Dtos
+    class ViewUserSubscriptionDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - SubscriptionPlanId : Guid
+        - SubscriptionPlanName : string
+        - UserId : Guid
+        - UserName : string
+        - StripeCurrentPeriodEnd : DateTime
+        - StripeCustomerId : string
+        - StripeSubscriptionId : string
+        - StripePriceId : string
+        - DateCreated : DateTime
+    }
+
+    class AddUserSubscriptionDto <<(C,orchid) dtos>> {
+        - SubscriptionPlanId : Guid
+        - UserId : Guid
+        - StripeCurrentPeriodEnd : DateTime
+        - StripeCustomerId : string
+        - StripeSubscriptionId : string
+        - StripePriceId : string
+    }
+
+    class AddUserSubscriptionUserClerkDto <<(C,orchid) dtos>> {
+        - SubscriptionPlanId : Guid
+        - UserIdClerk : string
+        - StripeCurrentPeriodEnd : DateTime
+        - StripeCustomerId : string
+        - StripeSubscriptionId : string
+        - StripePriceId : string
+    }
+
+    class UpdateUserSubscriptionDto <<(C,orchid) dtos>> {
+        - Id : Guid
+        - SubscriptionPlanId : Guid
+        - StripeCurrentPeriodEnd : DateTime
+        - StripeCustomerId : string
+        - StripeSubscriptionId : string
+        - StripePriceId : string
+    }
+
+    class ActionUserSubscriptionResponse <<(C,orchid) dtos>> {
+        - Message : string
+        - Id : Guid
+    }
+
+'Relationships
+    AddUserSubscriptionDto "1" --> "*" ViewUserSubscriptionDto
+    AddUserSubscriptionUserClerkDto "1" --> "*" ViewUserSubscriptionDto
+    UpdateUserSubscriptionDto "1" --> "*" ViewUserSubscriptionDto
+    ActionUserSubscriptionResponse "1" --> "*" ViewUserSubscriptionDto
+
+}
+
+@enduml
