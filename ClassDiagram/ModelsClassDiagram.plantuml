@@ -13,7 +13,8 @@ Title Models Class Diagram
 
 
 package pkgModels <<Frame>> {
-'Assets
+
+    !startsub Asset
     class Asset <<(C,orchid) model>> {
         - Id : Guid
         - ProjectId : Guid
@@ -23,8 +24,9 @@ package pkgModels <<Frame>> {
         - DateCreated : DateTime
         - DateUdpated : DateTime
     }
+    !endsub
 
-'Customer Review
+    !startsub CustomerReview
     class CustomerReview <<(C,orchid) model>> {
         - Id : Guid
         - Name : string
@@ -34,8 +36,9 @@ package pkgModels <<Frame>> {
         - DateCreated : DateTime
         - IsShow : bool
     }
+    !endsub
 
-'Privacy Policy
+    !startsub PrivacyPolicy
     class PrivacyPolicy <<(C,orchid) model>> {
         - Id : Guid
         - Description : string
@@ -43,8 +46,9 @@ package pkgModels <<Frame>> {
         - DateCreated : DateTime
         - DateUpdated : DateTime
     }
+    !endsub
 
-'Project
+    !startsub Project
     class Project <<(C,orchid) model>> {
         - Id : Guid
         - ProjectName : string
@@ -54,8 +58,9 @@ package pkgModels <<Frame>> {
         - DateUpdated : DateTime
         - IsPublish : bool
     }
+    !endsub
 
-'Scenario
+    !startsub Scenario
     class Scenario <<(C,orchid) model>> {
         - Id : Guid
         - ProjectId : Guid
@@ -69,8 +74,9 @@ package pkgModels <<Frame>> {
         - ImageUrl : string
         - CreatedBy : Guid
     }
+    !endsub
 
-'SubscriptionPlan
+    !startsub SubscriptionPlan
     class SubscriptionPlan <<(C,orchid) model>> {
         - Id : Guid
         - SubscriptionsName : string
@@ -91,8 +97,9 @@ package pkgModels <<Frame>> {
         - PrioritySupport : bool
         - MonthlyReporting : bool
     }
+    !endsub
 
-'Term
+    !startsub Term
     class Term <<(C,orchid) model>> {
         - Id : Guid
         - Question : string
@@ -100,8 +107,9 @@ package pkgModels <<Frame>> {
         - DateCreated : DateTime
         - DateUpdated : DateTime
     }
+    !endsub
 
-'Tutorial
+    !startsub Tutorial
     class Tutorial <<(C,orchid) model>> {
         - Id : Guid
         - Title : string
@@ -111,9 +119,10 @@ package pkgModels <<Frame>> {
         - IsShow : bool
         - Order : long
     }
+    !endsub
 
-'User
-!startsub User
+
+    !startsub User
     class User <<(C,orchid) model>> {
         - Id : Guid
         - UserIdClerk : string
@@ -134,10 +143,9 @@ package pkgModels <<Frame>> {
         - StatusUser : int
         - Role : string
     }
-!endsub
+    !endsub
 
-
-'UserSubscription
+    !startsub UserSubscription
     class UserSubscription <<(C,orchid) model>> {
         - Id : Guid
         - SubscriptionPlanId : Guid
@@ -148,6 +156,7 @@ package pkgModels <<Frame>> {
         - StripePriceId : string
         - DateCreated : DateTime
     }
+    !endsub
 
     ' Relationships
     User "1" --> "*" Project : owns

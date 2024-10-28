@@ -1,4 +1,4 @@
-@startuml Authentications
+    @startuml Authentications
 
 Title Authentication Class Diagram
 'Character	Visibility
@@ -14,12 +14,15 @@ Title Authentication Class Diagram
 
 package pkgAuthentications <<Frame>> {
 'ApiKeyAuthenticationAttribute
+    !startsub ApiKeyAuthenticationAttribute
     class ApiKeyAuthenticationAttribute <<(C,orchid) model>> {
         + OnAuthorizationAsync() : void 
         - IsValidApiKey() : bool 
     }
+    !endsub
 
  'AuthenAuthorJwtToken
+    !startsub AuthenAuthorJwtToken
     class AuthenAuthorJwtToken <<(C,orchid) model>> {
         - TokenLife : TimeSpan 
         - GenerationToken(User user) : string 
@@ -28,4 +31,5 @@ package pkgAuthentications <<Frame>> {
         + GenerateTokenJWTEndCode(User user) : string
         + GetJWTTokenDeEncode(string jwtTokenEncode) : string
     }
+    !endsub
 }

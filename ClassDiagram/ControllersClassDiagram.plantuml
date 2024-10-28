@@ -13,14 +13,20 @@ Title Controller Class Diagram
 
 
 package pkgControllers <<Frame>> {     
+    !startsub ControllerBase
     class ControllerBase <<(C,orchid) abstract>>
+    !endsub
+
+    !startsub UsersController
     class UsersController <<(C,orchid) controller>> {
         - _userRepo : IUserRepository
         - _mapper : IMapper
         + CreateUser(userDto : CreateUserDto) : Task<IActionResult>
         + UpdateUser(userDto : UpdateUserDto) :  Task<IActionResult>
     }
+    !endsub
 
+    !startsub AssetsController
     class AssetsController <<(C,orchid) controller>> {
         - _assestRepo : IAssetRepository
         - _projectRepo : IProjectRepository
@@ -38,7 +44,9 @@ package pkgControllers <<Frame>> {
         + UpdateAsset(id : Guid, updateAsset : UpdateAssetDto) : Task<IActionResult>
         + DeleteAsset(id : Guid) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub CustomerReviewsController
     class CustomerReviewsController <<(C,orchid) controller>> {
         - _customerReviewRepo : ICustomerReviewRepository
         - _mapper : IMapper
@@ -50,7 +58,9 @@ package pkgControllers <<Frame>> {
         + UpdateCustomerReview(id : Guid, updateReview : UpdateCustomerReviewDto) : Task<IActionResult>
         + DeleteCustomerReview(id : Guid) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub PrivacyPolicysController
     class PrivacyPolicysController <<(C,orchid) controller>> {
         - _privacyPolicyRepo : IPrivacyPolicyRepository
         - _mapper : IMapper
@@ -61,7 +71,9 @@ package pkgControllers <<Frame>> {
         + UpdatePrivacyPolicy(id : Guid, updatePrivacy : UpdatePrivacyPolicyDto) : Task<IActionResult>
         + DeletePrivacyPolicy(id : Guid) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub ProjectsController
     class ProjectsController <<(C,orchid) controller>> {
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
@@ -79,7 +91,9 @@ package pkgControllers <<Frame>> {
         + AddProjectUserClerk(newProject : AddProjectClerkDto) : Task<IActionResult>
         + UpdateProject(id : Guid, updateProject : UpdateProjectDto) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub ScenariosController
     class ScenariosController <<(C,orchid) controller>> {
         - _scenarioRepo : IScenarioRepository
         - _projectRepo : IProjectRepository
@@ -103,7 +117,9 @@ package pkgControllers <<Frame>> {
         + UpdateWebJsonScenario(id : Guid, webjson : string) : Task<IActionResult>
         + UpdateAndroidJsonScenario(id : Guid, androidjson : string) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub SubscriptionPlansController
     class SubscriptionPlansController <<(C,orchid) controller>> {
         - _subscriptionPlanRepo : ISubscriptionPlanRepository
         - _userRepository : IUserRepository
@@ -119,7 +135,9 @@ package pkgControllers <<Frame>> {
         + UpdateSubscriptionPlan(id : Guid, updateSubsciption : UpdateSubscriptionPlanDto) : Task<IActionResult>
         + DeleteSubsciptionPlan(id : Guid) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub TermsController
     class TermsController <<(C,orchid) controller>> {
             - _termRepo : ITermRepository
             - _mapper : IMapper
@@ -132,7 +150,9 @@ package pkgControllers <<Frame>> {
             + UpdateTerm(id : Guid, updateTerm : UpdateTermsDto) : Task<IActionResult>
             + DeleteTerm(id : Guid) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub TutorialsController
     class TutorialsController <<(C,orchid) controller>> {
         - _tutorialRepo : ITutorialRepository
         - _mapper : IMapper
@@ -145,7 +165,9 @@ package pkgControllers <<Frame>> {
         + UpdateTutorial(id : Guid, updateTutorial : UpdateTutorialDto) : Task<IActionResult>
         + DeleteTutorial(id : Guid) : Task<IActionResult>
     }
+    !endsub
 
+    !startsub UserSubscriptionsController
     class UserSubscriptionsController <<(C,orchid) controller>> {
         - _userSubRepo : IUserSubscriptionRepository
         - _userRepo : IUserRepository
@@ -164,4 +186,5 @@ package pkgControllers <<Frame>> {
         + GetUserSubsciptionById(id : Guid) : Task<IActionResult>
         + AddUserSubsciption(newUserSub : AddUserSubsciptionDto) : Task<IActionResult>
     }
+    !endsub
 }

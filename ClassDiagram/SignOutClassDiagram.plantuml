@@ -13,25 +13,30 @@ Title SignIn Class Diagram
 
 'Lưu ý, do mỗi Repository , IRepository đều không có gì bên trong nên khi tạo diagram mới thì chỉ cần copy lại rồi đổi tên
 
-
-package pkgSignin <<Frame>> {
-        !includesub ControllersClassDiagram.plantuml!UsersController
-        !includesub ControllersClassDiagram.plantuml!ControllerBase
-
+package pkgSignout <<Frame>> {
+        class UsersController <<(C,orchid) controller>> {
+            - _userRepo : IUserRepository
+            - _mapper : IMapper
+            + CreateUser(userDto : CreateUserDto) : Task<IActionResult>
+            + UpdateUser(userDto : UpdateUserDto) :  Task<IActionResult>
+        }
+        class ControllerBase <<(C,orchid) abstract>>
         class UserRepository <<(C,orchid) repository>>
         interface IUserRepository <<(I,#FF7700) repository>>
         !includesub ModelsClassDiagram.plantuml!User
-        class clerk-web-hook-create <<(A, yellow) middleware>>
-
-        !includesub DtosClassDiagram.plantuml!CreateUserDto
-
-
+        class AuthConfig <<(A, yellow) middleware>>
+        class CreateUserDtos <<(C,orchid) dtos>>{
+            - Data : Data
+            - Object : string
+            - Type : string
+        }
         class UserRepository implements IUserRepository
         class UsersController extends ControllerBase
+
         UsersController o-- IUserRepository
-        UsersController o-- CreateUserDto 
+        UsersController o-- CreateUserDtos
         UserRepository o-- User
-        "clerk-web-hook-create" -- UsersController
+        AuthConfig -- UsersController
 }
 
 @enduml
