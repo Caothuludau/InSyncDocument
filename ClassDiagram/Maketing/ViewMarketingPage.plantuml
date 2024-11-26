@@ -1,0 +1,90 @@
+@startuml ViewMarktingPageClassDiagram
+skinparam classAttributeIconSize 0
+Title ViewMarktingPage Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgViewMarkting <<Frame>> {  
+    'include controller'
+    !includesub ../ControllersClassDiagram.plantuml!ControllerBase
+    !includesub ../ControllersClassDiagram.plantuml!CategoryDocumentController
+    !includesub ../ControllersClassDiagram.plantuml!DocumentsController
+    !includesub ../ControllersClassDiagram.plantuml!PagesController
+
+    
+    'include Repository'
+    !includesub ../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../RepositoriesClassDiagram.plantuml!ICategoryDocumentRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!CategoryDocumentRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!IDocumentRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!DocumentRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!IPageRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!PageRepository
+
+    'include Dto'
+    !includesub ../DtosClassDiagram.plantuml!ViewCategoryDocumentDto
+    !includesub ../ModelsClassDiagram.plantuml!CategoryDocument
+    !includesub ../DtosClassDiagram.plantuml!ViewDocumentDto
+    !includesub ../ModelsClassDiagram.plantuml!Document
+    !includesub ../DtosClassDiagram.plantuml!ViewPageDto
+    !includesub ../ModelsClassDiagram.plantuml!Page
+
+
+    'set up realation ship' 
+    ControllerBase <|-- CategoryDocumentController
+    ControllerBase <|-- DocumentsController
+    ControllerBase <|-- PagesController
+
+
+    CategoryDocumentController ..> ViewCategoryDocumentDto : return views
+    DocumentsController ..> ViewDocumentDto : return views
+    PagesController ..> ViewPageDto : return views
+    
+    
+
+
+    IRepositoryBase <|.. RepositoryBase
+    ICategoryDocumentRepository <|.. CategoryDocumentRepository
+    CategoryDocumentRepository o-- CategoryDocument
+
+    IDocumentRepository <|.. DocumentRepository
+    DocumentRepository o-- Document
+
+    IPageRepository <|.. PageRepository
+    PageRepository o-- Page
+
+    
+
+
+    IRepositoryBase <|-- ICategoryDocumentRepository 
+    RepositoryBase <|-- CategoryDocumentRepository
+
+    IRepositoryBase <|-- IDocumentRepository 
+    RepositoryBase <|-- DocumentRepository
+
+    IRepositoryBase <|-- IPageRepository 
+    RepositoryBase <|-- PageRepository
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    CategoryDocumentController o-- ICategoryDocumentRepository
+    DocumentsController o-- IDocumentRepository
+    PagesController o-- IPageRepository
+
+   
+
+
+
+}

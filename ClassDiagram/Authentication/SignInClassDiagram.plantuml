@@ -1,0 +1,78 @@
+@startuml SigninGoogleClerk
+Title SigninGoogleClerk Class DiagramBorderColor
+skinparam classAttributeIconSize 0
+' Lớp chính xử lý sign-in
+package pkgSigninGoogleClerk <<Frame>>{
+
+class ClerkSignIn  {
+  + startSignInWithOAuth(provider: SocialProvider): OAuthSession
+  + handleOAuthCallback(oauthSession: OAuthSession, authCode: String): User
+  + verifyUser(user: User): Boolean
+}
+
+' Quá trình xác thực OAuth
+class OAuthSession  {
+  + id: String
+  + provider: SocialProvider
+  + authUrl: String
+  + status: OAuthStatus
+  + authCode: String
+  + redirectToProvider(): void
+  + receiveAuthCode(authCode: String): Boolean
+}
+
+' Các trạng thái OAuth
+class OAuthStatus  {
+  <<enumeration>>
+  + PENDING
+  + COMPLETED
+  + FAILED
+}
+
+' Các nhà cung cấp OAuth
+class SocialProvider  {
+  <<enumeration>>
+  + Google
+  + Facebook
+  + GitHub
+  + Apple
+}
+
+' Thông tin người dùng
+class User  {
+  + id: String
+  + email: String
+  + fullName: String
+  + isVerified: Boolean
+}
+
+' Lớp Google OAuth xử lý mã xác thực
+class GoogleOAuth  {
+  + exchangeAuthCode(authCode: String): AccessToken
+  + getUserInfo(accessToken: AccessToken): GoogleUserInfo
+}
+
+' Thông tin AccessToken
+class AccessToken  {
+  + token: String
+  + expiresIn: Int
+  + scope: String
+}
+
+' Thông tin Google User
+class GoogleUserInfo  {
+  + id: String
+  + email: String
+  + fullName: String
+  + profilePicture: String
+}
+
+' Các quan hệ
+ClerkSignIn --> OAuthSession
+OAuthSession --> OAuthStatus
+OAuthSession --> SocialProvider
+ClerkSignIn --> User
+GoogleOAuth --> AccessToken
+GoogleOAuth --> GoogleUserInfo
+}
+@enduml

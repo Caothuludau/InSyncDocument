@@ -1,0 +1,143 @@
+@startuml SignUpClassDiagram
+skinparam classAttributeIconSize 0
+Title SignUp Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgSignUp <<Frame>> {  
+    'include controller'
+    !includesub ../ControllersClassDiagram.plantuml!UsersController
+    !includesub ../ControllersClassDiagram.plantuml!ControllerBase
+
+    
+    'include Repository'
+    !includesub ../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../RepositoriesClassDiagram.plantuml!IUserRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!UserRepository
+    'include Dto'
+    !includesub ../DtosClassDiagram.plantuml!ActionUserResponse
+    !includesub ../DtosClassDiagram.plantuml!CreateUserDto
+    !includesub ../DtosClassDiagram.plantuml!Verification
+    !includesub ../DtosClassDiagram.plantuml!EmailAddresses
+     !includesub ../DtosClassDiagram.plantuml!Data
+    !includesub ../ModelsClassDiagram.plantuml!User
+
+    ' Lớp chính xử lý sign-in, sign-out và sign-up
+    class ClerkSignUp {
+    + signUpWithEmail(email: String, password: String): UserClerk
+    + signUpWithOAuth(provider: SocialProvider): OAuthSession
+    + verifyUser(user: UserClerk): Boolean
+    + callWebhook(user: CreateUserDto): WebhookResponse
+    }
+
+    ' Quá trình xác thực OAuth
+    class OAuthSession {
+    + id: String
+    + provider: SocialProvider
+    + authUrl: String
+    + status: OAuthStatus
+    + authCode: String
+    + redirectToProvider(): void
+    + receiveAuthCode(authCode: String): Boolean
+    }
+
+    ' Các trạng thái OAuth
+    class OAuthStatus {
+    <<enumeration>>
+    + PENDING
+    + COMPLETED
+    + FAILED
+    }
+
+    ' Các nhà cung cấp OAuth
+    class SocialProvider {
+    <<enumeration>>
+    + Google
+    + Facebook
+    + GitHub
+    + Apple
+    }
+
+    ' Thông tin người dùng
+    class UserClerk {
+    + id: String
+    + email: String
+    + fullName: String
+    + isVerified: Boolean
+    }
+
+    ' Kết quả webhook
+    class WebhookResponse {
+    + status: String
+    + message: String
+    + timestamp: Date
+    }
+
+    ' Lớp Google OAuth xử lý mã xác thực
+    class GoogleOAuth {
+    + exchangeAuthCode(authCode: String): AccessToken
+    + getUserInfo(accessToken: AccessToken): GoogleUserInfo
+    }
+
+    ' Thông tin AccessToken
+    class AccessToken {
+    + token: String
+    + expiresIn: Int
+    + scope: String
+    }
+
+    ' Thông tin Google User
+    class GoogleUserInfo {
+    + id: String
+    + email: String
+    + fullName: String
+    + profilePicture: String
+    }
+
+
+
+    'set up realation ship' 
+    ControllerBase <|-- UsersController
+    UsersController ..> ActionUserResponse : return views
+    UsersController ..> CreateUserDto : request
+
+    IRepositoryBase <|.. RepositoryBase
+    IUserRepository <|.. UserRepository
+    UserRepository o-- User
+
+    IRepositoryBase <|-- IUserRepository 
+    RepositoryBase <|-- UserRepository
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    UsersController o-- IUserRepository
+
+    'Relationships
+    Data "1" --> "*" EmailAddresses
+    EmailAddresses "1" --> "1" Verification
+    CreateUserDto "1" --> "1" Data
+
+
+
+    ClerkSignUp --> OAuthSession
+    OAuthSession --> OAuthStatus
+    OAuthSession --> SocialProvider
+    ClerkSignUp --> UserClerk
+    ClerkSignUp --> WebhookResponse
+    GoogleOAuth --> AccessToken
+    GoogleOAuth --> GoogleUserInfo
+    ClerkSignUp --> UsersController : webhook
+
+}

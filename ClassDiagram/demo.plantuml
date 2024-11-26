@@ -1,4 +1,5 @@
 @startuml
+skinparam classAttributeIconSize 0
 class ClassA
 class ClassB
 interface InterfaceB

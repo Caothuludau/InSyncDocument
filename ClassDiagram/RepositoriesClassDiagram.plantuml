@@ -1,4 +1,6 @@
 @startuml Repositorys
+skinparam classAttributeIconSize 0
+skinparam classAttributeIconSize 0
 Title Repository Class Diagram
 
 'Character	Visibility
@@ -17,12 +19,12 @@ Title Repository Class Diagram
 
 package pkgRepositorys <<Frame>>{
 !startsub DbContext
-class DbContext <<(C,orchid) abstract>>{
+abstract DbContext {
 }
 !endsub
 
 !startsub InSyncContext
-class InSyncContext <<(C,orchid) DbContext>> {
+class InSyncContext {
     + InSyncContext()
     + InSyncContext(options : DbContextOptions<InSyncContext>)
     + Assets : DbSet<Asset>
@@ -42,7 +44,7 @@ class InSyncContext <<(C,orchid) DbContext>> {
 
     
 !startsub IRepositoryBase
-interface IRepositoryBase<T> <<(I,#ADD8E6) interface>> {
+interface IRepositoryBase<T> {
     + Add(entity : T) : Task<T>
     + Update(entity : T) : Task
     + Delete(entity : T) : Task<T>
@@ -65,8 +67,8 @@ interface IRepositoryBase<T> <<(I,#ADD8E6) interface>> {
 
 !startsub RepositoryBase
 
-class RepositoryBase<T> <<(C,orchid) class>> {
-    - _context : InSyncContext
+class RepositoryBase<T>    {
+    # _context : InSyncContext
     - disposed : bool
     + RepositoryBase(context : InSyncContext)
     + Add(entity : T) : Task<T>
@@ -98,10 +100,10 @@ class RepositoryBase<T> <<(C,orchid) class>> {
 !endsub
  
 !startsub AssetRepository
-interface IAssetRepository <<(I,#ADD8E6) interface>> {
+interface IAssetRepository    {
     // Inherits from IRepositoryBase<Asset>
 }
-class AssetRepository <<(C,orchid) class>> {
+class AssetRepository    {
     - _context : InSyncContext
     + AssetRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Asset>
@@ -111,14 +113,14 @@ class AssetRepository <<(C,orchid) class>> {
 
 
 !startsub ICategoryDocumentRepository
-interface ICategoryDocumentRepository <<(I,#ADD8E6) interface>> {
+interface ICategoryDocumentRepository    {
     + DeleteCategoryDocument(id : Guid) : Task
     // Inherits from IRepositoryBase<CategoryDocument>
 }
 !endsub
 
 !startsub CategoryDocumentRepository
-class CategoryDocumentRepository <<(C,orchid) class>> {
+class CategoryDocumentRepository    {
     - _context : InSyncContext
     + CategoryDocumentRepository(context : InSyncContext)
     + DeleteCategoryDocument(id : Guid) : Task
@@ -128,13 +130,13 @@ class CategoryDocumentRepository <<(C,orchid) class>> {
 
 
 !startsub ICustomerReviewRepository
-interface ICustomerReviewRepository <<(I,#ADD8E6) interface>> {
+interface ICustomerReviewRepository    {
     // Inherits from IRepositoryBase<CustomerReview>
 }
 !endsub
 
 !startsub CustomerReviewRepository
-class CustomerReviewRepository <<(C,orchid) class>> {
+class CustomerReviewRepository    {
     - _context : InSyncContext
     + CustomerReviewRepository(context : InSyncContext)
     // Inherits from RepositoryBase<CustomerReview>
@@ -143,13 +145,13 @@ class CustomerReviewRepository <<(C,orchid) class>> {
 
 
 !startsub IDocumentRepository
-interface IDocumentRepository <<(I,#ADD8E6) interface>> {
+interface IDocumentRepository    {
     // Inherits from IRepositoryBase<Document>
 }
 !endsub
 
 !startsub DocumentRepository
-class DocumentRepository <<(C,orchid) class>> {
+class DocumentRepository    {
     - _context : InSyncContext
     + DocumentRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Document>
@@ -158,13 +160,13 @@ class DocumentRepository <<(C,orchid) class>> {
 
 
 !startsub IPageRepository
-interface IPageRepository <<(I,#ADD8E6) interface>> {
+interface IPageRepository    {
     // Inherits from IRepositoryBase<Page>
 }
 !endsub
 
 !startsub PageRepository
-class PageRepository <<(C,orchid) class>> {
+class PageRepository    {
     - _context : InSyncContext
     + PageRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Page>
@@ -173,14 +175,14 @@ class PageRepository <<(C,orchid) class>> {
 
 
 !startsub IProjectRepository
-interface IProjectRepository <<(I,#ADD8E6) interface>> {
+interface IProjectRepository    {
     + DeleteProject(id : Guid) : Task
     // Inherits from IRepositoryBase<Project>
 }
 !endsub
 
 !startsub ProjectRepository
-class ProjectRepository <<(C,orchid) class>> {
+class ProjectRepository    {
     - _context : InSyncContext
     + ProjectRepository(context : InSyncContext)
     + DeleteProject(id : Guid) : Task
@@ -190,13 +192,13 @@ class ProjectRepository <<(C,orchid) class>> {
 
 
 !startsub IScenarioRepository
-interface IScenarioRepository <<(I,#ADD8E6) interface>> {
+interface IScenarioRepository    {
     // Inherits from IRepositoryBase<Scenario>
 }
 !endsub
 
 !startsub ScenarioRepository
-class ScenarioRepository <<(C,orchid) class>> {
+class ScenarioRepository    {
     - _context : InSyncContext
     + ScenarioRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Scenario>
@@ -206,14 +208,14 @@ class ScenarioRepository <<(C,orchid) class>> {
 
 
 !startsub ISubscriptionPlanRepository
-interface ISubscriptionPlanRepository <<(I,#ADD8E6) interface>> {
+interface ISubscriptionPlanRepository    {
     + DeleteSubscriptionPlan(id : Guid) : Task
     // Inherits from IRepositoryBase<SubscriptionPlan>
 }
 !endsub
 
 !startsub SubscriptionPlanRepository
-class SubscriptionPlanRepository <<(C,orchid) class>> {
+class SubscriptionPlanRepository    {
     - _context : InSyncContext
     + SubscriptionPlanRepository(context : InSyncContext)
     + DeleteSubscriptionPlan(id : Guid) : Task
@@ -222,13 +224,13 @@ class SubscriptionPlanRepository <<(C,orchid) class>> {
 !endsub
 
 !startsub IUserRepository
-interface IUserRepository <<(I,#ADD8E6) interface>> {
+interface IUserRepository    {
     // Inherits from IRepositoryBase<User>
 }
 !endsub
 
 !startsub UserRepository
-class UserRepository <<(C,orchid) class>> {
+class UserRepository    {
     - _context : InSyncContext
     + UserRepository(context : InSyncContext)
     // Inherits from RepositoryBase<User>
@@ -237,13 +239,13 @@ class UserRepository <<(C,orchid) class>> {
 
 
 !startsub IUserSubscriptionRepository
-interface IUserSubscriptionRepository <<(I,#ADD8E6) interface>> {
+interface IUserSubscriptionRepository    {
     // Inherits from IRepositoryBase<UserSubscription>
 }
 !endsub
 
 !startsub UserSubscriptionRepository
-class UserSubscriptionRepository <<(C,orchid) class>> {
+class UserSubscriptionRepository    {
     - _context : InSyncContext
     + UserRepository(context : InSyncContext)
     // Inherits from RepositoryBase<UserSubscription>

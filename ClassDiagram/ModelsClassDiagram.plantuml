@@ -1,5 +1,5 @@
 @startuml Models
-
+skinparam classAttributeIconSize 0
 Title Models Class Diagram
 'Character	Visibility
 '-			private
@@ -15,7 +15,7 @@ Title Models Class Diagram
 package pkgModels <<Frame>> {
 
     !startsub Asset
-    class Asset <<(C,orchid) model>> {
+    class Asset    {
         + Id : Guid
         + ProjectId : Guid
         + AssestName : string
@@ -28,7 +28,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub CategoryDocument
-    class CategoryDocument<<(C,orchid) model>>{
+    class CategoryDocument  {
         + CategoryDocument()
         + Id : Guid
         + Title : string
@@ -40,7 +40,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Document
-    class Document<<(C,orchid) model>>{
+    class Document  {
         + Id : Guid
         + Slug : string
         + Title : string
@@ -56,7 +56,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub CustomerReview
-    class CustomerReview <<(C,orchid) model>> {
+    class CustomerReview    {
         + Id : Guid
         + Name : string
         + ImageUrl : string<<nullable>>
@@ -68,7 +68,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Page
-    class Page <<(C,orchid) model>>{
+    class Page   {
         + Id : Guid
         + Slug : string
         + Title : string
@@ -80,7 +80,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Project
-    class Project <<(C,orchid) model>> {
+    class Project    {
         + Project()
 
         + Id : Guid
@@ -97,7 +97,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Scenario
-    class Scenario <<(C,orchid) model>> {
+    class Scenario    {
         + Id : Guid
         + ProjectId : Guid
         + ScenarioName : string
@@ -115,7 +115,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub SubscriptionPlan
-    class SubscriptionPlan <<(C,orchid) model>> {
+    class SubscriptionPlan    {
         + SubscriptionPlan()
         + Id : Guid
         + SubscriptionsName : string
@@ -141,7 +141,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub User
-    class User <<(C,orchid) model>> {
+    class User    {
         + User()
 
         + Id : Guid
@@ -170,7 +170,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub UserSubscription
-    class UserSubscription <<(C,orchid) model>> {
+    class UserSubscription    {
         + Id : Guid
         + SubscriptionPlanId : Guid
         + UserId : Guid

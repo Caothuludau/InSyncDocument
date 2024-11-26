@@ -1,5 +1,5 @@
 @startuml Controllers
-
+skinparam classAttributeIconSize 0
 Title Controller Class Diagram
 'Character	Visibility
 '-			private
@@ -16,11 +16,11 @@ Title Controller Class Diagram
 package pkgControllers <<Frame>> {   
 
     !startsub ControllerBase
-    class ControllerBase <<(C,orchid) abstract>>
+    abstract ControllerBase{}
     !endsub
     'User Controller'
     !startsub UsersController
-    class UsersController <<(C,orchid) controller>> {
+    class UsersController    {
         - _userRepo : IUserRepository
         - _mapper : IMapper
         _logger : ILogger<UsersController>
@@ -33,7 +33,7 @@ package pkgControllers <<Frame>> {
     'Assets Controller'
     !startsub AssetsController
     
-    class AssetsController <<(C,orchid) controller>> {
+    class AssetsController    {
         - _assestRepo : IAssetRepository
         - _projectRepo : IProjectRepository
         - ITEM_PAGES_DEFAULT : int
@@ -63,7 +63,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub CategoryDocumentController
-    class CategoryDocumentController <<(C,orchid) controller>> {
+    class CategoryDocumentController    {
         - _cateRepo : ICustomerReviewRepository
         - _mapper : IMapper
         - _logger : ILogger<CategoryDocumentController>
@@ -85,7 +85,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub CustomerReviewsController
-    class CustomerReviewsController <<(C,orchid) controller>> {
+    class CustomerReviewsController    {
         - _customerReviewRepo : ICustomerReviewRepository
         - _mapper : IMapper
         - _logger : ILogger<CustomerReviewsController>
@@ -108,7 +108,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub DocumentsController
-    class DocumentsController <<(C,orchid) controller>> {
+    class DocumentsController    {
         - _documentRepo : IDocumentRepository
         - _cateRepo : ICategoryDocumentRepository
         - _mapper : IMapper
@@ -136,7 +136,7 @@ package pkgControllers <<Frame>> {
     !endsub
    
    !startsub PagesController
-    class PagesController <<(C,orchid) controller>> {
+    class PagesController    {
         - _pageRepo :IPageRepository 
         - _mapper : IMapper
         - _logger : ILogger<PagesController>
@@ -161,7 +161,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub ProjectsController
-    class ProjectsController <<(C,orchid) controller>> {
+    class ProjectsController    {
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
         - _logger : ILogger<ProjectsController>
@@ -187,7 +187,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub ScenariosController
-    class ScenariosController <<(C,orchid) controller>> {
+    class ScenariosController    {
         - _scenarioRepo : IScenarioRepository
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
@@ -218,7 +218,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub SubscriptionPlansController
-    class SubscriptionPlansController <<(C,orchid) controller>> {
+    class SubscriptionPlansController    {
         - _subscriptionPlanRepo : ISubscriptionPlanRepository
         - _userRepository : IUserRepository
         - _logger : ILogger<SubscriptionPlansController> 
@@ -242,7 +242,7 @@ package pkgControllers <<Frame>> {
 
 
     !startsub UserSubscriptionsController
-    class UserSubscriptionsController <<(C,orchid) controller>> {
+    class UserSubscriptionsController    {
         - _userSubRepo : IUserSubscriptionRepository
         - _userRepo : IUserRepository
         - _subRepo : ISubscriptionPlanRepository

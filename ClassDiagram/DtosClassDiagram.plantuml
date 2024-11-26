@@ -1,5 +1,5 @@
 @startuml DTOs
-
+skinparam classAttributeIconSize 0
 Title DTOs Class Diagram
 'Character	Visibility
 '-			private
@@ -14,7 +14,7 @@ Title DTOs Class Diagram
 package dtos <<Frame>> {
    'Asset DTO'
     !startsub ViewAssetDto
-    class ViewAssetDto <<(C,orchid) dtos>> {
+    class ViewAssetDto    {
         + Id : Guid
         + ProjectId : Guid
         + ProjectName : string
@@ -27,7 +27,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateAssetDto
-    class UpdateAssetDto <<(C,orchid) dtos>> {
+    class UpdateAssetDto    {
         + Id : Guid
         + AssestName : string
         + Type : string
@@ -35,7 +35,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddAssetDto
-    class AddAssetDto <<(C,orchid) dtos>> {
+    class AddAssetDto    {
         + ProjectId : Guid
         + AssestName: string
         + Type : string<<nullable>>
@@ -44,7 +44,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionAssetResponse
-    class ActionAssetResponse <<(C,orchid) dtos>> {
+    class ActionAssetResponse    {
         + Id : Guid
         + Message: string
     }
@@ -54,7 +54,7 @@ package dtos <<Frame>> {
 
     'CustomerReview DTO'
     !startsub ViewCustomerReviewDto
-    class ViewCustomerReviewDto <<(C,orchid) dtos>> {
+    class ViewCustomerReviewDto    {
         + Id : Guid
         + Name : string
         + ImageUrl : string<<nullable>>
@@ -66,7 +66,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddCustomerReviewDto
-    class AddCustomerReviewDto <<(C,orchid) dtos>> {
+    class AddCustomerReviewDto    {
         + Name : string
         + ImageUrl : string<<nullable>>
         + JobTitle : string
@@ -75,7 +75,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateCustomerReviewDto
-    class UpdateCustomerReviewDto <<(C,orchid) dtos>> {
+    class UpdateCustomerReviewDto    {
         + Id : Guid
         + Name : string
         + ImageUrl : string<<nullable>>
@@ -86,7 +86,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionCustomerReviewResponse
-    class ActionCustomerReviewResponse <<(C,orchid) dtos>> {
+    class ActionCustomerReviewResponse    {
         + Message : string
         + Id : Guid
     }
@@ -95,7 +95,7 @@ package dtos <<Frame>> {
 
    'CategoryDocuments DTO'
     !startsub ViewCategoryDocumentDto
-    class ViewCategoryDocumentDto <<(C,orchid) dtos>> {
+    class ViewCategoryDocumentDto    {
     + Id : Guid
     + Title : string
     + Description : string <<nullable>>
@@ -107,7 +107,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateCategoryDocumentDto
-    class UpdateCategoryDocumentDto <<(C,orchid) dtos>> {
+    class UpdateCategoryDocumentDto    {
     + Id : Guid
     + Title : string
     + Order : int
@@ -117,7 +117,7 @@ package dtos <<Frame>> {
 
 
     !startsub AddCategoryDocumentDto
-    class AddCategoryDocumentDto <<(C,orchid) dtos>> {
+    class AddCategoryDocumentDto    {
     + Title : string
     + Order : int
     + Description : string <<nullable>>
@@ -126,7 +126,7 @@ package dtos <<Frame>> {
 
 
     !startsub ActionCategoryDocumentResponse
-    class ActionCategoryDocumentResponse <<(C,orchid) dtos>> {
+    class ActionCategoryDocumentResponse    {
     + Message : string
     + Id : Guid
     }
@@ -136,7 +136,7 @@ package dtos <<Frame>> {
     'Documents DTO'
     
     !startsub ViewDocumentDto
-    class ViewDocumentDto <<(C,orchid) dtos>> {
+    class ViewDocumentDto    {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -152,7 +152,7 @@ package dtos <<Frame>> {
 
 
     !startsub UpdateDocumentDto
-    class UpdateDocumentDto <<(C,orchid) dtos>> {
+    class UpdateDocumentDto    {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -164,7 +164,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddDocumentDto
-    class AddDocumentDto <<(C,orchid) dtos>> {
+    class AddDocumentDto    {
     + Slug : string
     + Title : string
     + Content : string <<nullable>>
@@ -175,7 +175,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionDocumentResponse
-    class ActionDocumentResponse <<(C,orchid) dtos>> {
+    class ActionDocumentResponse    {
     + Message : string
     + Id : Guid
     }
@@ -185,7 +185,7 @@ package dtos <<Frame>> {
     'Pages DTO'
 
     !startsub ViewPageDto
-    class ViewPageDto <<(C,orchid) dtos>> {
+    class ViewPageDto    {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -198,7 +198,7 @@ package dtos <<Frame>> {
 
 
     !startsub UpdatePageDto
-    class UpdatePageDto <<(C,orchid) dtos>> {
+    class UpdatePageDto    {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -208,7 +208,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddPageDto
-    class AddPageDto <<(C,orchid) dtos>> {
+    class AddPageDto    {
     + Slug : string
     + Title : string
     + Content : string <<nullable>>
@@ -217,7 +217,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionPageResponse
-    class ActionPageResponse <<(C,orchid) dtos>> {
+    class ActionPageResponse    {
     + Message : string
     + Id : Guid
     }
@@ -226,7 +226,7 @@ package dtos <<Frame>> {
 
     'Project Dto
     !startsub ViewProjectDto
-    class ViewProjectDto <<(C,orchid) dtos>> {
+    class ViewProjectDto    {
         + Id : Guid
         + ProjectName : string
         + Description : string <<nullable>>
@@ -239,7 +239,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddProjectDto
-    class AddProjectDto <<(C,orchid) dtos>> {
+    class AddProjectDto    {
         + ProjectName : string
         + Description : string
         + UserId : Guid
@@ -248,7 +248,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddProjectClerkDto
-    class AddProjectClerkDto <<(C,orchid) dtos>> {
+    class AddProjectClerkDto    {
         + ProjectName : string
         + Description : string
         + UserIdClerk : string
@@ -257,7 +257,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateProjectDto
-    class UpdateProjectDto <<(C,orchid) dtos>> {
+    class UpdateProjectDto    {
         + Id : Guid
         + ProjectName : string
         + Description : string
@@ -266,7 +266,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionProjectResponse
-    class ActionProjectResponse <<(C,orchid) dtos>> {
+    class ActionProjectResponse    {
         + Message : string
         + Id : Guid
     }
@@ -274,7 +274,7 @@ package dtos <<Frame>> {
     'ProjectDto'
 
     'Response Paging'
-    class ResponsePaging <<(C,orchid) dtos>> {
+    class ResponsePaging    {
         + data : T
         + totalOfData : int
     }
@@ -282,7 +282,7 @@ package dtos <<Frame>> {
 
     'Scenario Dto
     !startsub ViewScenarioDto
-    class ViewScenarioDto <<(C,orchid) dtos>> {
+    class ViewScenarioDto    {
         + Id : Guid
         + ProjectId : Guid
         + ProjectName : string
@@ -301,7 +301,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddScenarioDto
-    class AddScenarioDto <<(C,orchid) dtos>> {
+    class AddScenarioDto    {
         + ProjectId : Guid
         + ScenarioName : string
         + Description : string <<nullable>>
@@ -314,7 +314,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddScenarioUserClerkDto
-    class AddScenarioUserClerkDto <<(C,orchid) dtos>> {
+    class AddScenarioUserClerkDto    {
         + ProjectId : Guid
         + ScenarioName : string
         + Description : string <<nullable>>
@@ -327,7 +327,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateScenarioDto
-    class UpdateScenarioDto <<(C,orchid) dtos>> {
+    class UpdateScenarioDto    {
         + Id : Guid
         + ScenarioName : string
         + Description : string <<nullable>>
@@ -339,14 +339,14 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateRenameScenarioDto
-    class UpdateRenameScenarioDto <<(C,orchid) dtos>> {
+    class UpdateRenameScenarioDto    {
         + Id : Guid
         + ScenarioName : string
     }
     !endsub
 
     !startsub ActionScenarioResponse
-    class ActionScenarioResponse <<(C,orchid) dtos>> {
+    class ActionScenarioResponse    {
         + Message : string
         + Id : Guid
     }
@@ -356,7 +356,7 @@ package dtos <<Frame>> {
 
     'Subscription Plan Dtos
     !startsub ViewSubscriptionPlanDto
-    class ViewSubscriptionPlanDto <<(C,orchid) dtos>> {
+    class ViewSubscriptionPlanDto    {
         + Id : Guid
         + SubscriptionsName : string
         + Status : bool
@@ -380,7 +380,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddSubscriptionPlanDto
-    class AddSubscriptionPlanDto <<(C,orchid) dtos>> {
+    class AddSubscriptionPlanDto    {
         + SubscriptionsName : string
         + Status : bool
         + Price : decimal
@@ -400,7 +400,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddSubscriptionPlanUserClerkDto
-    class AddSubscriptionPlanUserClerkDto <<(C,orchid) dtos>> {
+    class AddSubscriptionPlanUserClerkDto    {
         + SubscriptionsName : string
         + Status : bool
         + Price : decimal
@@ -420,7 +420,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateSubscriptionPlanDto
-    class UpdateSubscriptionPlanDto <<(C,orchid) dtos>> {
+    class UpdateSubscriptionPlanDto    {
         + Id : Guid
         + SubscriptionsName : string
         + Status : bool
@@ -440,7 +440,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionSubscriptionPlanResponse
-    class ActionSubscriptionPlanResponse <<(C,orchid) dtos>> {
+    class ActionSubscriptionPlanResponse    {
         + Message : string
         + Id : Guid
     }
@@ -449,7 +449,7 @@ package dtos <<Frame>> {
 
     'Tutorial Dtos
     !startsub ViewTutorialDto
-    class ViewTutorialDto <<(C,orchid) dtos>> {
+    class ViewTutorialDto    {
         + Id : Guid
         + Title : string
         + Content : string
@@ -463,7 +463,7 @@ package dtos <<Frame>> {
 
     'User Dtos
     !startsub Data
-    class Data <<(C,orchid) dtos>> {
+    class Data    {
         + Birthday : string
         + Created_At : long
         + Email_Addresses : EmailAddresses[] <<nullable>>
@@ -491,7 +491,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub EmailAddresses
-    class EmailAddresses <<(C,orchid) dtos>> {
+    class EmailAddresses    {
         + Email_Address : string
         + Id : string
         + Linked_To : object[]
@@ -501,14 +501,14 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub Verification
-    class Verification <<(C,orchid) dtos>> {
+    class Verification    {
         + Status : string
         + Strategy : string
     }
     !endsub
 
     !startsub CreateUserDto
-    class CreateUserDto <<(C,orchid) dtos>> {
+    class CreateUserDto    {
         + Data : Data
         + Object : string
         + Type : string
@@ -516,10 +516,17 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateUserDto
-    class UpdateUserDto <<(C,orchid) dtos>> {
+    class UpdateUserDto    {
         + Data : Data
         + Object : string
         + Type : string
+    }
+    !endsub
+
+    !startsub ActionUserResponse
+    class ActionUserResponse    {
+        + Message : string
+        + Id : Guid
     }
     !endsub
 
@@ -531,7 +538,7 @@ package dtos <<Frame>> {
 
 'User Subscription Dtos
     !startsub ViewUserSubscriptionDto
-    class ViewUserSubscriptionDto <<(C,orchid) dtos>> {
+    class ViewUserSubscriptionDto    {
         + Id : Guid
         + SubscriptionPlanId : Guid
         + SubscriptionPlanName : string
@@ -546,7 +553,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddUserSubscriptionDto
-    class AddUserSubscriptionDto <<(C,orchid) dtos>> {
+    class AddUserSubscriptionDto    {
         + SubscriptionPlanId : Guid
         + UserId : Guid
         + StripeCurrentPeriodEnd : DateTime
@@ -557,7 +564,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddUserSubscriptionUserClerkDto
-    class AddUserSubscriptionUserClerkDto <<(C,orchid) dtos>> {
+    class AddUserSubscriptionUserClerkDto    {
         + SubscriptionPlanId : Guid
         + UserIdClerk : string
         + StripeCurrentPeriodEnd : DateTime
@@ -568,7 +575,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateUserSubscriptionDto
-    class UpdateUserSubscriptionDto <<(C,orchid) dtos>> {
+    class UpdateUserSubscriptionDto    {
         + Id : Guid
         + SubscriptionPlanId : Guid
         + StripeCurrentPeriodEnd : DateTime
@@ -579,7 +586,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionUserSubscriptionResponse
-    class ActionUserSubscriptionResponse <<(C,orchid) dtos>> {
+    class ActionUserSubscriptionResponse    {
         + Message : string
         + Id : Guid
     }
