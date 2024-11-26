@@ -8,461 +8,518 @@ Title DTOs Class Diagram
 '+			public
 
 'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
-'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part + of
 'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
 
 package dtos <<Frame>> {
-
+   'Asset DTO'
     !startsub ViewAssetDto
     class ViewAssetDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - ProjectId : Guid
-        - ProjectName : string
-        - AssestName : string
-        - Type : string
-        - FilePath : string
-        - DateCreated : DateTime
-        - DateUdpated : DateTime
+        + Id : Guid
+        + ProjectId : Guid
+        + ProjectName : string
+        + AssestName : string
+        + Type : string<<nullable>>
+        + FilePath : string
+        + DateCreated : DateTime
+        + DateUdpated : DateTime<<nullable>>
     }
     !endsub
 
     !startsub UpdateAssetDto
     class UpdateAssetDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - AssestName : string
-        - Type : string
+        + Id : Guid
+        + AssestName : string
+        + Type : string
     }
     !endsub
 
     !startsub AddAssetDto
     class AddAssetDto <<(C,orchid) dtos>> {
-        - ProjectId : Guid
-        - AssestName: string
-        - Type : string
-        - FilePath : string
+        + ProjectId : Guid
+        + AssestName: string
+        + Type : string<<nullable>>
+        + FilePath : string
     }
     !endsub
 
     !startsub ActionAssetResponse
     class ActionAssetResponse <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Message: string
+        + Id : Guid
+        + Message: string
     }
     !endsub
+    'Asset DTO'
 
+
+    'CustomerReview DTO'
     !startsub ViewCustomerReviewDto
     class ViewCustomerReviewDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Name : string
-        - ImageUrl : string
-        - JobTitle : string
-        - Review : string
-        - DateCreated : DateTime
-        - IsShow : bool
+        + Id : Guid
+        + Name : string
+        + ImageUrl : string<<nullable>>
+        + JobTitle : string
+        + Review : string
+        + DateCreated : DateTime
+        + IsShow : bool
     }
     !endsub
 
     !startsub AddCustomerReviewDto
     class AddCustomerReviewDto <<(C,orchid) dtos>> {
-        - Name : string
-        - ImageUrl : string
-        - JobTitle : string
-        - Review : string
+        + Name : string
+        + ImageUrl : string<<nullable>>
+        + JobTitle : string
+        + Review : string
     }
     !endsub
 
     !startsub UpdateCustomerReviewDto
     class UpdateCustomerReviewDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Name : string
-        - ImageUrl : string
-        - JobTitle : string
-        - Review : string
-        - IsShow : bool
+        + Id : Guid
+        + Name : string
+        + ImageUrl : string<<nullable>>
+        + JobTitle : string
+        + Review : string
+        + IsShow : bool
     }
     !endsub
 
     !startsub ActionCustomerReviewResponse
     class ActionCustomerReviewResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
+        + Message : string
+        + Id : Guid
+    }
+    !endsub
+    'CustomerReview DTO'
+
+   'CategoryDocuments DTO'
+    !startsub ViewCategoryDocumentDto
+    class ViewCategoryDocumentDto <<(C,orchid) dtos>> {
+    + Id : Guid
+    + Title : string
+    + Description : string <<nullable>>
+    + Order : int
+    + DateCreated : DateTime
+    + DateUpdated : DateTime <<nullable>>
+    + Documents : IEnumerable<ViewDocumentDto>
     }
     !endsub
 
-    !startsub ViewPrivacyPolicyDto
-    class ViewPrivacyPolicyDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Description : string
-        - Title : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
+    !startsub UpdateCategoryDocumentDto
+    class UpdateCategoryDocumentDto <<(C,orchid) dtos>> {
+    + Id : Guid
+    + Title : string
+    + Order : int
+    + Description : string <<nullable>>
     }
     !endsub
 
-    !startsub AddPrivacyPolicyDto
-    class AddPrivacyPolicyDto <<(C,orchid) dtos>> {
-        - Description : string
-        - Title : string
+
+    !startsub AddCategoryDocumentDto
+    class AddCategoryDocumentDto <<(C,orchid) dtos>> {
+    + Title : string
+    + Order : int
+    + Description : string <<nullable>>
     }
     !endsub
 
-    !startsub UpdatePrivacyPolicyDto
-    class UpdatePrivacyPolicyDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Description : string
-        - Title : string
+
+    !startsub ActionCategoryDocumentResponse
+    class ActionCategoryDocumentResponse <<(C,orchid) dtos>> {
+    + Message : string
+    + Id : Guid
+    }
+    !endsub
+    'CategoryDocuments DTO'
+
+    'Documents DTO'
+    
+    !startsub ViewDocumentDto
+    class ViewDocumentDto <<(C,orchid) dtos>> {
+    + Id : Guid
+    + Slug : string
+    + Title : string
+    + Content : string <<nullable>>
+    + Note : string <<nullable>>
+    + Order : int
+    + DateCreated : DateTime
+    + DateUpdated : DateTime <<nullable>>
+    + CategoryId : Guid
+    + CategoryName : string
     }
     !endsub
 
-    !startsub ActionPrivacyPolicyResponse
-    class ActionPrivacyPolicyResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
+
+    !startsub UpdateDocumentDto
+    class UpdateDocumentDto <<(C,orchid) dtos>> {
+    + Id : Guid
+    + Slug : string
+    + Title : string
+    + Content : string <<nullable>>
+    + Note : string <<nullable>>
+    + Order : int
+    + CategoryId : Guid
     }
     !endsub
+
+    !startsub AddDocumentDto
+    class AddDocumentDto <<(C,orchid) dtos>> {
+    + Slug : string
+    + Title : string
+    + Content : string <<nullable>>
+    + Note : string <<nullable>>
+    + Order : int
+    + CategoryId : Guid
+    }
+    !endsub
+
+    !startsub ActionDocumentResponse
+    class ActionDocumentResponse <<(C,orchid) dtos>> {
+    + Message : string
+    + Id : Guid
+    }
+    !endsub
+    'Documents DTO'
+
+    'Pages DTO'
+
+    !startsub ViewPageDto
+    class ViewPageDto <<(C,orchid) dtos>> {
+    + Id : Guid
+    + Slug : string
+    + Title : string
+    + Content : string <<nullable>>
+    + Note : string <<nullable>>
+    + DateCreated : DateTime 
+    + DateUpdated : DateTime <<nullable>>
+    }
+    !endsub
+
+
+    !startsub UpdatePageDto
+    class UpdatePageDto <<(C,orchid) dtos>> {
+    + Id : Guid
+    + Slug : string
+    + Title : string
+    + Content : string <<nullable>>
+    + Note : string <<nullable>>
+    }
+    !endsub
+
+    !startsub AddPageDto
+    class AddPageDto <<(C,orchid) dtos>> {
+    + Slug : string
+    + Title : string
+    + Content : string <<nullable>>
+    + Note : string <<nullable>>
+    }
+    !endsub
+
+    !startsub ActionPageResponse
+    class ActionPageResponse <<(C,orchid) dtos>> {
+    + Message : string
+    + Id : Guid
+    }
+    !endsub
+    'Page DTO'
 
     'Project Dto
     !startsub ViewProjectDto
     class ViewProjectDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - ProjectName : string
-        - Description : string
-        - UserId : Guid
-        - displayName : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - IsPublish : bool
+        + Id : Guid
+        + ProjectName : string
+        + Description : string <<nullable>>
+        + UserId : Guid
+        + displayName : string
+        + DateCreated : DateTime
+        + DateUpdated : DateTime<<nullable>>
+        + IsPublish : bool
     }
     !endsub
 
     !startsub AddProjectDto
     class AddProjectDto <<(C,orchid) dtos>> {
-        - ProjectName : string
-        - Description : string
-        - UserId : Guid
-        - IsPublish : bool
+        + ProjectName : string
+        + Description : string
+        + UserId : Guid
+        + IsPublish : bool
     }
     !endsub
 
     !startsub AddProjectClerkDto
     class AddProjectClerkDto <<(C,orchid) dtos>> {
-        - ProjectName : string
-        - Description : string
-        - UserIdClerk : string
-        - IsPublish : bool
+        + ProjectName : string
+        + Description : string
+        + UserIdClerk : string
+        + IsPublish : bool
     }
     !endsub
 
     !startsub UpdateProjectDto
     class UpdateProjectDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - ProjectName : string
-        - Description : string
-        - IsPublish : bool
+        + Id : Guid
+        + ProjectName : string
+        + Description : string
+        + IsPublish : bool
     }
     !endsub
 
     !startsub ActionProjectResponse
     class ActionProjectResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
+        + Message : string
+        + Id : Guid
     }
     !endsub
+    'ProjectDto'
+
+    'Response Paging'
+    class ResponsePaging <<(C,orchid) dtos>> {
+        + data : T
+        + totalOfData : int
+    }
+    'Response Paging'
 
     'Scenario Dto
     !startsub ViewScenarioDto
     class ViewScenarioDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - ProjectId : Guid
-        - ProjectName : string
-        - Title : string
-        - Description : string
-        - CreatedAt : DateTime
-        - UpdatedAt : DateTime
-        - StepsWeb : string
-        - StepsAndroid : string
-        - IsFavorites : bool
-        - ImageUrl : string
-        - AuthorId : Guid
-        - AuthorName : string
+        + Id : Guid
+        + ProjectId : Guid
+        + ProjectName : string
+        + Title : string
+        + Description : string <<nullable>>
+        + CreatedAt : DateTime
+        + UpdatedAt : DateTime <<nullable>>
+        + StepsWeb : string <<nullable>>
+        + StepsAndroid : string <<nullable>>
+        + IsFavorites : bool <<nullable>>
+        + ImageUrl : string <<nullable>>
+        + AuthorId : string
+        + AuthorIdGuid: Guid
+        + AuthorName : string
     }
     !endsub
 
     !startsub AddScenarioDto
     class AddScenarioDto <<(C,orchid) dtos>> {
-        - ProjectId : Guid
-        - ScenarioName : string
-        - Description : string
-        - StepsWeb : string
-        - StepsAndroid : string
-        - IsFavorites : bool
-        - ImageUrl : string
-        - CreatedBy : Guid
+        + ProjectId : Guid
+        + ScenarioName : string
+        + Description : string <<nullable>>
+        + StepsWeb : string <<nullable>>
+        + StepsAndroid : string <<nullable>>
+        + IsFavorites : bool <<nullable>>
+        + ImageUrl : string <<nullable>>
+        + CreatedBy : Guid
     }
     !endsub
 
     !startsub AddScenarioUserClerkDto
     class AddScenarioUserClerkDto <<(C,orchid) dtos>> {
-        - ProjectId : Guid
-        - ScenarioName : string
-        - Description : string
-        - StepsWeb : string
-        - StepsAndroid : string
-        - IsFavorites : bool
-        - ImageUrl : string
-        - UserIdClerk : string
+        + ProjectId : Guid
+        + ScenarioName : string
+        + Description : string <<nullable>>
+        + StepsWeb : string <<nullable>>
+        + StepsAndroid : string <<nullable>>
+        + IsFavorites : bool <<nullable>>
+        + ImageUrl : string <<nullable>>
+        + UserIdClerk : string
     }
     !endsub
 
     !startsub UpdateScenarioDto
     class UpdateScenarioDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - ScenarioName : string
-        - Description : string
-        - StepsWeb : string
-        - StepsAndroid : string
-        - IsFavorites : bool
-        - ImageUrl : string
+        + Id : Guid
+        + ScenarioName : string
+        + Description : string <<nullable>>
+        + StepsWeb : string <<nullable>>
+        + StepsAndroid : string <<nullable>>
+        + IsFavorites : bool <<nullable>>
+        + ImageUrl : string <<nullable>>
     }
     !endsub
 
     !startsub UpdateRenameScenarioDto
     class UpdateRenameScenarioDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - ScenarioName : string
+        + Id : Guid
+        + ScenarioName : string
     }
     !endsub
 
     !startsub ActionScenarioResponse
     class ActionScenarioResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
+        + Message : string
+        + Id : Guid
     }
     !endsub
 
-'Subscription Plan Dtos
+    'Scenario DTO'
+
+    'Subscription Plan Dtos
     !startsub ViewSubscriptionPlanDto
     class ViewSubscriptionPlanDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - SubscriptionsName : string
-        - Status : bool
-        - Price : decimal
-        - UserId : Guid
-        - UserName : string
-        - Content : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - MaxProjects : int
-        - MaxAssets : long
-        - MaxScenarios : int
-        - MaxUsersAccess : int
-        - StorageLimit : long
-        - SupportLevel : string
-        - CustomFeaturesDescription : string
-        - DataRetentionPeriod : long
-        - PrioritySupport : bool
-        - MonthlyReporting : bool
+        + Id : Guid
+        + SubscriptionsName : string
+        + Status : bool
+        + Price : decimal
+        + UserId : Guid
+        + UserName : string
+        + Content : string
+        + DateCreated : DateTime
+        + DateUpdated : DateTime <<nullable>>
+        + MaxProjects : int  <<nullable>>
+        + MaxAssets : long <<nullable>>
+        + MaxScenarios : int <<nullable>>
+        + MaxUsersAccess : int <<nullable>>
+        + StorageLimit : long <<nullable>>
+        + SupportLevel : string <<nullable>>
+        + CustomFeaturesDescription : string <<nullable>>
+        + DataRetentionPeriod : long <<nullable>>
+        + PrioritySupport : bool <<nullable>>
+        + MonthlyReporting : bool <<nullable>>
     }
     !endsub
 
     !startsub AddSubscriptionPlanDto
     class AddSubscriptionPlanDto <<(C,orchid) dtos>> {
-        - SubscriptionsName : string
-        - Status : bool
-        - Price : decimal
-        - UserId : Guid
-        - Content : string
-        - MaxProjects : int
-        - MaxAssets : long
-        - MaxScenarios : int
-        - MaxUsersAccess : int
-        - StorageLimit : long
-        - SupportLevel : string
-        - CustomFeaturesDescription : string
-        - DataRetentionPeriod : long
-        - PrioritySupport : bool
-        - MonthlyReporting : bool
+        + SubscriptionsName : string
+        + Status : bool
+        + Price : decimal
+        + UserId : Guid
+        + Content : string
+        + MaxProjects : int <<nullable>>
+        + MaxAssets : long <<nullable>>
+        + MaxScenarios : int <<nullable>>
+        + MaxUsersAccess : int <<nullable>>
+        + StorageLimit : long <<nullable>>
+        + SupportLevel : string <<nullable>>
+        + CustomFeaturesDescription : string <<nullable>>
+        + DataRetentionPeriod : long <<nullable>>
+        + PrioritySupport : bool <<nullable>>
+        + MonthlyReporting : bool <<nullable>>
     }
     !endsub
 
     !startsub AddSubscriptionPlanUserClerkDto
     class AddSubscriptionPlanUserClerkDto <<(C,orchid) dtos>> {
-        - SubscriptionsName : string
-        - Status : bool
-        - Price : decimal
-        - UserIdClerk : string
-        - Content : string
-        - MaxProjects : int
-        - MaxAssets : long
-        - MaxScenarios : int
-        - MaxUsersAccess : int
-        - StorageLimit : long
-        - SupportLevel : string
-        - CustomFeaturesDescription : string
-        - DataRetentionPeriod : long
-        - PrioritySupport : bool
-        - MonthlyReporting : bool
+        + SubscriptionsName : string
+        + Status : bool
+        + Price : decimal
+        + UserIdClerk : string
+        + Content : string
+        + MaxProjects : int <<nullable>>
+        + MaxAssets : long <<nullable>>
+        + MaxScenarios : int <<nullable>>
+        + MaxUsersAccess : int <<nullable>>
+        + StorageLimit : long <<nullable>>
+        + SupportLevel : string <<nullable>>
+        + CustomFeaturesDescription : string <<nullable>>
+        + DataRetentionPeriod : long <<nullable>>
+        + PrioritySupport : bool <<nullable>>
+        + MonthlyReporting : bool <<nullable>>
     }
     !endsub
 
     !startsub UpdateSubscriptionPlanDto
     class UpdateSubscriptionPlanDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - SubscriptionsName : string
-        - Status : bool
-        - Price : decimal
-        - Content : string
-        - MaxProjects : int
-        - MaxAssets : long
-        - MaxScenarios : int
-        - MaxUsersAccess : int
-        - StorageLimit : long
-        - SupportLevel : string
-        - CustomFeaturesDescription : string
-        - DataRetentionPeriod : long
-        - PrioritySupport : bool
-        - MonthlyReporting : bool
+        + Id : Guid
+        + SubscriptionsName : string
+        + Status : bool
+        + Price : decimal
+        + Content : string
+        + MaxProjects : int <<nullable>>
+        + MaxAssets : long <<nullable>>
+        + MaxScenarios : int <<nullable>>
+        + MaxUsersAccess : int <<nullable>>
+        + StorageLimit : long <<nullable>>
+        + SupportLevel : string <<nullable>>
+        + CustomFeaturesDescription : string <<nullable>>
+        + DataRetentionPeriod : long <<nullable>>
+        + PrioritySupport : bool <<nullable>>
+        + MonthlyReporting : bool <<nullable>>
     }
     !endsub
 
     !startsub ActionSubscriptionPlanResponse
     class ActionSubscriptionPlanResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
+        + Message : string
+        + Id : Guid
     }
     !endsub
-
-    'Term Dtos
-    !startsub ViewTermDto
-    class ViewTermDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Question : string
-        - Answer : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-    }
-    !endsub
-
-    !startsub AddTermsDto
-    class AddTermsDto <<(C,orchid) dtos>> {
-        - Question : string
-        - Answer : string
-    }
-    !endsub
-
-    !startsub UpdateTermsDto
-    class UpdateTermsDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Question : string
-        - Answer : string
-    }
-    !endsub
-
-    !startsub ActionTermResponse
-    class ActionTermResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
-    }
-    !endsub
+    'SubscriptionPlan DTo'
 
     'Tutorial Dtos
     !startsub ViewTutorialDto
     class ViewTutorialDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Title : string
-        - Content : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - IsShow : bool
-        - Order : long
+        + Id : Guid
+        + Title : string
+        + Content : string
+        + DateCreated : DateTime
+        + DateUpdated : DateTime
+        + IsShow : bool
+        + Order : long
     }
     !endsub
 
-    !startsub AddTutorialDto
-    class AddTutorialDto <<(C,orchid) dtos>> {
-        - Title : string
-        - Content : string
-        - IsShow : bool
-        - Order : long
-    }
-    !endsub
-
-    !startsub UpdateTutorialDto
-    class UpdateTutorialDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - Title : string
-        - Content : string
-        - IsShow : bool
-        - Order : long
-    }
-    !endsub
-
-    !startsub ActionTutorialResponse
-    class ActionTutorialResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
-    }
-    !endsub
 
     'User Dtos
     !startsub Data
     class Data <<(C,orchid) dtos>> {
-        - Birthday : string
-        - Created_At : long
-        - Email_Addresses : EmailAddresses[]
-        - First_Name : string
-        - Gender : string
-        - Id : string
-        - Image_Url : string
-        - Last_Name : string
-        - Last_Sign_In_At : long
-        - Object : string
-        - Password_Enabled : bool
-        - Phone_Numbers : string[]
-        - Primary_Email_Address_Id : string
-        - Primary_Phone_Number_Id : string
-        - Primary_Web3_Wallet_Id : string
-        - Private_Metadata : Dictionary
-        - Profile_Image_Url : string
-        - Public_Metadata : Dictionary
-        - Two_Factor_Enabled : bool
-        - Unsafe_Metadata : Dictionary
-        - Updated_At : long
-        - Username : object
-        - Web3_Wallets : string[]
+        + Birthday : string
+        + Created_At : long
+        + Email_Addresses : EmailAddresses[] <<nullable>>
+        + First_Name : string <<nullable>>
+        + Gender : string <<nullable>>
+        + Id : string <<nullable>>
+        + Image_Url : string <<nullable>>
+        + Last_Name : string <<nullable>>
+        + Last_Sign_In_At : long <<nullable>>
+        + Object : string <<nullable>>
+        + Password_Enabled : bool <<nullable>>
+        + Phone_Numbers : string[] <<nullable>>
+        + Primary_Email_Address_Id : string <<nullable>>
+        + Primary_Phone_Number_Id : string <<nullable>>
+        + Primary_Web3_Wallet_Id : string <<nullable>>
+        + Private_Metadata : Dictionary<string, object> <<nullable>>
+        + Profile_Image_Url : string <<nullable>>
+        + Public_Metadata : Dictionary<string,object> <<nullable>>
+        + Two_Factor_Enabled : bool <<nullable>>
+        + Unsafe_Metadata : Dictionary <<nullable>>
+        + Updated_At : long 
+        + Username : object <<nullable>>
+        + Web3_Wallets : string[] <<nullable>>
     }
     !endsub
 
     !startsub EmailAddresses
     class EmailAddresses <<(C,orchid) dtos>> {
-        - Email_Address : string
-        - Id : string
-        - Linked_To : object[]
-        - Object : string
-        - Verification : Verification
+        + Email_Address : string
+        + Id : string
+        + Linked_To : object[]
+        + Object : string
+        + Verification : Verification
     }
     !endsub
 
     !startsub Verification
     class Verification <<(C,orchid) dtos>> {
-        - Status : string
-        - Strategy : string
+        + Status : string
+        + Strategy : string
     }
     !endsub
 
     !startsub CreateUserDto
     class CreateUserDto <<(C,orchid) dtos>> {
-        - Data : Data
-        - Object : string
-        - Type : string
+        + Data : Data
+        + Object : string
+        + Type : string
     }
     !endsub
 
     !startsub UpdateUserDto
     class UpdateUserDto <<(C,orchid) dtos>> {
-        - Data : Data
-        - Object : string
-        - Type : string
+        + Data : Data
+        + Object : string
+        + Type : string
     }
     !endsub
 
@@ -475,64 +532,58 @@ package dtos <<Frame>> {
 'User Subscription Dtos
     !startsub ViewUserSubscriptionDto
     class ViewUserSubscriptionDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - SubscriptionPlanId : Guid
-        - SubscriptionPlanName : string
-        - UserId : Guid
-        - UserName : string
-        - StripeCurrentPeriodEnd : DateTime
-        - StripeCustomerId : string
-        - StripeSubscriptionId : string
-        - StripePriceId : string
-        - DateCreated : DateTime
+        + Id : Guid
+        + SubscriptionPlanId : Guid
+        + SubscriptionPlanName : string
+        + UserId : Guid
+        + UserName : string
+        + StripeCurrentPeriodEnd : DateTime
+        + StripeCustomerId : string
+        + StripeSubscriptionId : string
+        + StripePriceId : string
+        + DateCreated : DateTime
     }
     !endsub
 
     !startsub AddUserSubscriptionDto
     class AddUserSubscriptionDto <<(C,orchid) dtos>> {
-        - SubscriptionPlanId : Guid
-        - UserId : Guid
-        - StripeCurrentPeriodEnd : DateTime
-        - StripeCustomerId : string
-        - StripeSubscriptionId : string
-        - StripePriceId : string
+        + SubscriptionPlanId : Guid
+        + UserId : Guid
+        + StripeCurrentPeriodEnd : DateTime
+        + StripeCustomerId : string
+        + StripeSubscriptionId : string
+        + StripePriceId : string
     }
     !endsub
 
     !startsub AddUserSubscriptionUserClerkDto
     class AddUserSubscriptionUserClerkDto <<(C,orchid) dtos>> {
-        - SubscriptionPlanId : Guid
-        - UserIdClerk : string
-        - StripeCurrentPeriodEnd : DateTime
-        - StripeCustomerId : string
-        - StripeSubscriptionId : string
-        - StripePriceId : string
+        + SubscriptionPlanId : Guid
+        + UserIdClerk : string
+        + StripeCurrentPeriodEnd : DateTime
+        + StripeCustomerId : string
+        + StripeSubscriptionId : string
+        + StripePriceId : string
     }
     !endsub
 
     !startsub UpdateUserSubscriptionDto
     class UpdateUserSubscriptionDto <<(C,orchid) dtos>> {
-        - Id : Guid
-        - SubscriptionPlanId : Guid
-        - StripeCurrentPeriodEnd : DateTime
-        - StripeCustomerId : string
-        - StripeSubscriptionId : string
-        - StripePriceId : string
+        + Id : Guid
+        + SubscriptionPlanId : Guid
+        + StripeCurrentPeriodEnd : DateTime
+        + StripeCustomerId : string
+        + StripeSubscriptionId : string
+        + StripePriceId : string
     }
     !endsub
 
     !startsub ActionUserSubscriptionResponse
     class ActionUserSubscriptionResponse <<(C,orchid) dtos>> {
-        - Message : string
-        - Id : Guid
+        + Message : string
+        + Id : Guid
     }
     !endsub
-
-'Relationships
-    AddUserSubscriptionDto "1" --> "*" ViewUserSubscriptionDto
-    AddUserSubscriptionUserClerkDto "1" --> "*" ViewUserSubscriptionDto
-    UpdateUserSubscriptionDto "1" --> "*" ViewUserSubscriptionDto
-    ActionUserSubscriptionResponse "1" --> "*" ViewUserSubscriptionDto
 
 }
 

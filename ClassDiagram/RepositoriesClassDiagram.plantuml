@@ -1,0 +1,227 @@
+@startuml Repositorys
+Title Repository Class Diagram
+
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+'Association	||	Quan hệ liên kết giữa hai thực thể : use, has, contains
+'Inheritance	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng
+'ko có annotations trong code)'
+package pkgRepositorys <<Frame>>{
+    
+!startsub IRepositoryBase
+interface IRepositoryBase<T> <<(I,#ADD8E6) interface>> {
+    + Add(entity : T) : Task<T>
+    + Update(entity : T) : Task
+    + Delete(entity : T) : Task<T>
+    + DeleteMulti(where : Expression<Func<T, bool>>) : Task
+    + GetSingleByCondition(expression : Expression<Func<T, bool>>, 
+      includes : string[] <<nullable>>) : Task<T>
+    + GetAll(includes : string[] <<nullable>>) : IEnumerable<T>
+    + GetMulti(predicate : Expression<Func<T, bool>>, 
+      includes : string[] <<nullable>>) : IEnumerable<T>
+    + GetMultiPaging(filter : Expression<Func<T, bool>>, 
+      out total : int, 
+      index : int = 0, 
+      size : int = 50, 
+      includes : string[] <<nullable>>) : IEnumerable<T>
+    + CountAsync(where : Expression<Func<T, bool>>) : Task<int>
+    + CheckContainsAsync(predicate : Expression<Func<T, bool>>) : Task<bool>
+}
+
+!endsub
+
+!startsub RepositoryBase
+
+class RepositoryBase<T> <<(C,orchid) class>> {
+    - _context : InSyncContext
+    - disposed : bool
+    + RepositoryBase(context : InSyncContext)
+    + Add(entity : T) : Task<T>
+    + Update(entity : T) : Task
+    + Delete(entity : T) : Task<T>
+    + DeleteMulti(where : Expression<Func<T, bool>>) : Task
+    + GetSingleByCondition(expression : Expression<Func<T, bool>>, 
+      includes : string[] <<nullable>>) : Task<T>
+    + GetAll(includes : string[] <<nullable>>) : IEnumerable<T>
+    + GetMulti(predicate : Expression<Func<T, bool>>, 
+      includes : string[] <<nullable>>) : IEnumerable<T>
+    + GetMultiPaging(filter : Expression<Func<T, bool>>, 
+      out total : int, 
+      index : int = 0, 
+      size : int = 50, 
+      includes : string[] <<nullable>>) : IEnumerable<T>
+    + CountAsync(where : Expression<Func<T, bool>>) : Task<int>
+    + CheckContainsAsync(predicate : Expression<Func<T, bool>>) : Task<bool>
+    + Dispose() : void
+    - Dispose(disposing : bool) : void
+}
+!endsub
+
+
+
+!startsub IAssetRepository
+
+
+!endsub
+ 
+!startsub AssetRepository
+interface IAssetRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<Asset>
+}
+class AssetRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + AssetRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<Asset>
+}
+
+!endsub
+
+
+!startsub ICategoryDocumentRepository
+interface ICategoryDocumentRepository <<(I,#ADD8E6) interface>> {
+    + DeleteCategoryDocument(id : Guid) : Task
+    // Inherits from IRepositoryBase<CategoryDocument>
+}
+!endsub
+
+!startsub CategoryDocumentRepository
+class CategoryDocumentRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + CategoryDocumentRepository(context : InSyncContext)
+    + DeleteCategoryDocument(id : Guid) : Task
+    // Inherits from RepositoryBase<CategoryDocument>
+}
+!endsub
+
+
+!startsub ICustomerReviewRepository
+interface ICustomerReviewRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<CustomerReview>
+}
+!endsub
+
+!startsub CustomerReviewRepository
+class CustomerReviewRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + CustomerReviewRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<CustomerReview>
+}
+!endsub
+
+
+!startsub IDocumentRepository
+interface IDocumentRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<Document>
+}
+!endsub
+
+!startsub DocumentRepository
+class DocumentRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + DocumentRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<Document>
+}
+!endsub
+
+
+!startsub IPageRepository
+interface IPageRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<Page>
+}
+!endsub
+
+!startsub PageRepository
+class PageRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + PageRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<Page>
+}
+!endsub
+
+
+!startsub IProjectRepository
+interface IProjectRepository <<(I,#ADD8E6) interface>> {
+    + DeleteProject(id : Guid) : Task
+    // Inherits from IRepositoryBase<Project>
+}
+!endsub
+
+!startsub ProjectRepository
+class ProjectRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + ProjectRepository(context : InSyncContext)
+    + DeleteProject(id : Guid) : Task
+    // Inherits from RepositoryBase<Project>
+}
+!endsub
+
+
+!startsub IScenarioRepository
+interface IScenarioRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<Scenario>
+}
+!endsub
+
+!startsub ScenarioRepository
+class ScenarioRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + ScenarioRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<Scenario>
+}
+!endsub
+
+
+
+!startsub ISubscriptionPlanRepository
+interface ISubscriptionPlanRepository <<(I,#ADD8E6) interface>> {
+    + DeleteSubscriptionPlan(id : Guid) : Task
+    // Inherits from IRepositoryBase<SubscriptionPlan>
+}
+!endsub
+
+!startsub SubscriptionPlanRepository
+class SubscriptionPlanRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + SubscriptionPlanRepository(context : InSyncContext)
+    + DeleteSubscriptionPlan(id : Guid) : Task
+    // Inherits from RepositoryBase<SubscriptionPlan>
+}
+!endsub
+
+!startsub IUserRepository
+interface IUserRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<User>
+}
+!endsub
+
+!startsub UserRepository
+class UserRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + UserRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<User>
+}
+!endsub
+
+
+!startsub IUserSubscriptionRepository
+interface IUserSubscriptionRepository <<(I,#ADD8E6) interface>> {
+    // Inherits from IRepositoryBase<UserSubscription>
+}
+!endsub
+
+!startsub UserSubscriptionRepository
+class UserSubscriptionRepository <<(C,orchid) class>> {
+    - _context : InSyncContext
+    + UserRepository(context : InSyncContext)
+    // Inherits from RepositoryBase<UserSubscription>
+}
+!endsub
+}
+@enduml

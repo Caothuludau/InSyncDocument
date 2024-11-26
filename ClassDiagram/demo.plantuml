@@ -1,0 +1,13 @@
+@startuml
+actor Client
+participant AssetsController
+participant AssetRepository
+participant Database
+
+Client -> AssetsController: GetAssetById(Guid id)
+AssetsController -> AssetRepository: GetAsset(Guid id)
+AssetRepository -> Database: SELECT * FROM Assets WHERE id = id
+Database --> AssetRepository: Asset Data
+AssetRepository --> AssetsController: Asset
+AssetsController --> Client: Asset DTO
+@enduml

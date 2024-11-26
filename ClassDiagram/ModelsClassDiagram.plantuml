@@ -16,159 +16,195 @@ package pkgModels <<Frame>> {
 
     !startsub Asset
     class Asset <<(C,orchid) model>> {
-        - Id : Guid
-        - ProjectId : Guid
-        - AssestName : string
-        - Type : string
-        - FilePath : string
-        - DateCreated : DateTime
-        - DateUdpated : DateTime
+        + Id : Guid
+        + ProjectId : Guid
+        + AssestName : string
+        + Type : string <<nullable>>
+        + FilePath : string
+        + DateCreated : DateTime
+        + DateUdpated : DateTime <<nullable>>
+        + Project : Project
+    }
+    !endsub
+
+    !startsub CategoryDocument
+    class CategoryDocument<<(C,orchid) model>>{
+        + CategoryDocument()
+        + Id : Guid
+        + Title : string
+        + Description : string<<nullable>>
+        + DateCreated : DateTime
+        + DateUdpated : DateTime<<nullable>>
+        + Documents : ICollection<Document>
+    }
+    !endsub
+
+    !startsub Document
+    class Document<<(C,orchid) model>>{
+        + Id : Guid
+        + Slug : string
+        + Title : string
+        + Content : string <<nullable>>
+        + Note : string <<nullable>>
+        + Order : int
+        + DateCreated : DateTime
+        + DateUdpated : DateTime <<nullable>>
+        + Documents : ICollection<Document>
+        + CategoryId : Guid
+        + Category : CategoryDocument
     }
     !endsub
 
     !startsub CustomerReview
     class CustomerReview <<(C,orchid) model>> {
-        - Id : Guid
-        - Name : string
-        - ImageUrl : string
-        - JobTitle : string
-        - Review : string
-        - DateCreated : DateTime
-        - IsShow : bool
+        + Id : Guid
+        + Name : string
+        + ImageUrl : string<<nullable>>
+        + JobTitle : string
+        + Review : string
+        + DateCreated : DateTime
+        + IsShow : bool
     }
     !endsub
 
-    !startsub PrivacyPolicy
-    class PrivacyPolicy <<(C,orchid) model>> {
-        - Id : Guid
-        - Description : string
-        - Title : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
+    !startsub Page
+    class Page <<(C,orchid) model>>{
+        + Id : Guid
+        + Slug : string
+        + Title : string
+        + Content : string<<nullable>>
+        + Note : string<<nullable>>
+        + DateCreated : DateTime
+        + DateUdpated : DateTime<<nullable>>
     }
     !endsub
 
     !startsub Project
     class Project <<(C,orchid) model>> {
-        - Id : Guid
-        - ProjectName : string
-        - Description : string
-        - UserId : Guid
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - IsPublish : bool
+        + Project()
+
+        + Id : Guid
+        + ProjectName : string
+        + Description : string<<nullable>>
+        + UserId : Guid
+        + DateCreated : DateTime
+        + DateUpdated : DateTime<<nullable>>
+        + IsPublish : bool
+        + User : User;
+        + Assets : ICollection<Asset>
+        + Scenarios : ICollection<Scenario>
     }
     !endsub
 
     !startsub Scenario
     class Scenario <<(C,orchid) model>> {
-        - Id : Guid
-        - ProjectId : Guid
-        - ScenarioName : string
-        - Description : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - StepsWeb : string
-        - StepsAndroid : string
-        - IsFavorites : bool
-        - ImageUrl : string
-        - CreatedBy : Guid
+        + Id : Guid
+        + ProjectId : Guid
+        + ScenarioName : string
+        + Description : string<<nullable>>
+        + DateCreated : DateTime
+        + DateUpdated : DateTime<<nullable>>
+        + StepsWeb : string<<nullable>>
+        + StepsAndroid : string<<nullable>>
+        + IsFavorites : bool<<nullable>>
+        + ImageUrl : string<<nullable>>
+        + CreatedBy : Guid
+        + CreatedByNavigation : User
+        + Project : Project
     }
     !endsub
 
     !startsub SubscriptionPlan
     class SubscriptionPlan <<(C,orchid) model>> {
-        - Id : Guid
-        - SubscriptionsName : string
-        - Status : bool
-        - Price : decimal
-        - UserId : Guid
-        - Content : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - MaxProjects : int
-        - MaxAssets : long
-        - MaxScenarios : int
-        - MaxUsersAccess : int
-        - StorageLimit : long
-        - SupportLevel : string
-        - CustomFeaturesDescription : string
-        - DataRetentionPeriod : long
-        - PrioritySupport : bool
-        - MonthlyReporting : bool
+        + SubscriptionPlan()
+        + Id : Guid
+        + SubscriptionsName : string
+        + Status : bool
+        + Price : decimal
+        + UserId : Guid
+        + Content : string
+        + DateCreated : DateTime
+        + DateUpdated : DateTime<<nullable>>
+        + MaxProjects : int<<nullable>>
+        + MaxAssets : long<<nullable>>
+        + MaxScenarios : int<<nullable>>
+        + MaxUsersAccess : int<<nullable>>
+        + StorageLimit : long<<nullable>>
+        + SupportLevel : string<<nullable>>
+        + CustomFeaturesDescription : string<<nullable>>
+        + DataRetentionPeriod : long<<nullable>>
+        + PrioritySupport : bool<<nullable>>
+        + MonthlyReporting : bool<<nullable>>
+        + User : User
+        + UserSubscriptions : ICollection<UserSubscription>
     }
     !endsub
-
-    !startsub Term
-    class Term <<(C,orchid) model>> {
-        - Id : Guid
-        - Question : string
-        - Answer : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-    }
-    !endsub
-
-    !startsub Tutorial
-    class Tutorial <<(C,orchid) model>> {
-        - Id : Guid
-        - Title : string
-        - Content : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - IsShow : bool
-        - Order : long
-    }
-    !endsub
-
 
     !startsub User
     class User <<(C,orchid) model>> {
-        - Id : Guid
-        - UserIdClerk : string
-        - UserName : string
-        - PasswordHash : string
-        - Email : string
-        - DisplayName : string
-        - EmailConfirmed : bool
-        - PhoneNumber : string
-        - LockoutEnd : DateTime
-        - LockoutEnable : bool
-        - AccessFailCount : long
-        - ImageUrl : string
-        - Dob : DateTime
-        - Address : string
-        - DateCreated : DateTime
-        - DateUpdated : DateTime
-        - StatusUser : int
-        - Role : string
+        + User()
+
+        + Id : Guid
+        + UserIdClerk : string<<nullable>>
+        + UserName : string
+        + PasswordHash : string<<nullable>>
+        + Email : string
+        + DisplayName : string<<nullable>>
+        + EmailConfirmed : bool<<nullable>>
+        + PhoneNumber : string<<nullable>>
+        + LockoutEnd : DateTime<<nullable>>
+        + LockoutEnable : bool<<nullable>>
+        + AccessFailCount : long
+        + ImageUrl : string<<nullable>>
+        + Dob : DateTime<<nullable>>
+        + Address : string<<nullable>>
+        + DateCreated : DateTime
+        + DateUpdated : DateTime<<nullable>>
+        + StatusUser : int
+        + Role : string<<nullable>>
+        + Projects : ICollection<Project>
+        + Scenarios : ICollection<Scenario>
+        + SubscriptionPlans : ICollection<SubscriptionPlan>
+        + UserSubscriptions : ICollection<UserSubscription>
     }
     !endsub
 
     !startsub UserSubscription
     class UserSubscription <<(C,orchid) model>> {
-        - Id : Guid
-        - SubscriptionPlanId : Guid
-        - UserId : Guid
-        - StripeCurrentPeriodEnd : DateTime
-        - StripeCustomerId : string
-        - StripeSubscriptionId : string
-        - StripePriceId : string
-        - DateCreated : DateTime
+        + Id : Guid
+        + SubscriptionPlanId : Guid
+        + UserId : Guid
+        + StripeCurrentPeriodEnd : DateTime
+        + StripeCustomerId : string
+        + StripeSubscriptionId : string
+        + StripePriceId : string
+        + DateCreated : DateTime
+        + SubscriptionPlan : SubscriptionPlan
+        + User : User
     }
     !endsub
 
     ' Relationships
-    User "1" --> "*" Project : owns
+    User "1" --> "*" Project : creates
+    
+
     User "1" --> "*" Scenario : creates
-    User "1" --> "*" SubscriptionPlan : subscribes
-    User "1" --> "*" UserSubscription : has
+    
+    User "1" --> "0--*" SubscriptionPlan : admin creates
+   
+
+    User "1" --> "0--*" UserSubscription : has
+   
+
     Project "1" --> "0..*" Asset : contains
+
     Project "1" --> "0..*" Scenario : contains
-    Scenario "1" --> "1" Project : belongs to
-    Scenario "1" --> "0..1" User : created by
-    SubscriptionPlan "1" --> "1" User : belongs to
+    
+
+    CategoryDocument "1" -->"0..*" Document : contains
+
+    
     SubscriptionPlan "1" --> "0..*" UserSubscription : has
-    UserSubscription "1" --> "1" SubscriptionPlan : belongs to
-    UserSubscription "1" --> "1" User : subscribed by
+   
 }
+@enduml
