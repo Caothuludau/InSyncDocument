@@ -13,7 +13,33 @@ Title Repository Class Diagram
 'Association	||	Quan hệ liên kết giữa hai thực thể : use, has, contains
 'Inheritance	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng
 'ko có annotations trong code)'
+
+
 package pkgRepositorys <<Frame>>{
+!startsub DbContext
+class DbContext <<(C,orchid) abstract>>{
+}
+!endsub
+
+!startsub InSyncContext
+class InSyncContext <<(C,orchid) DbContext>> {
+    + InSyncContext()
+    + InSyncContext(options : DbContextOptions<InSyncContext>)
+    + Assets : DbSet<Asset>
+    + CategoryDocuments : DbSet<CategoryDocument>
+    + CustomerReviews : DbSet<CustomerReview>
+    + Documents : DbSet<Document>
+    + Pages : DbSet<Page>
+    + Projects : DbSet<Project>
+    + Scenarios : DbSet<Scenario>
+    + SubscriptionPlans : DbSet<SubscriptionPlan>
+    + Users : DbSet<User>
+    + UserSubscriptions : DbSet<UserSubscription>
+    # OnConfiguring(optionsBuilder : DbContextOptionsBuilder)
+    - OnModelCreatingPartial(modelBuilder:ModelBuilder )
+}
+!endsub
+
     
 !startsub IRepositoryBase
 interface IRepositoryBase<T> <<(I,#ADD8E6) interface>> {

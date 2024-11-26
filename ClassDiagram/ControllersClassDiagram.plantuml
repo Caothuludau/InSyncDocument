@@ -227,7 +227,8 @@ package pkgControllers <<Frame>> {
         - _mapper : IMapper
         - includes : string[]
         + SubscriptionPlansController(subscriptionPlanRepo :ISubscriptionPlanRepository ,
-            userRepository : IUserRepository ,mapper :IMapper ,logger : ILogger<SubscriptionPlansController> )
+            userRepository : IUserRepository ,mapper :IMapper ,
+            logger : ILogger<SubscriptionPlansController> )
         + GetSubscriptionPlans() : Task<IActionResult>
         + GetAllSubsciptionPlan(index : int, size : int, keySearch : string) : Task<IActionResult>
         + GetSubsciptionPlanById(id : Guid) : Task<IActionResult>

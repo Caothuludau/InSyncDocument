@@ -1,13 +1,13 @@
 @startuml
-actor Client
-participant AssetsController
-participant AssetRepository
-participant Database
+class ClassA
+class ClassB
+interface InterfaceB
 
-Client -> AssetsController: GetAssetById(Guid id)
-AssetsController -> AssetRepository: GetAsset(Guid id)
-AssetRepository -> Database: SELECT * FROM Assets WHERE id = id
-Database --> AssetRepository: Asset Data
-AssetRepository --> AssetsController: Asset
-AssetsController --> Client: Asset DTO
+
+ClassA o-- ClassB : Aggregation
+ClassA *-- ClassB : Composition
+
+ClassA <--> ClassB : Bidirectional
+
+note left of ClassA : Đây là ghi chú
 @enduml
