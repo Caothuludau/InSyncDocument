@@ -1,36 +1,42 @@
-@startuml
+@startuml ChangePasswordClerk
 skinparam classAttributeIconSize 0
-Title Set Password Class Diagram (Clerk Service)
 
-package ClerkService <<Frame>> {
-    ' User class
-    class User {
-        + id: String
-        + email: String
-        + fullName: String
-        + hashedPassword: String
-        + isPasswordSet: Boolean
-    }
-
-    ' Authentication Service
-    class AuthenticationService {
-        + setPassword(userId: String, newPassword: String): Boolean
-    }
-
-    ' Password Validator class
-    class PasswordValidator {
-        + validatePassword(password: String): Boolean
-        + isStrong(password: String): Boolean
-    }
-
-    ' User Repository class
-    class UserRepository {
-        + getUserById(userId: String): User
-        + updatePassword(userId: String, hashedPassword: String): Boolean
-    }
-
-    ' Relationships
-    AuthenticationService --> UserRepository : Updates
-    AuthenticationService --> PasswordValidator : Validates
+' Class cho người dùng
+class User {
+  + id: String
+  + email: String
+  + fullName: String
+  + password: String
+  + updatePassword(newPassword: String): Boolean
+  + validateCurrentPassword(currentPassword: String): Boolean
 }
+
+' Class yêu cầu thay đổi mật khẩu
+class ChangePasswordRequest {
+  + userId: String
+  + currentPassword: String
+  + newPassword: String
+  + confirmNewPassword: String
+  + validate(): Boolean
+}
+
+' Class xác thực mật khẩu
+class PasswordValidator {
+  + validatePassword(password: String): Boolean
+  + isStrong(password: String): Boolean
+}
+
+' Class xử lý quá trình thay đổi mật khẩu
+class PasswordChangeProcess {
+  + initiateChangePasswordRequest(userId: String, currentPassword: String, newPassword: String): Boolean
+  + validateCurrentPassword(user: User, currentPassword: String): Boolean
+  + updatePassword(user: User, newPassword: String): Boolean
+}
+
+' Relationships giữa các lớp
+User --> ChangePasswordRequest : "Request change password"
+ChangePasswordRequest --> PasswordValidator : "Validate new password"
+ChangePasswordRequest --> PasswordChangeProcess : "Initiate password change"
+PasswordChangeProcess --> User : "Validate current password"
+PasswordChangeProcess --> User : "Update new password"
 @enduml
