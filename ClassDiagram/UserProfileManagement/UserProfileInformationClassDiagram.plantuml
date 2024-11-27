@@ -1,0 +1,45 @@
+@startuml UserProfileInformation
+Title UserProfileInformation Class Diagram
+skinparam classAttributeIconSize 0
+package pkgUserProfileInformation <<Frame>>{
+    ' Lớp đại diện cho người dùng
+    class User {
+      + userId: string
+      + fullName: string
+      + primaryEmail: string
+      + emailAddresses: List<EmailAddress>
+      + connectedAccounts: List<ConnectedAccount>
+      + getFullName(): string
+      + getPrimaryEmail(): string
+      + getEmailAddresses(): List<string>
+      + getConnectedAccounts(): List<string>
+    }
+
+    ' Lớp đại diện cho địa chỉ email
+    class EmailAddress {
+      + email: string
+      + isPrimary: boolean
+      + setPrimaryEmail(): void
+    }
+
+    ' Lớp đại diện cho tài khoản kết nối
+    class ConnectedAccount {
+      + provider: string
+      + accountId: string
+      + getAccountInfo(): string
+    }
+
+    ' Lớp lấy thông tin người dùng từ API hoặc cơ sở dữ liệu
+    class UserInfoService {
+      + getUserInfo(userId: string): User
+      + updateUserInfo(userId: string, updatedUser: User): boolean
+      + deleteUserInfo(userId: string): boolean
+    }
+
+    ' Quan hệ giữa các lớp
+    UserInfoService  ..> User : Retrieves
+    User "1" --> "0..*" EmailAddress : Has
+    User "1" --> "0..*" ConnectedAccount : Has
+    EmailAddress "1" --> "1" User : BelongsTo
+}
+@enduml

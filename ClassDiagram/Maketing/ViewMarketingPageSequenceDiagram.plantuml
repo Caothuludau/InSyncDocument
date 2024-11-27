@@ -1,0 +1,54 @@
+@startuml ViewMarketingPageSequenceDiagram
+skinparam classAttributeIconSize 0
+Title ViewMarketingPage Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+    actor "User" as U
+    participant "Page marketing" as Pmk
+    participant "PagensController" as PageController
+    participant "IPageRepository" as IPageRepo
+    participant "InSyncContext" as ISContext
+    database "SqlServer" as Db
+
+    
+        U -> Pmk :  Go to marketing page
+        activate Pmk
+
+        Pmk -> PageController : GET /api/pages/{slug}
+        activate PageController
+        PageController -> IPageRepo : GetSingleByCondition()
+        activate IPageRepo
+        IPageRepo -> ISContext : Query Page
+        activate ISContext
+        ISContext -> Db : Query In SQL Serve
+        activate Db
+
+        ' Chiều trả về từ SQL Server đến User
+        alt Page exist in db
+            Db --> ISContext : Page Data
+            ISContext --> IPageRepo : Page Entity
+            IPageRepo --> PageController : Return Page 
+            PageController --> Pmk : Return ViewPageDto
+            Pmk --> U : Render View
+        else Page don't exist in db
+            Db --> ISContext : No Page Data
+            deactivate Db
+            ISContext --> IPageRepo : return null
+            deactivate ISContext
+            IPageRepo --> PageController : return nul 
+            deactivate IPageRepo
+            PageController --> Pmk : message , 400
+            deactivate PageController
+            Pmk --> U : Redirect Home Page
+        end
+
+@enduml

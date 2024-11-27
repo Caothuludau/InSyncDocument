@@ -1,0 +1,76 @@
+@startuml ViewHomePageSequenceDiagram
+skinparam classAttributeIconSize 0
+Title ViewHomePage Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+
+    actor "User" as U
+    participant "Home Page" as Hp
+    participant "SubscriptionPlansController" as SubController
+    participant "ISubscriptionPlanRepository" as ISubRepo
+    participant "CustomerReviewsController" as CusReController
+    participant "ICustomerReviewRepository" as ICusReRepo
+    participant "InSyncContext" as ISContext
+    database "SqlServer" as Db
+
+    
+        U -> Hp :  go to home page
+        activate Hp
+
+        Hp -> SubController : GET /api/subscriptionplans/pagination
+        activate SubController
+        SubController -> ISubRepo : GetMultiPaging()
+        activate ISubRepo
+        ISubRepo -> ISContext : Query SubscriptionPlans
+        activate ISContext
+        ISContext -> Db : Query In SQL Serve
+        activate Db
+
+        ' Chiều trả về từ SQL Server đến User
+        Db --> ISContext : SubscriptionPlans Data
+        deactivate Db
+        ISContext --> ISubRepo : SubscriptionPlans Entities
+        deactivate ISContext
+        ISubRepo --> SubController : Return List Suscription 
+        deactivate ISubRepo
+        SubController --> Hp : Return List ViewSuscriptionDto
+        deactivate SubController
+
+        
+        Hp -> CusReController : GET /api/customerreviews/pagination
+        activate CusReController
+        CusReController -> ICusReRepo : GetMultiPaging()
+        activate ICusReRepo
+        ICusReRepo -> ISContext : Query CustomerReviews
+        activate ISContext
+        ISContext -> Db : Query In SQL Serve
+        activate Db
+
+        ' Chiều trả về từ SQL Server đến User
+        Db --> ISContext : CustomerReviews Data
+        deactivate Db
+        ISContext --> ICusReRepo : CustomerReviews Entities
+        deactivate ISContext
+        ICusReRepo --> CusReController : Return List Customer Review
+        deactivate ICusReRepo
+        CusReController --> Hp : Return List CustomerReviewDto
+        deactivate CusReController
+  
+    
+        Hp--> U : Render View
+        deactivate Hp
+
+    
+
+
+@enduml

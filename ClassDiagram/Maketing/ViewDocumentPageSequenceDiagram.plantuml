@@ -1,0 +1,82 @@
+@startuml ViewDocumentPageSequenceDiagram
+skinparam classAttributeIconSize 0
+Title View Document Page Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+    actor "User" as U
+    participant "Documentation Page" as Pd
+    participant "DocumentsController" as DocsController
+    participant "IDocumentRepository" as IDocRepo
+    participant "CategoryDocumentsController" as CaDocsController
+    participant "ICategoryDocumentRepository" as ICateDocRepo
+    participant "InSyncContext" as ISContext
+    database "SqlServer" as Db
+
+
+        activate U
+        ' Load Category Document
+        U -> Pd :  Go to documentation page
+        activate Pd
+
+        Pd -> CaDocsController : GET /api/categorydocuments/pagination
+        activate CaDocsController
+        CaDocsController -> ICateDocRepo : GetMultiPaging()
+        activate ICateDocRepo
+        ICateDocRepo -> ISContext : Query Category Document
+        activate ISContext
+        ISContext -> Db : Query In SQL Serve
+        activate Db
+
+        Db --> ISContext : Category Document Data
+        deactivate Db
+        ISContext --> ICateDocRepo : Category Document Entity
+        deactivate ISContext
+        ICateDocRepo --> CaDocsController : Return Category Document 
+        deactivate ICateDocRepo
+        CaDocsController --> Pd : Return ViewCategoryDocumentDto
+        deactivate CaDocsController
+        Pd --> U : Render View
+
+
+
+
+
+       
+        Pd -> DocsController : GET /api/documents/{slug}
+        activate DocsController
+        DocsController -> IDocRepo : GetSingleByCondition()
+        activate IDocRepo
+        IDocRepo -> ISContext : Query Document
+        activate ISContext
+        ISContext -> Db : Query In SQL Serve
+        activate Db
+
+        'Chiều trả về từ SQL Server đến User
+        alt Document exist in db
+            Db --> ISContext : Document Data
+            ISContext --> IDocRepo : Document Entity
+            IDocRepo --> DocsController : Return Document 
+            DocsController --> Pd : Return ViewDocumentDto
+            Pd --> U : Render View
+        else Document don't exist in db
+            Db --> ISContext : No Document Data
+            deactivate Db
+            ISContext --> IDocRepo : return null
+            deactivate ISContext
+            IDocRepo --> DocsController : return nul 
+            deactivate IDocRepo
+            DocsController --> Pd : message , 400
+            deactivate DocsController
+            Pd --> U : Redirect Home Page
+        end
+
+@enduml

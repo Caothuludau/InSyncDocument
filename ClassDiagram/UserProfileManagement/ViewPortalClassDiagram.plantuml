@@ -1,0 +1,124 @@
+@startuml ViewPortalStripe
+Title ViewPortalStripe Class DiagramBorderColor
+skinparam classAttributeIconSize 0
+' Lớp chính xử lý sign-in
+package pkgViewPortalStripe <<Frame>> {
+  class StripeBillingPortalService {
+    + createPortalSession(customerId: string, returnUrl: string): PortalSession
+    + sendLoginEmail(customerEmail: string, sessionUrl: string): void
+    + getPortalData(sessionId: string): PortalView
+  }
+
+  class PortalSession {
+    + id: string
+    + customerId: string
+    + url: string
+    + createdAt: DateTime
+    + expiresAt: DateTime
+    + isActive: boolean
+    + validateSession(): void
+  }
+
+  class PortalView {
+    + htmlContent: string
+    + currentSubscription: Subscription
+    + paymentMethod: List<PaymentMethod>
+    + invoiceHistory: List<Invoice>
+    + paymentInfo: PaymentInformation
+    + render(): void
+  }
+
+  class Subscription {
+    + id: string
+    + status: string
+    + startDate: DateTime
+    + endDate: DateTime
+    + plan: Plan
+  }
+
+  class PaymentMethod {
+    + id: string
+    + type: string
+    + last4: string
+    + isDefault: boolean
+    + updatePaymentMethod(): void
+  }
+
+  class PaymentInformation {
+    + totalDue: double
+    + currency: string
+    + nextPaymentDate: DateTime
+    + autoRenewEnabled: boolean
+  }
+
+  class Invoice {
+    + id: string
+    + issuedDate: DateTime
+    + amount: double
+    + currency: string
+    + status: string
+  }
+
+  class Plan {
+    + id: string
+    + name: string
+    + price: double
+    + currency: string
+  }
+
+  StripeBillingPortalService ..> PortalSession : creates
+  StripeBillingPortalService ..> PortalView : retrieves
+  PortalView "1" --> "1" Subscription : shows current
+  PortalView "1" --> "1..*" PaymentMethod : uses
+  PortalView "1" --> "1" PaymentInformation : displays
+  PortalView "1" --> "1..*" Invoice : shows history
+  Subscription "1" --> "1" Plan : links to
+}
+
+@enduml
+
+' StripeBillingPortalService:
+
+' Dịch vụ chính tương tác với Stripe để tạo portal session, gửi email, và lấy dữ liệu để hiển thị.
+' Phương thức:
+' createPortalSession: Tạo session với URL duy nhất.
+' sendLoginEmail: Gửi email chứa liên kết đăng nhập.
+' getPortalData: Lấy dữ liệu để hiển thị trong Portal View (gồm các gói hiện tại, phương thức thanh toán, hóa đơn, v.v.).
+' PortalSession:
+
+' Đại diện cho phiên làm việc của khách hàng, như đã mô tả trước đây.
+' PortalView:
+
+' Hiển thị dữ liệu trên giao diện Portal.
+' Thuộc tính:
+' currentSubscription: Thông tin gói đăng ký hiện tại.
+' paymentMethod: Phương thức thanh toán mặc định của khách hàng.
+' invoiceHistory: Danh sách các hóa đơn.
+' paymentInfo: Thông tin thanh toán (số tiền cần trả, ngày thanh toán tiếp theo, v.v.).
+' Subscription:
+
+' Mô tả gói đăng ký hiện tại của khách hàng.
+' Bao gồm thông tin chi tiết về kế hoạch (Plan), ngày bắt đầu/kết thúc, trạng thái, v.v.
+' PaymentMethod:
+
+' Thông tin phương thức thanh toán, như loại (thẻ, PayPal), số cuối (last4), và trạng thái mặc định.
+' PaymentInformation:
+
+' Dữ liệu liên quan đến thanh toán:
+' totalDue: Tổng số tiền cần trả.
+' currency: Loại tiền tệ.
+' nextPaymentDate: Ngày thanh toán tiếp theo.
+' autoRenewEnabled: Trạng thái tự động gia hạn.
+' Invoice:
+
+' Lịch sử hóa đơn của khách hàng.
+' Thuộc tính:
+' id: Mã định danh hóa đơn.
+' issuedDate: Ngày xuất hóa đơn.
+' amount: Số tiền hóa đơn.
+' currency: Loại tiền tệ.
+' status: Trạng thái hóa đơn (paid, pending, v.v.).
+' Plan:
+
+' Thông tin về kế hoạch đăng ký:
+' id, name, price, và currency.

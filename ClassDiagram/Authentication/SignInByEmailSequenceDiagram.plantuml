@@ -1,0 +1,55 @@
+@startuml SignInByEmailSequenceDiagram
+skinparam classAttributeIconSize 0
+Title Sign In By Email Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+    actor "User" as U
+    participant "ClerkSignIn" as CS
+    participant "UserRepository" as UR
+    participant "PasswordHasher" as PH
+    participant "DataContext" as DTCT
+    database "DataBase" as DB
+
+    U -> CS : signInWithEmail(email, password)
+    activate CS
+    CS -> UR : findUserByEmail(email)
+    activate UR
+    UR -> DTCT : Query user by email
+    activate DTCT
+    DTCT -> DB : Execute query 
+    activate DB
+    DB -> DTCT : Return user data
+    deactivate DB
+    DTCT --> UR : Return user (if exists)
+    deactivate DTCT
+
+    alt User exists
+        UR --> CS : Return user
+        CS -> UR : validatePassword(user, password)
+        UR -> PH : verify(user.hashedPassword, password)
+        activate PH
+        PH --> UR : Return true/false
+        deactivate PH
+        alt Password is correct
+            UR --> CS : Password valid
+            CS -> U : Login successful
+        else Password is incorrect
+            UR --> CS : Password invalid
+            CS -> U : Return error (Invalid password)
+        end
+    else User does not exist
+        UR --> CS : No user found
+        CS -> U : Return error (User not found)
+    end
+    deactivate CS
+
+@enduml

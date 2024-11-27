@@ -1,0 +1,49 @@
+@startuml UpdateUserInformation
+Title Update User Information Class Diagram
+skinparam classAttributeIconSize 0
+package pkgUpdateUserInformation <<Frame>>{
+    ' Lớp đại diện cho người dùng
+    class User <<model>> {
+      + userId: string
+      + firstName: string
+      + lastName: string
+      + fullName: string
+      + primaryEmail: string
+      + emailAddresses: List<EmailAddress>
+      + connectedAccounts: List<ConnectedAccount>
+      + updateFullName(newFullName: string): void
+      + updatePrimaryEmail(newEmail: string): void
+    }
+
+    ' Lớp đại diện cho địa chỉ email
+    class EmailAddress <<model>> {
+      + email: string
+      + isPrimary: boolean
+      + setPrimaryEmail(): void
+    }
+
+    ' Lớp đại diện cho tài khoản kết nối
+    class ConnectedAccount <<model>> {
+      + provider: string
+      + accountId: string
+      + getAccountInfo(): string
+      + updateAccountInfo(updatedAccount: ConnectedAccount): boolean
+    }
+
+    ' Lớp dịch vụ xử lý thông tin người dùng
+    class UserInfoService <<service>> {
+      + getUserInfo(userId: string): User
+      + updateUserInfo(userId: string, updatedUser: User): boolean
+      + updateUserEmail(userId: string, newEmail: string): boolean
+      + updateUserFullName(userId: string, newFullName: string): boolean
+    }
+
+    ' Quan hệ giữa các lớp
+    UserInfoService  ..> User : Retrieves
+    UserInfoService  ..> EmailAddress : Updates
+    UserInfoService  ..> User : Updates
+    User "1" --> "0..*" EmailAddress : Has
+    User "1" --> "0..*" ConnectedAccount : Has
+    ConnectedAccount "1" --> "1" User : BelongsTo
+}
+@enduml

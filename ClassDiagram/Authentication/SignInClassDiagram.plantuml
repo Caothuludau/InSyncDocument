@@ -6,19 +6,19 @@ package pkgSigninGoogleClerk <<Frame>>{
 
 class ClerkSignIn  {
   + startSignInWithOAuth(provider: SocialProvider): OAuthSession
-  + handleOAuthCallback(oauthSession: OAuthSession, authCode: String): User
-  + verifyUser(user: User): Boolean
+  + handleOAuthCallback(oauthSession: OAuthSession, authCode: string): User
+  + verifyUser(user: User): boolean
 }
 
 ' Quá trình xác thực OAuth
 class OAuthSession  {
-  + id: String
+  + id: string
   + provider: SocialProvider
-  + authUrl: String
+  + authUrl: string
   + status: OAuthStatus
-  + authCode: String
+  + authCode: string
   + redirectToProvider(): void
-  + receiveAuthCode(authCode: String): Boolean
+  + receiveAuthCode(authCode: string): boolean
 }
 
 ' Các trạng thái OAuth
@@ -40,31 +40,31 @@ class SocialProvider  {
 
 ' Thông tin người dùng
 class User  {
-  + id: String
-  + email: String
-  + fullName: String
-  + isVerified: Boolean
+  + id: string
+  + email: string
+  + fullName: string
+  + isVerified: boolean
 }
 
 ' Lớp Google OAuth xử lý mã xác thực
 class GoogleOAuth  {
-  + exchangeAuthCode(authCode: String): AccessToken
+  + exchangeAuthCode(authCode: string): AccessToken
   + getUserInfo(accessToken: AccessToken): GoogleUserInfo
 }
 
 ' Thông tin AccessToken
 class AccessToken  {
-  + token: String
-  + expiresIn: Int
-  + scope: String
+  + token: string
+  + expiresIn: int
+  + scope: string
 }
 
 ' Thông tin Google User
 class GoogleUserInfo  {
-  + id: String
-  + email: String
-  + fullName: String
-  + profilePicture: String
+  + id: string
+  + email: string
+  + fullName: string
+  + profilePicture: string
 }
 
 ' Các quan hệ

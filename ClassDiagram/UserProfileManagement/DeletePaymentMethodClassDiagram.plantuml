@@ -1,0 +1,56 @@
+@startuml DeletePaymentMethod
+Title DeletePaymentMethod Class Diagram
+package pkgViewPortalStripe <<Frame>> {
+  class StripeBillingPortalService {
+    + createPortalSession(customerId: string, returnUrl: string): PortalSession
+    + sendLoginEmail(customerEmail: string, sessionUrl: string): void
+    + getPortalData(sessionId: string): PortalView
+    + deletePaymentMethod(customerId: string, paymentMethodId: string): boolean
+  }
+
+  class PortalView {
+    + htmlContent: string
+    + currentSubscription: Subscription
+    + paymentMethod: List<PaymentMethod>
+    + invoiceHistory: List<Invoice>
+    + paymentInfo: PaymentInformation
+    + deletePaymentMethod(paymentMethodId: string): boolean
+    + render(): void
+  }
+
+  class PaymentMethod {
+    + id: string
+    + type: string
+    + last4: string
+    + isDefault: boolean
+    + delete(): boolean
+  }
+
+  StripeBillingPortalService ..> PortalView : retrieves
+  PortalView "1" --> "1..*" PaymentMethod : uses
+  PortalView ..> StripeBillingPortalService : deletePaymentMethod
+}
+@enduml
+' Tiến trình hoạt động
+' Tạo phiên truy cập View Portal:
+
+' Người dùng đăng nhập và được chuyển đến trang view portal thông qua dịch vụ StripeBillingPortalService.createPortalSession.
+' Dịch vụ này trả về một đối tượng PortalSession chứa thông tin URL phiên.
+' Truy xuất thông tin cổng:
+
+' StripeBillingPortalService.getPortalData được gọi để tải dữ liệu hiển thị trên view portal, bao gồm phương thức thanh toán hiện tại.
+' Hiển thị phương thức thanh toán:
+
+' Dữ liệu phương thức thanh toán (PaymentMethod) được hiển thị trên giao diện người dùng.
+' Xóa phương thức thanh toán:
+
+' Người dùng chọn xóa một phương thức thanh toán cụ thể.
+' Hành động này gọi PortalView.deletePaymentMethod(paymentMethodId), sau đó ủy quyền yêu cầu xóa đến StripeBillingPortalService.deletePaymentMethod.
+' Xử lý xóa trong StripeBillingPortalService:
+
+' Dịch vụ deletePaymentMethod thực hiện lệnh xóa dựa trên customerId và paymentMethodId.
+' Trả về giá trị boolean để thông báo kết quả (thành công hoặc thất bại).
+' Cập nhật giao diện:
+
+' Nếu thành công, giao diện sẽ cập nhật để xóa phương thức thanh toán khỏi danh sách.
+' Nếu thất bại, người dùng sẽ nhận thông báo lỗi.

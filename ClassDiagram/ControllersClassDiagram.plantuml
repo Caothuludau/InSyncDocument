@@ -16,7 +16,7 @@ Title Controller Class Diagram
 package pkgControllers <<Frame>> {   
 
     !startsub ControllerBase
-    abstract ControllerBase{}
+    abstract ControllerBase {}
     !endsub
     'User Controller'
     !startsub UsersController

@@ -1,0 +1,38 @@
+@startuml SigninByEmailClerk
+Title SigninGoogleClerk Class DiagramBorderColor
+skinparam classAttributeIconSize 0
+' Lớp chính xử lý sign-in
+package pkgSigninGoogleClerk <<Frame>>{
+    class ClerkSignIn {
+    + signInWithEmail(email: string, password: string): User
+    }
+
+    class UserRepository {
+    + findUserByEmail(email: string): User
+    + validatePassword(user: User, password: string): boolean
+    }
+
+    class PasswordHasher {
+    + hash(password: string): string
+    + verify(hash: string, password: string): boolean
+    }
+
+    class User {
+    + id: string
+    + email: string
+    + fullName: string
+    + hashedPassword: string
+    + isVerified: boolean
+    }
+
+    class DataContext {
+    + queryUserByEmail(email: string): User
+    }
+
+    ' Relationships
+    ClerkSignIn --> UserRepository
+    UserRepository --> PasswordHasher
+    UserRepository --> User
+    UserRepository --> DataContext
+}
+@enduml

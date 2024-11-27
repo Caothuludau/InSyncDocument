@@ -1,0 +1,27 @@
+@startuml ViewUpdateBillingInformationClassDiagram
+Title View Or Update Billing Information Class Diagram
+package pkgViewUpdateBillingInformation <<Frame>> {
+  class StripeBillingPortalService <<service>>{
+    + getUserBillingInformation(customerId: string): BillingInformation
+    + updateUserBillingInformation(customerId: string, billingInfo: BillingInformation): void
+  }
+
+  class BillingInformation <<model>>{
+    + name: string
+    + email: string
+    + address: Address
+    + phoneNumber: string
+  }
+
+  class Address <<model>>{
+    + country: string
+    + addressLine1: string
+    + city: string
+    + postalCode: string
+  }
+
+  StripeBillingPortalService ..> BillingInformation : retrieves
+  StripeBillingPortalService ..> BillingInformation : updates
+  BillingInformation "1" --> "1" Address : contains
+}
+@enduml

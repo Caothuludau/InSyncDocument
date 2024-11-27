@@ -1,0 +1,118 @@
+@startuml SignUpSequenceDiagram
+skinparam classAttributeIconSize 0
+Title Sign Up Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+    actor "User" as U
+    participant "SignUp Page" as SUP
+    participant "Home Page" as HP
+    participant "ClerkSignUpService" as CS
+    participant "OAuthSession" as OS
+    participant "GoogleOAuth" as GO
+    participant "AccessToken" as AT
+    participant "GoogleUserInfo" as GUI
+
+    participant "UsersController" as UC
+    participant "IUserRepository" as IUserRepo
+    participant "InSyncContext" as CONTEXT
+    database "SqlServe" as Db
+
+    activate U
+    U -> SUP : Enter full registration by email password information
+    activate SUP
+    SUP -> CS : Call ClerkSignUpService
+    activate CS
+    CS -> CS : Check exist user in project
+    alt Email account not created
+        CS  --> HP : Redirect to Home Page
+        activate HP
+       
+        
+        CS -> UC : Call webhook POST /api/users/clerk-web-hook-create
+        activate UC
+
+        UC ->IUserRepo : AddUser()
+        activate IUserRepo
+
+        IUserRepo -> CONTEXT : Data manipulation
+        activate CONTEXT
+
+        CONTEXT -> Db : Add user into DB
+        activate Db
+
+        ' Database returns success or failure
+        Db --> CONTEXT : User added successfully
+        deactivate Db
+
+        CONTEXT --> IUserRepo : Return success
+        deactivate CONTEXT
+
+        IUserRepo --> UC : Return success
+        deactivate IUserRepo
+
+        ' UsersController returns response to ClerkSignUp
+        UC --> CS : Return WebhookResponse
+        deactivate UC
+        ' ClerkSignUp responds to User with success message
+    else Email created account
+        CS --> SUP : message error email used
+    end
+
+
+
+    opt OAuth SignUp (optional)
+        SUP -> CS : Request SignUp via OAuth (Google)
+        alt Email account not created
+            CS -> OS : Redirect to OAuth provider (Google)
+            activate OS
+            OS -> GO : Exchange auth code
+            activate GO
+            GO -> AT : Get AccessToken
+            activate AT
+            AT --> GO : Return AccessToken
+            deactivate AT
+            GO -> GUI : Get Google User Info
+            activate GUI
+            GUI --> GO : Return User Info
+            deactivate GUI
+            GO --> OS : Return User Info
+            deactivate GO
+            OS --> CS : OAuth session created
+            CS -> UC : Create user from OAuth info
+            activate UC 
+            UC -> IUserRepo : Save OAuth user data
+            activate IUserRepo
+
+            IUserRepo -> CONTEXT : Data manipulation
+            activate CONTEXT
+            CONTEXT -> Db : Add user into DB
+            activate Db
+            ' Database returns success or failure
+            Db --> CONTEXT : User added successfully
+            deactivate Db
+
+            CONTEXT --> IUserRepo : Return success
+            deactivate CONTEXT
+
+            IUserRepo --> UC : Return success
+            deactivate IUserRepo
+            UC --> CS : return webhook response
+            deactivate UC
+        else Email created acount
+            CS --> HP     : Login and redirect to Home Page
+            deactivate CS
+            deactivate HP
+        end
+    end
+
+
+@enduml

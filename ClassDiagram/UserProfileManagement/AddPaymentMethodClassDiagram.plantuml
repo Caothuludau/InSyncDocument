@@ -1,0 +1,64 @@
+@startuml DeletePaymentMethod
+Title DeletePaymentMethod Class Diagram
+package pkgViewPortalStripe <<Frame>> {
+  class StripeBillingPortalService {
+    + createPortalSession(customerId: string, returnUrl: string): PortalSession
+    + sendLoginEmail(customerEmail: string, sessionUrl: string): void
+    + getPortalData(sessionId: string): PortalView
+    + addPaymentMethod(customerId: string, paymentMethodDetails: PaymentMethodDetails): PaymentMethod
+  }
+
+  class PortalView {
+    + htmlContent: string
+    + currentSubscription: Subscription
+    + paymentMethod: List<PaymentMethod
+    + invoiceHistory: List<Invoice>
+    + paymentInfo: PaymentInformation
+    + addPaymentMethod(paymentMethodDetails: PaymentMethodDetails): PaymentMethod
+    + render(): void
+  }
+
+  class PaymentMethod {
+    + id: string
+    + type: string
+    + last4: string
+    + isDefault: boolean
+    + setAsDefault(): void
+  }
+
+  class PaymentMethodDetails {
+    + cardNumber: string
+    + expiryDate: string
+    + cvc: string
+    + billingAddress: string
+  }
+
+  StripeBillingPortalService ..> PortalView : retrieves
+  PortalView "1" --> "*" PaymentMethod : manages
+  PortalView ..> StripeBillingPortalService : addPaymentMethod
+}
+@enduml
+
+' Quy trình hoạt động
+' Tạo phiên truy cập View Portal:
+
+' Người dùng đăng nhập và được chuyển đến trang view portal thông qua dịch vụ StripeBillingPortalService.createPortalSession.
+' Dịch vụ này trả về một đối tượng PortalSession chứa thông tin URL phiên.
+' Truy xuất thông tin cổng:
+
+' StripeBillingPortalService.getPortalData được gọi để tải dữ liệu hiển thị trên view portal, bao gồm danh sách phương thức thanh toán hiện tại.
+' Người dùng yêu cầu thêm phương thức thanh toán:
+
+' Người dùng nhập thông tin chi tiết về thẻ hoặc phương thức thanh toán mới vào giao diện (ví dụ: số thẻ, ngày hết hạn, địa chỉ thanh toán).
+' Xử lý thêm phương thức thanh toán trong PortalView:
+
+' Giao diện gọi hàm PortalView.addPaymentMethod, nhận dữ liệu PaymentMethodDetails.
+' Hàm này gửi yêu cầu tới dịch vụ StripeBillingPortalService.addPaymentMethod.
+' Thêm phương thức thanh toán qua StripeBillingPortalService:
+
+' addPaymentMethod xử lý logic phía backend, sử dụng API Stripe để thêm phương thức thanh toán mới vào hồ sơ khách hàng.
+' Stripe API xác minh thông tin thẻ, kiểm tra tính hợp lệ (như mã CVC, số thẻ), và nếu hợp lệ, thêm phương thức vào tài khoản Stripe của khách hàng.
+' Kết quả trả về:
+
+' API trả về thông tin của phương thức thanh toán mới được tạo (PaymentMethod).
+' Dịch vụ trả kết quả cho PortalView, nơi thông tin này được thêm vào danh sách phương thức thanh toán và hiển thị trên giao diện.

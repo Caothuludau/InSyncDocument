@@ -1,0 +1,66 @@
+@startuml SignSequenceDiagram
+skinparam classAttributeIconSize 0
+Title Sign Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+    actor "User" as U
+participant "ClerkSignIn" as CS
+participant "OAuthSession" as OS
+participant "GoogleOAuth" as GO
+database "Database" as DB
+
+' Người dùng bắt đầu quy trình đăng nhập
+U -> CS : startSignInWithOAuth(Google)
+activate CS
+CS -> OS : Create OAuth session
+activate OS
+OS -> GO : redirectToProvider()
+GO --> U : Redirect to Google login page
+deactivate OS
+
+' Người dùng đăng nhập vào Google
+U -> GO : Enter Google credentials
+activate GO
+GO --> U : Redirect back with authCode
+deactivate GO
+
+' Hệ thống nhận mã xác thực từ Google
+U -> CS : Callback with authCode
+CS -> OS : receiveAuthCode(authCode)
+OS --> CS : Return OAuth session with status COMPLETED
+
+' Trao đổi mã xác thực để lấy access token
+CS -> GO : exchangeAuthCode(authCode)
+activate GO
+GO --> CS : Return AccessToken
+
+' Lấy thông tin người dùng từ Google
+CS -> GO : getUserInfo(accessToken)
+GO --> CS : Return GoogleUserInfo (id, email, fullName)
+
+' Kiểm tra người dùng trong hệ thống
+CS -> DB : Query user by email
+activate DB
+alt User exists
+    DB --> CS : Return existing user
+    CS -> U : Sign-in successful
+else User does not exist
+    DB --> CS : No user found
+    CS -> DB : Save new user (GoogleUserInfo)
+    DB --> CS : User saved
+    CS -> U : Sign-in successful (new user)
+end
+deactivate DB
+
+deactivate CS
+
+@enduml

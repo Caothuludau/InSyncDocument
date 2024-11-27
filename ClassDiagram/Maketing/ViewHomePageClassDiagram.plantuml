@@ -16,6 +16,7 @@ Title ViewHomePage Class Diagram
 package pkgViewHomePage <<Frame>> {  
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!SubscriptionPlansController
+    !includesub ../ControllersClassDiagram.plantuml!CustomerReviewsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
 
     
@@ -26,25 +27,36 @@ package pkgViewHomePage <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
     !includesub ../RepositoriesClassDiagram.plantuml!ISubscriptionPlanRepository
     !includesub ../RepositoriesClassDiagram.plantuml!SubscriptionPlanRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!ICustomerReviewRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!CustomerReviewRepository
     'include Dto'
     !includesub ../DtosClassDiagram.plantuml!ViewSubscriptionPlanDto
     !includesub ../ModelsClassDiagram.plantuml!SubscriptionPlan
+    !includesub ../DtosClassDiagram.plantuml!ViewCustomerReviewDto
+    !includesub ../ModelsClassDiagram.plantuml!CustomerReview
 
 
     'set up realation ship' 
     ControllerBase <|-- SubscriptionPlansController
+    ControllerBase <|-- CustomerReviewsController
     SubscriptionPlansController ..> ViewSubscriptionPlanDto : return views
+    CustomerReviewsController ..> ViewCustomerReviewDto : return views
 
     IRepositoryBase <|.. RepositoryBase
     ISubscriptionPlanRepository <|.. SubscriptionPlanRepository
     SubscriptionPlanRepository o-- SubscriptionPlan
+    ICustomerReviewRepository <|.. CustomerReviewRepository
+    CustomerReviewRepository o-- CustomerReview
 
     IRepositoryBase <|-- ISubscriptionPlanRepository 
     RepositoryBase <|-- SubscriptionPlanRepository
+    IRepositoryBase <|-- ICustomerReviewRepository 
+    RepositoryBase <|-- CustomerReviewRepository
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
     SubscriptionPlansController o-- ISubscriptionPlanRepository
+    CustomerReviewsController o-- ICustomerReviewRepository
 
 
 
