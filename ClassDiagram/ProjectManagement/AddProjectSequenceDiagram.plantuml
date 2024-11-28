@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Add Project for Clerk Sequence Diagram
+
+actor "User" as U
+boundary "Project Management Page" as Hp
+participant "ProjectsController" as ProController
+participant "IProjectRepository" as IProRepo
+participant "IUserRepository" as IUserRepo
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Enter Data project and Click button to add project
+activate Hp
+
+Hp -> ProController : Call AddProjectUserClerk(newProject)
+activate ProController
+ProController -> ProController : Validate ModelState
+ProController -> ProController : Check if UserIdClerk exists
+alt User not found
+    ProController -> Hp : Return Notification Error 400
+    deactivate Hp
+    deactivate ProController
+else User found
+    ProController -> IUserRepo : Check if user exists by UserIdClerk
+    activate IUserRepo
+    IUserRepo -> Db : Fetch user by UserIdClerk
+    activate Db
+    Db --> IUserRepo : Return user data
+    deactivate Db
+    IUserRepo --> ProController : Return user data
+    deactivate IUserRepo
+
+    ProController -> Mapper : Map AddProjectClerkDto to Project
+    activate Mapper
+    Mapper --> ProController : Return mapped Project
+    deactivate Mapper
+
+    ProController -> IProRepo : Add project
+    activate IProRepo
+    IProRepo -> Db : Insert new project into database
+    activate Db
+    Db --> IProRepo : Return new project data
+    deactivate Db
+    IProRepo --> ProController : Return added project
+    deactivate IProRepo
+
+    ProController -> Hp : Return success response 200
+    deactivate ProController
+    Hp --> U : Show success message
+    deactivate Hp
+end
+
+@enduml

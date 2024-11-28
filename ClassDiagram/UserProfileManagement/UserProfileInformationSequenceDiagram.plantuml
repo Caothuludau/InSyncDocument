@@ -1,0 +1,76 @@
+@startuml UserProfileInformationSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam sequenceMessageAlign center
+Title User Profile Information Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+
+actor User as UserActor
+boundary "UserProfileInformation Screen" as UIScreen
+participant "UserInfoService" as Service
+participant "Database" as DB
+participant "User" as UserModel
+participant "EmailAddress" as EmailModel
+participant "ConnectedAccount" as AccountModel
+
+UserActor -> UIScreen: View User Profile
+activate UIScreen
+
+UIScreen -> Service: getUserInfo(userId)
+activate Service
+
+Service -> DB: SELECT * FROM Users WHERE userId = userId
+activate DB
+DB --> Service: User Data
+deactivate DB
+
+Service -> UserModel: Map data to User object
+activate UserModel
+UserModel --> Service: User Object
+deactivate UserModel
+
+Service -> UserModel: getFullName()
+activate UserModel
+UserModel --> Service: fullName
+deactivate UserModel
+
+Service -> UserModel: getPrimaryEmail()
+activate UserModel
+UserModel --> Service: primaryEmail
+deactivate UserModel
+
+Service -> UserModel: getEmailAddresses()
+activate UserModel
+UserModel -> EmailModel: Retrieve emails
+activate EmailModel
+EmailModel --> UserModel: List<string>
+deactivate EmailModel
+UserModel --> Service: List<string>
+deactivate UserModel
+
+Service -> UserModel: getConnectedAccounts()
+activate UserModel
+UserModel -> AccountModel: Retrieve connected accounts
+activate AccountModel
+AccountModel --> UserModel: List<string>
+deactivate AccountModel
+UserModel --> Service: List<string>
+deactivate UserModel
+
+Service --> UIScreen: User Profile Data (fullName, primaryEmail, emails, accounts)
+deactivate Service
+
+UIScreen --> UserActor: Display User Profile
+deactivate UIScreen
+@enduml
+

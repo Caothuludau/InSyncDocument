@@ -1,0 +1,32 @@
+@startuml AddPaymentMethodSequence
+skinparam sequenceMessageAlign center
+Title Add Payment Method - Stripe Billing
+
+actor User as UserActor
+boundary "Portal View Screen" as PortalViewScreen
+participant "StripeBillingPortalService" as BillingService
+participant "Stripe API" as StripeAPI
+database "Stripe Database" as StripeDB
+
+UserActor -> PortalViewScreen: Enter payment method details
+activate PortalViewScreen
+
+PortalViewScreen -> BillingService: addPaymentMethod(customerId, PaymentMethodDetails)
+activate BillingService
+
+BillingService -> StripeAPI: Validate and create payment method
+activate StripeAPI
+
+StripeAPI -> StripeDB: INSERT PaymentMethod data
+activate StripeDB
+StripeDB --> StripeAPI: Success (PaymentMethodId)
+deactivate StripeDB
+
+StripeAPI --> BillingService: Created PaymentMethod (id, type, last4, isDefault)
+deactivate StripeAPI
+
+BillingService --> PortalViewScreen: Created PaymentMethod (id, type, last4, isDefault)
+PortalViewScreen -> UserActor: Payment method added and displayed
+deactivate BillingService
+deactivate PortalViewScreen
+@enduml

@@ -1,82 +1,38 @@
-@startuml SignOutClerk
-Title SignOutClerk Class DiagramBorderColor
+@startuml SignOutClassDiagram
+Title Sign Out Class Diagram
 skinparam classAttributeIconSize 0
-' Lớp chính xử lý sign-in
-package pkgSignOutClerk <<Frame>>{
-' Lớp chính xử lý sign-in và sign-out
-    class ClerkSignIn {
-      + startSignInWithOAuth(provider: SocialProvider): OAuthSession
-      + handleOAuthCallback(oauthSession: OAuthSession, authCode: string): User
-      + verifyUser(user: User): boolean
-      + signOutUser(user: User): boolean
-    }
 
-    ' Quá trình xác thực OAuth
-    class OAuthSession {
-      + id: string
-      + provider: SocialProvider
-      + authUrl: string
-      + status: OAuthStatus
-      + authCode: string
-      + redirectToProvider(): void
-      + receiveAuthCode(authCode: string): boolean
-    }
+package pkgSignOut <<Frame>> {
 
-    ' Các trạng thái OAuth
-    class OAuthStatus {
-      <<enumeration>>
-      + PENDING
-      + COMPLETED
-      + FAILED
-    }
-
-    ' Các nhà cung cấp OAuth
-    class SocialProvider {
-      <<enumeration>>
-      + Google
-      + Facebook
-      + GitHub
-      + Apple
-    }
-
-    ' Thông tin người dùng
+    ' Lớp đại diện cho người dùng
     class User {
-      + id: string
-      + email: string
-      + fullName: string
-      + isVerified: boolean
+      + userId: string
+      + sessionId: string
+      + isSignedIn: boolean
+      + signOut(): boolean
     }
 
-    ' Lớp Google OAuth xử lý mã xác thực
-    class GoogleOAuth {
-      + exchangeAuthCode(authCode: string): AccessToken
-      + getUserInfo(accessToken: AccessToken): GoogleUserInfo
+    ' Lớp quản lý phiên đăng nhập
+    class SessionManager {
+      + invalidateSession(sessionId: string): boolean
     }
 
-    ' Thông tin AccessToken
-    class AccessToken {
-      + token: string
-      + expiresIn: Int
-      + scope: string
+    ' Lớp dịch vụ quản lý thông tin người dùng
+    class UserInfoService {
+      + getUserInfo(userId: string): User
+      + updateUserInfo(userId: string, updatedUser: User): boolean
     }
 
-    ' Thông tin Google User
-    class GoogleUserInfo {
-      + id: string
-      + email: string
-      + fullName: string
-      + profilePicture: string
+    ' Lớp cơ sở dữ liệu
+    class Database {
+      + query(queryString: string): ResultSet
+      + execute(queryString: string): boolean
     }
 
-    ' Các quan hệ
-    ClerkSignIn --> OAuthSession
-    OAuthSession --> OAuthStatus
-    OAuthSession --> SocialProvider
-    ClerkSignIn --> User
-    GoogleOAuth --> AccessToken
-    GoogleOAuth --> GoogleUserInfo
-
+    ' Quan hệ giữa các lớp
+    UserInfoService ..> User : Retrieves
+    UserInfoService ..> SessionManager : Uses
+    SessionManager ..> Database : Executes Queries
+    User ..> Database : Updates
 }
 @enduml
-
-

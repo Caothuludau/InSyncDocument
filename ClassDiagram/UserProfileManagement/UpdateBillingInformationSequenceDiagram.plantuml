@@ -1,0 +1,55 @@
+@startuml UpdateBillingInformationSequence
+skinparam SequenceMessageAlignment center
+Title Update Billing Information - Stripe Billing
+
+actor User as UserActor
+boundary "Portal View Screen" as PortalViewScreen
+participant "StripeBillingPortalService" as BillingService
+participant "Stripe API" as StripeAPI
+database "Stripe Database" as StripeDB
+
+' == User Views Current Billing Information ==
+UserActor -> PortalViewScreen: Request to view billing information
+activate PortalViewScreen
+
+PortalViewScreen -> BillingService: getUserBillingInformation(customerId)
+activate BillingService
+
+BillingService -> StripeAPI: Retrieve billing information
+activate StripeAPI
+
+StripeAPI -> StripeDB: SELECT billing info WHERE customerId
+activate StripeDB
+StripeDB --> StripeAPI: BillingInformation (name, email, address, phoneNumber)
+deactivate StripeDB
+
+StripeAPI --> BillingService: BillingInformation
+deactivate StripeAPI
+
+BillingService --> PortalViewScreen: BillingInformation
+PortalViewScreen -> UserActor: Display current billing information
+deactivate BillingService
+
+' == User Updates Billing Information ==
+UserActor -> PortalViewScreen: Submit updated billing information
+activate PortalViewScreen
+
+PortalViewScreen -> BillingService: updateUserBillingInformation(customerId, updatedBillingInfo)
+activate BillingService
+
+BillingService -> StripeAPI: Update billing information
+activate StripeAPI
+
+StripeAPI -> StripeDB: UPDATE billing info WHERE customerId
+activate StripeDB
+StripeDB --> StripeAPI: Update Success
+deactivate StripeDB
+
+StripeAPI --> BillingService: Update Confirmation
+deactivate StripeAPI
+
+BillingService --> PortalViewScreen: Update Confirmation
+PortalViewScreen -> UserActor: Notify billing information updated successfully
+deactivate BillingService
+deactivate PortalViewScreen
+@enduml

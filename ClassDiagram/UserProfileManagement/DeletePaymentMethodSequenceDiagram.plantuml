@@ -1,0 +1,36 @@
+@startuml DeletePaymentMethodSequence
+skinparam sequenceMessageAlign center
+Title Delete Payment Method - Stripe Billing
+
+actor User as UserActor
+boundary "Portal View Screen" as PortalViewScreen
+participant "StripeBillingPortalService" as BillingService
+database "Stripe Database" as StripeDB
+
+UserActor -> PortalViewScreen: Request delete payment method (paymentMethodId)
+activate PortalViewScreen
+
+PortalViewScreen -> BillingService: deletePaymentMethod(customerId, paymentMethodId)
+activate BillingService
+
+BillingService -> StripeDB: Get PaymentMethods with paymentMethodId, customerId
+activate StripeDB
+StripeDB --> BillingService: PaymentMethod data
+deactivate StripeDB
+
+alt Payment Method Found
+  BillingService -> StripeDB: DELETE PaymentMethods
+  activate StripeDB
+  StripeDB --> BillingService: Deletion success
+  deactivate StripeDB
+
+  BillingService --> PortalViewScreen: Success response
+  PortalViewScreen -> UserActor: Payment method deleted
+else Payment Method Not Found
+  BillingService --> PortalViewScreen: Error response (Payment method not found)
+  PortalViewScreen -> UserActor: Error message
+end
+
+deactivate BillingService
+deactivate PortalViewScreen
+@enduml

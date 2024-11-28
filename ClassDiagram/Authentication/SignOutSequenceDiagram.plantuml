@@ -1,0 +1,38 @@
+@startuml SignOutSequenceDiagram
+Title Sign Out Sequence Diagram
+skinparam sequenceMessageAlign center
+
+    actor User as UserActor
+    boundary "SignOut Screen" as SignOutScreen
+    participant "UserInfoService" as Service
+    participant "SessionManager" as SessionMgr
+    participant "Database" as DB
+
+    UserActor -> SignOutScreen: Tap Sign Out
+    activate SignOutScreen
+
+    SignOutScreen -> Service: signOut(userId)
+    activate Service
+
+    Service -> SessionMgr: invalidateSession(sessionId)
+    activate SessionMgr
+
+    SessionMgr -> DB: DELETE FROM Sessions WHERE sessionId = ?
+    activate DB
+    DB --> SessionMgr: Success
+    deactivate DB
+
+    SessionMgr --> Service: Session invalidated
+    deactivate SessionMgr
+
+    Service -> DB: UPDATE Users SET isSignedIn = false WHERE userId = ?
+    activate DB
+    DB --> Service: Success
+    deactivate DB
+
+    Service --> SignOutScreen: Sign Out Success
+    deactivate Service
+
+    SignOutScreen --> UserActor: Display Sign Out Success Message
+    deactivate SignOutScreen
+@enduml

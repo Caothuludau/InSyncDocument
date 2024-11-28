@@ -1,42 +1,18 @@
-@startuml ChangePasswordClerk
-skinparam classAttributeIconSize 0
+@startuml DeleteProjectSequenceDiagram
+Title Delete Project Sequence Diagram
 
-' Class cho người dùng
-class User {
-  + id: String
-  + email: String
-  + fullName: String
-  + password: String
-  + updatePassword(newPassword: String): Boolean
-  + validateCurrentPassword(currentPassword: String): Boolean
-}
+actor User
+entity ProjectsController
+entity IProjectRepository
+entity ProjectRepository
+entity Project
 
-' Class yêu cầu thay đổi mật khẩu
-class ChangePasswordRequest {
-  + userId: String
-  + currentPassword: String
-  + newPassword: String
-  + confirmNewPassword: String
-  + validate(): Boolean
-}
+User -> ProjectsController : Send delete request (projectId)
+ProjectsController -> IProjectRepository : Call deleteProject(projectId)
+IProjectRepository -> ProjectRepository : Call deleteProject(projectId)
+ProjectRepository -> Project : Delete project from database
+ProjectRepository -> IProjectRepository : Return deletion result
+IProjectRepository -> ProjectsController : Return deletion result
+ProjectsController -> User : Return success/failure response
 
-' Class xác thực mật khẩu
-class PasswordValidator {
-  + validatePassword(password: String): Boolean
-  + isStrong(password: String): Boolean
-}
-
-' Class xử lý quá trình thay đổi mật khẩu
-class PasswordChangeProcess {
-  + initiateChangePasswordRequest(userId: String, currentPassword: String, newPassword: String): Boolean
-  + validateCurrentPassword(user: User, currentPassword: String): Boolean
-  + updatePassword(user: User, newPassword: String): Boolean
-}
-
-' Relationships giữa các lớp
-User --> ChangePasswordRequest : "Request change password"
-ChangePasswordRequest --> PasswordValidator : "Validate new password"
-ChangePasswordRequest --> PasswordChangeProcess : "Initiate password change"
-PasswordChangeProcess --> User : "Validate current password"
-PasswordChangeProcess --> User : "Update new password"
 @enduml

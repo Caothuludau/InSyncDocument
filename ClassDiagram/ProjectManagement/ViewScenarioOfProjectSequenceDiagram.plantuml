@@ -1,0 +1,72 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Get Scenario of Project Sequence Diagram
+
+actor "User" as U
+boundary "Project Management Page" as Hp
+participant "ScenariosController" as ScenariosController
+participant "IScenarioRepository" as IScenarioRepo
+participant "IUserRepository" as IUserRepo
+participant "IMapper" as Mapper
+database "SqlServer" as Db
+participant "ResponsePaging" as ResponsePaging
+
+U -> Hp : Request to get scenarios of project (projectId, createdBy, index, size, keySearch)
+activate Hp
+
+Hp -> ScenariosController : Call GetScenarioOfProject(projectId, createdBy, index, size, keySearch)
+activate ScenariosController
+
+ScenariosController -> ScenariosController : Validate ModelState
+alt ModelState invalid
+    ScenariosController -> Hp : Return BadRequest("Invalid model state.")
+    deactivate Hp
+    deactivate ScenariosController
+else Valid ModelState
+    ScenariosController -> IScenarioRepo : Get scenarios by projectId, createdBy, keySearch
+    activate IScenarioRepo
+    IScenarioRepo -> Db : Query scenarios from database (projectId, createdBy, keySearch)
+    activate Db
+    Db --> IScenarioRepo : Return list of scenarios
+    deactivate Db
+    IScenarioRepo --> ScenariosController : Return list of scenarios
+    deactivate IScenarioRepo
+
+    alt Paging provided (index, size)
+        ScenariosController -> IScenarioRepo : Get paged scenarios with total count
+        activate IScenarioRepo
+        IScenarioRepo -> Db : Query paged scenarios from database (index, size)
+        activate Db
+        Db --> IScenarioRepo : Return paged list of scenarios
+        deactivate Db
+        IScenarioRepo --> ScenariosController : Return paged scenarios and total count
+        deactivate IScenarioRepo
+    else No paging (index, size not provided)
+        ScenariosController -> IScenarioRepo : Get all scenarios with total count
+        activate IScenarioRepo
+        IScenarioRepo -> Db : Query paged scenarios from database 
+        activate Db
+        Db --> IScenarioRepo : Return paged list all of scenarios
+        deactivate Db
+        IScenarioRepo --> ScenariosController : Return all scenarios and total count
+        deactivate IScenarioRepo
+    end
+
+    ScenariosController -> Mapper : Map scenarios to ViewScenarioDto
+    activate Mapper
+    Mapper --> ScenariosController : Return mapped ViewScenarioDto list
+    deactivate Mapper
+
+    ScenariosController -> ResponsePaging : Create ResponsePaging object
+    activate ResponsePaging
+    ResponsePaging --> ScenariosController : Return ResponsePaging object
+    deactivate ResponsePaging
+
+    ScenariosController -> Hp : Return Ok(ResponsePaging)
+    deactivate ScenariosController
+    Hp --> U : Show scenarios for project
+    deactivate Hp
+end
+
+@enduml

@@ -1,0 +1,53 @@
+@startuml ViewPortalSequence
+skinparam sequenceMessageAlign center
+Title View Portal - Stripe Billing
+
+actor User as UserActor
+boundary "Portal Login Screen" as PortalScreen
+participant "StripeBillingPortalService" as BillingService
+database "Stripe Database" as StripeDB
+participant "Portal View Renderer" as PortalRenderer
+
+UserActor -> PortalScreen: Request portal view
+activate PortalScreen
+
+PortalScreen -> BillingService: createPortalSession(customerId, returnUrl)
+activate BillingService
+
+BillingService -> StripeDB: create PortalSessions with (customerId, returnUrl)
+activate StripeDB
+StripeDB --> BillingService: Portal session created (sessionId, url, expiresAt)
+deactivate StripeDB
+
+BillingService --> PortalScreen: sessionUrl
+deactivate BillingService
+
+PortalScreen -> UserActor: Redirect to sessionUrl
+
+UserActor -> PortalScreen: Access portal via sessionUrl
+activate PortalScreen
+
+PortalScreen -> BillingService: getPortalData(sessionId)
+activate BillingService
+
+BillingService -> StripeDB: Get PortalSessions with sessionId
+activate StripeDB
+StripeDB --> BillingService: Session data (customerId, isActive, expiresAt)
+deactivate StripeDB
+
+alt Session Valid
+  BillingService -> StripeDB: Get portal of customer
+  StripeDB --> BillingService: Customer details, subscriptions, payment methods, invoices
+  deactivate StripeDB
+
+  BillingService --> PortalRenderer: Render portal view
+  activate PortalRenderer
+  PortalRenderer -> UserActor: Display portal view (subscription, payment methods, invoices)
+  deactivate PortalRenderer
+else Session Invalid/Expired
+  BillingService --> PortalScreen: Error message (Session expired or invalid)
+end
+
+deactivate BillingService
+deactivate PortalScreen
+@enduml

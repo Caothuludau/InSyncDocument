@@ -1,0 +1,36 @@
+@startuml UpdateUserProfileSequence
+Title Update User Profile Sequence Diagram
+skinparam sequenceMessageAlign center
+
+actor User as UserActor
+boundary "Profile Update Screen" as ProfileScreen
+participant "UserInfoService" as UserService
+participant "Database" as DB
+
+UserActor -> ProfileScreen: Enter new profile details
+activate ProfileScreen
+
+ProfileScreen -> UserService: updateUserInfo(userId, updatedUser)
+activate UserService
+
+UserService -> DB: SELECT * FROM Users WHERE userId = ?
+activate DB
+DB --> UserService: User data
+deactivate DB
+
+alt Validate data
+  UserService -> ProfileScreen: Invalid data error
+  deactivate UserService
+else Update data
+  UserService -> DB: UPDATE Users Information
+  activate DB
+  DB --> UserService: Update success
+  deactivate DB
+end
+
+UserService --> ProfileScreen: Update success message
+deactivate UserService
+
+ProfileScreen --> UserActor: Display confirmation message
+deactivate ProfileScreen
+@enduml

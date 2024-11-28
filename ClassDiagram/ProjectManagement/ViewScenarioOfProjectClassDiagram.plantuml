@@ -1,0 +1,56 @@
+@startuml DeleteProjectClassDiagram
+skinparam classAttributeIconSize 0
+Title Delete Project Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgViewHomePage <<Frame>> {  
+    'include controller'
+    !includesub ../ControllersClassDiagram.plantuml!ScenariosController
+    !includesub ../ControllersClassDiagram.plantuml!ControllerBase
+
+    
+    'include Repository'
+    !includesub ../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../RepositoriesClassDiagram.plantuml!IScenarioRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!ScenarioRepository
+    'include Dto'
+    !includesub ../DtosClassDiagram.plantuml!ViewScenarioDto
+    !includesub ../ModelsClassDiagram.plantuml!Scenario
+
+
+
+    'set up realation ship' 
+    ControllerBase <|-- ScenariosController
+
+    ScenariosController ..> ViewScenarioDto : return views
+
+    IRepositoryBase <|.. RepositoryBase
+    IScenarioRepository <|.. ScenarioRepository
+    ScenarioRepository o-- Scenario
+
+    IRepositoryBase <|-- IScenarioRepository 
+    RepositoryBase <|-- ScenarioRepository
+
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    ScenariosController o-- IScenarioRepository
+    ScenariosController o-- IMapper
+
+
+
+
+}

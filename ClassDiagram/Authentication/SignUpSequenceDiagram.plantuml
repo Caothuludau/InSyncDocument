@@ -13,8 +13,8 @@ Title Sign Up Sequence Diagram
 
 ' Include các file vào trong file để sử dụng'
     actor "User" as U
-    participant "SignUp Page" as SUP
-    participant "Home Page" as HP
+    boundary "Sign Up Page" as SUP
+    boundary "Home Page" as HP
     participant "ClerkSignUpService" as CS
     participant "OAuthSession" as OS
     participant "GoogleOAuth" as GO
