@@ -49,6 +49,7 @@ package pkgViewHomePage <<Frame>> {
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
     ProjectsController o-- IProjectRepository
+    ProjectsController o-- IMapper
 
 
 

@@ -183,7 +183,6 @@ package pkgModels <<Frame>> {
         + User : User
     }
     !endsub
-
     ' Relationships
     User "1" --> "*" Project : creates
     

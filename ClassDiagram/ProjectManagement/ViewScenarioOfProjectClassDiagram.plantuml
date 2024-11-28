@@ -49,8 +49,4 @@ package pkgViewHomePage <<Frame>> {
     RepositoryBase o-- InSyncContext
     ScenariosController o-- IScenarioRepository
     ScenariosController o-- IMapper
-
-
-
-
 }
