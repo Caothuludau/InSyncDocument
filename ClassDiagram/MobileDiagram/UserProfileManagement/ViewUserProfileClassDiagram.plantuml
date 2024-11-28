@@ -1,0 +1,32 @@
+@startuml ViewUserProfileClassDiagram
+Title View User Profile Class Diagram
+skinparam classAttributeIconSize 0
+
+' Package for user profile handling
+package pkgProfileFragment <<Frame>> {
+    class ProfileFragment {
+        + onCreate(savedInstanceState: Bundle): void
+        + loadUserProfile(): void
+        + displayUserInfo(): void
+    }
+
+    class UserProfileModel {
+        + getUserName(): String
+        + getUserEmail(): String
+        + getDeviceStatus(): String
+    }
+
+    class SharePerferences {
+        + getString(key: String): String
+    }
+
+    class UserProfileView {
+        + ProfileScreen(userName: String, userEmail: String, deviceStatus: String): void
+    }
+    
+    ProfileFragment -down-> SharePerferences
+    ProfileFragment -down-> UserProfileModel
+    UserProfileModel -down-> UserProfileView
+}
+
+@enduml

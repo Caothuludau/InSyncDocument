@@ -1,0 +1,22 @@
+@startuml MobileSignOutClassDiagram
+Title Sign Out Class Diagram
+skinparam classAttributeIconSize 0
+
+package pkgSignOut <<Frame>> {
+    ' Lớp quản lý phiên đăng nhập
+    class SharePreferences {
+      + remove(sessionName : String)
+      + get(sessionName : String): String 
+      + apply(): boolean
+    }
+
+    ' Lớp dịch vụ quản lý thông tin người dùng
+    class UserInfo {
+      + getUserInfo(userId: string): User
+      + updateUserInfo(userId: string, updatedUser: User): boolean
+    }
+    ' Quan hệ giữa các lớp
+    UserInfo -> SharePreferences : Retrieves
+    UserInfo -> SharePreferences : Uses
+}
+@enduml

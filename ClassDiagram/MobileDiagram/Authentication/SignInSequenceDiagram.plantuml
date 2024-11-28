@@ -1,0 +1,44 @@
+@startuml MobileSignSequenceDiagram
+skinparam classAttributeIconSize 0
+Title Sign Sequence Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+    actor "User" as U
+participant "ClerkSignIn" as CS
+participant "GoogleOAuth" as GO
+
+' Người dùng đăng nhập vào Google
+U -> GO : Enter Google credentials
+activate GO
+GO -> U : Redirect back with GoogleUserInfo (id, email, fullName)
+deactivate GO
+
+' Hệ thống nhận mã xác thực từ Google
+U -> CS : Callback GetUserList() with authentiaction information
+activate CS
+
+' Người dùng bắt đầu quy trình đăng nhập
+U -> CS : GetUserList()
+U -> CS : ValidatePasswordRequest()
+
+
+alt User exists
+    CS -> U : Return existing user
+    CS -> U : Sign-in successful
+else User does not exist
+    CS -> U : No user found, regirect to Login with Error Message.
+    
+end
+
+deactivate CS
+
+@enduml

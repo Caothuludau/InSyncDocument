@@ -1,0 +1,45 @@
+@startuml GrantAccessibilityPermissionClassDiagram
+Title GrantAccessibilityPermission Class Diagram
+skinparam classAttributeIconSize 0
+
+' Lớp chính xử lý sign-in
+package pkgMain <<Frame>> {
+    class MainActivity {
+        + onCreate(savedInstanceState: Bundle): void
+        + buildDialog(): void
+        + checkPermission(): boolean
+    }
+    class PermissionManager {
+        + requestPermission(): void
+        + isPermissionGranted(): boolean
+        + showPermissionRationale(): void
+    }
+
+    class PermissionDialog {
+        - message: String
+        - positiveButton: String
+        - negativeButton: String
+        + showDialog(): void
+    }
+
+    MainActivity -down-> PermissionManager 
+    PermissionManager -> PermissionDialog 
+    
+}
+
+
+' Package for accessibility handling
+package pkgAndroidSystem <<Rectangle>> {
+    class AccessibilityServiceHandler {
+        + requestPermission(): void
+        + launchService(): void
+        + checkAccessibilityStatus(): boolean
+    }
+    
+    PermissionDialog -right-> AccessibilityServiceHandler : Call
+    
+}
+
+
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml GrantAccessibilityPermissionSequenceDiagram
+Title GrantAccessibilityPermission Sequence Diagram
+
+actor User
+
+
+
+User -> MainActivity : Start App
+MainActivity -> PermissionManager : checkPermission()
+PermissionManager -> PermissionDialog : showDialog()
+PermissionDialog -> User : Display Permission Dialog
+User -> PermissionDialog : Confirm/Reject
+PermissionDialog -> PermissionManager : Return User Response
+PermissionManager -> MainActivity : Permission Granted/Denied
+MainActivity -> AccessibilityServiceHandler : requestPermission()
+AccessibilityServiceHandler -> MainActivity : Permission Status
+MainActivity -> User : Allow user action to the app
+
+@enduml

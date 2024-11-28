@@ -1,0 +1,106 @@
+@startuml Models
+skinparam classAttributeIconSize 0
+Title Mobile Models Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+package pkgModels <<Frame>> {
+
+    !startsub Action
+    class Action    {
+        + actionType : string
+        + isLog : bool
+        + logContent : string
+        + duration : int
+        + direction : string
+        + on : string
+        + x : float
+        + y : float
+        + degrees : int
+        + executedActions : List<Action>
+        + trueActions : List<Action>
+        + falseActions : List<Action>
+        + times : int
+        + tries : int
+        + open : string
+        + pasteContent : string
+        + imageExist : string
+    }
+    !endsub
+
+    !startsub Log 
+    class Log    {
+        + log_scenarios_id : Guid
+        + session_id : Guid
+        + date_created : DateTime
+        + description : string
+        + note : string
+        + status : bool
+        + Log()
+    }
+    !endsub
+
+    !startsub LogSession
+    class LogSession    {
+        + session_id : Guid
+        + sesion_name : string
+        + device_name : string
+        + scenaio_id : Guid
+        + need_resolved : bool
+        + date_created : DateTime
+
+        + LogSession()
+    }
+    !endsub
+
+    !startsub Project
+    class Project{
+        + id : Guid
+        + projectName : string
+        + description : string
+        + userId : string
+        + userIdGuid : Guid
+        + displayName : string
+        + dateCreated : DateTime
+        + dateUpdated : DateTime
+        + isPublish : bool 
+    }
+    !endsub
+
+    !startsub Scenario
+    class Scenario    {
+        + id :  UUID
+        + projectId : UUID
+        + projectName : String
+        + title : String
+        + description : String
+        + createdAt : LocalDateTime
+        + updatedAt : LocalDateTime
+        + stepsWeb : String
+        + stepsAndroid : String
+        + isFavorites : Boolean
+        + imageUrl : String
+        + AuthorId : UUID
+        + AuthorName : UUID
+    }
+    !endsub
+    
+    !startsub Sequence
+    class Sequence    {
+        + actions : Queue<Action>
+        + tempQueue : Queue<Action>
+        + tries : int
+        + scenaio_id: string
+        + session_id: string
+    }
+    !endsub
+
+
+}

@@ -1,0 +1,38 @@
+@startuml SignIn
+Title SignIn DiagramBorderColor
+skinparam classAttributeIconSize 0
+' Lớp chính xử lý sign-in
+package pkgSignIn <<Frame>>{
+class LoginActivity {
+        + onCreate(savedInstanceState: Bundle): void
+        + onActivityResult(requestCode: int, resultCode: int, data: Intent?): void
+        + onAppStart(): void
+        + eventHandling(): void
+        + loginWithGoogle(view: View): void
+        + handleSignInResult(task: Task<GoogleSignInAccount>): void
+        + loginButtonClicked(view: View): void
+    }
+class GoogleLogin {
+  + handleSignInResult(task: Task<GoogleSignInAccount>): void
+}
+class ClerkLogin{
+  + GetAllUserListRequest()
+  + GetUserListRequest()
+  + ValidatePasswordRequest()
+}
+class UserCredentials{
+    + email: string
+    + password: string
+}
+class UserInfo{
+    + jsonPayload: JsonObject
+}
+
+LoginActivity --> GoogleLogin
+LoginActivity --> UserCredentials
+GoogleLogin --> ClerkLogin
+UserCredentials --> ClerkLogin
+ClerkLogin --> UserInfo
+
+}
+@enduml

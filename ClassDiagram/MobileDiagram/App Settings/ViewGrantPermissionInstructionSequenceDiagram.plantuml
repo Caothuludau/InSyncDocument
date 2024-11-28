@@ -1,0 +1,35 @@
+@startuml ViewGrantPermissionInstructionSequenceDiagram
+Title ViewGrantPermissionInstruction Sequence Diagram
+
+actor User
+
+User -> MainActivity : Start App
+activate MainActivity
+MainActivity -> PermissionManager : checkPermission()
+activate PermissionManager
+PermissionManager -> PermissionDialog : showDialog()
+activate PermissionDialog
+PermissionDialog -> User : Display Permission Dialog
+deactivate PermissionDialog
+
+User -> PermissionDialog : Click Guide Button
+activate PermissionDialog
+PermissionDialog -> ViewGrantPermissionInstruction : showInstructionDialog()
+activate ViewGrantPermissionInstruction
+ViewGrantPermissionInstruction -> InstructionNavigation : nextInstruction()
+ViewGrantPermissionInstruction -> InstructionNavigation : previousInstruction()
+activate InstructionNavigation
+InstructionNavigation -> ViewGrantPermissionInstruction : Instruction Displayed
+deactivate InstructionNavigation
+deactivate ViewGrantPermissionInstruction
+
+User -> InstructionNavigation : Click Close Instruction
+activate InstructionNavigation
+InstructionNavigation -> ViewGrantPermissionInstruction : closeInstruction()
+deactivate InstructionNavigation
+deactivate ViewGrantPermissionInstruction
+deactivate PermissionDialog
+deactivate PermissionManager
+deactivate MainActivity
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml SignOutSequenceDiagram
+Title Sign Out Sequence Diagram
+skinparam sequenceMessageAlign center
+
+    actor User as UserActor
+    boundary "SignOut Button" as SignOutScreen
+    participant "System" as Service
+    participant "SharePreferences" as SessionMgr
+
+    UserActor -> SignOutScreen: Tap Sign Out
+    activate SignOutScreen
+
+    SignOutScreen -> Service: signOut(userId)
+    activate Service
+
+    Service -> UserActor: ConfirmDialog()
+    UserActor -> Service: Confirm Sign Out
+    Service -> SessionMgr: remove(sessionName)
+    activate SessionMgr
+
+
+    SessionMgr --> Service: Session invalidated
+    deactivate SessionMgr
+
+    
+
+    Service --> UserActor: SignOut Success, Redirect to SignIn
+    deactivate Service
+
+alt User does not confirm
+    UserActor -> Service: Cancel Sign Out
+    activate Service
+    Service --> UserActor: SignOut Cancelled
+    deactivate Service
+end
+
+    deactivate SignOutScreen
+@enduml

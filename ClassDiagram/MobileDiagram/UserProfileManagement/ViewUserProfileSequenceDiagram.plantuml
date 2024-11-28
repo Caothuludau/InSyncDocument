@@ -1,0 +1,26 @@
+@startuml ViewUserProfileSequenceDiagram
+Title View User Profile Sequence Diagram
+
+actor User
+
+User -> ProfileFragment : Click "Home" tab
+activate ProfileFragment
+
+ProfileFragment -> SharePerferences : getString("UserInfo)
+activate SharePerferences
+SharePerferences -> ProfileFragment : Return user's information json payload
+deactivate SharePerferences
+
+ProfileFragment -> UserProfileModel : getDeviceStatus()
+activate UserProfileModel
+UserProfileModel -> ProfileFragment : Return deviceStatus
+deactivate UserProfileModel
+
+ProfileFragment -> UserProfileView : ProfileScreen(userName, userEmail, deviceStatus)
+activate UserProfileView
+UserProfileView -> User : Display profile information
+deactivate UserProfileView
+
+deactivate ProfileFragment
+
+@enduml
