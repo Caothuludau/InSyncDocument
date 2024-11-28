@@ -43,7 +43,7 @@ alt Project exists
     IProRepo --> ProController : Return delete success
     deactivate IProRepo
     ProController --> Hp : Return success response (Project deleted)
-    deactivate ProController
+    
     Hp --> U : Notify user (Project deleted successfully)
 else Project does not exist
     ProController --> Hp : Return error response (Not Found)

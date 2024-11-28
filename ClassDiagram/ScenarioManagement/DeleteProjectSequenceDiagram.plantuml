@@ -1,0 +1,60 @@
+@startuml DeleteScenarioSequenceDiagram
+actor "User" as U
+boundary "Scenario Management Page" as SPage
+participant "ScenariosController" as ScenariosController
+participant "IScenarioRepository" as IScenarioRepo
+participant "ScenarioRepository" as ScenarioRepo
+participant "DbContext" as DbContext
+database "Database" as DB
+
+U -> SPage : Request to delete scenario (id)
+activate SPage
+
+SPage -> ScenariosController : Call DeleteScenario(id)
+activate ScenariosController
+
+
+    ScenariosController -> ScenariosController : Check model state validity
+    alt Invalid model state
+        ScenariosController -> SPage : Return BadRequest(ModelState)
+        
+    else Valid model state
+        ScenariosController -> IScenarioRepo : Check if scenario exists by ID
+        activate IScenarioRepo
+        IScenarioRepo -> ScenarioRepo : Check if scenario with ID exists
+        activate ScenarioRepo
+        ScenarioRepo -> DbContext : Query database for scenario by ID
+        activate DbContext
+        DbContext --> ScenarioRepo : Return scenario existence check result
+        deactivate DbContext
+        ScenarioRepo --> IScenarioRepo : Return check result
+        deactivate ScenarioRepo
+        IScenarioRepo --> ScenariosController : Return check result
+        deactivate IScenarioRepo
+
+        alt Scenario exists
+            ScenariosController -> ScenarioRepo : Delete scenario by ID
+            activate ScenarioRepo
+            ScenarioRepo -> DbContext : Delete scenario from database
+            activate DbContext
+            DbContext -> DB : Execute DELETE operation on the scenario table
+            DB --> DbContext : Return delete success
+            DbContext --> ScenarioRepo : Return delete success
+            deactivate DbContext
+            ScenarioRepo --> ScenariosController : Return delete success
+            deactivate ScenarioRepo
+
+           
+            ScenariosController -> SPage : Return Ok("Scenario deleted successfully.")
+            SPage --> U : Display success message
+
+        else Scenario does not exist
+            ScenariosController -> SPage : Return NotFound with error message
+            deactivate ScenariosController
+            SPage -> U : Notificate Not found to delete
+            deactivate SPage
+        end
+    end
+
+
+@enduml

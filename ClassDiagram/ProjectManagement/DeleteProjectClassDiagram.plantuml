@@ -13,7 +13,7 @@ Title Delete Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgViewHomePage <<Frame>> {  
+package pkgDeleteProject <<Frame>> {  
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!ProjectsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase

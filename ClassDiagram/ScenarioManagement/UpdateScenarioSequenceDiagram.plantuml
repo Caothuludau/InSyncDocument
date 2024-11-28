@@ -1,0 +1,62 @@
+@startuml UpdateScenarioSequenceDiagram
+Title Update Scenario Sequence Diagram
+actor "User" as U
+boundary "Screen Udpate Scenario" as Screen
+participant "ScenariosController" as SC
+participant "IScenarioRepository" as Repo
+participant "IMapper" as Mapper
+participant "ScenarioRepository" as ScenarioRepo
+database "Database" as DB
+
+U -> Screen : Submit updated scenario
+activate Screen
+Screen -> SC : Send UpdateScenario request (id, UpdateScenarioDto)
+activate SC
+
+
+    SC -> SC : Validate ModelState
+    alt Invalid ModelState
+        SC -> Screen : Show validation errors
+    else Valid ModelState
+        SC -> SC : Check if IDs match (id == UpdateScenarioDto.Id)
+        alt ID mismatch
+            SC -> Screen : Show error ("Scenario ID information does not match")
+        else ID matches
+            SC -> Repo : Get scenario by ID
+            activate Repo
+            Repo -> DB : Execute SELECT operation
+            activate DB
+            DB --> Repo : Return scenario or null
+            deactivate DB
+            Repo --> SC : Return existing scenario
+            deactivate Repo
+
+            alt Scenario not found
+                SC -> Screen : Show error ("Scenario not found")
+            else Scenario found
+                SC -> SC : Update DateUpdated
+                SC -> Mapper : Map UpdateScenarioDto to existing scenario
+                activate Mapper
+                Mapper --> SC : Return updated scenario
+                deactivate Mapper
+
+                SC -> Repo : Update scenario in repository
+                activate Repo
+                Repo -> DB : Execute UPDATE operation
+                activate DB
+                DB --> Repo : Return success or failure
+                deactivate DB
+                Repo --> SC : Operation result
+                deactivate Repo
+
+                alt Update successful 
+                    SC -> Screen : Show success message
+                else Update failed
+                    SC -> Screen : Show error ("Error updating scenario")
+                end
+            end
+        end
+    end
+
+
+@enduml

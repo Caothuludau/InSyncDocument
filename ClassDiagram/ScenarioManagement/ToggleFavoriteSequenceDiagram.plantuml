@@ -1,0 +1,55 @@
+@startuml ToggleFavoriteScenarioSequenceDiagram
+actor "User" as U
+boundary "Scenario Management Page" as SPage
+participant "ScenariosController" as ScenariosController
+participant "IScenarioRepository" as IScenarioRepo
+participant "ScenarioRepository" as ScenarioRepo
+participant "Stopwatch" as Stopwatch
+participant "Response" as Response
+database "Database" as DB
+
+U -> SPage : click icon favorite scenario (id)
+activate SPage
+
+SPage -> ScenariosController : Call ToggleFavoriteScenario(id)
+activate ScenariosController
+
+    ScenariosController -> ScenariosController : Check model state validity
+    alt Invalid model state
+        ScenariosController -> SPage : Return BadRequest(ModelState)
+    else Valid model state
+        ScenariosController -> IScenarioRepo : Get scenario by ID
+        activate IScenarioRepo
+        IScenarioRepo -> ScenarioRepo : Query scenario by ID
+        activate ScenarioRepo
+        ScenarioRepo -> DB : Execute SELECT operation
+        DB --> ScenarioRepo : Return scenario data
+        deactivate ScenarioRepo
+        IScenarioRepo --> ScenariosController : Return scenario object
+        deactivate IScenarioRepo
+
+        alt Scenario found
+            ScenariosController -> ScenariosController : Toggle IsFavorites and update DateUpdated
+
+            ScenariosController -> IScenarioRepo : Update scenario in repository
+            activate IScenarioRepo
+            IScenarioRepo -> ScenarioRepo : Execute UPDATE operation
+            activate ScenarioRepo
+            ScenarioRepo -> DB : Update scenario record
+            DB --> ScenarioRepo : Return update success
+            deactivate ScenarioRepo
+            IScenarioRepo --> ScenariosController : Return update success
+            deactivate IScenarioRepo
+
+            
+            ScenariosController -> SPage : Return  Ok("Scenario updated favorite successfully.")
+            SPage --> U : Display success message
+        else Scenario not found
+            ScenariosController -> SPage : Return Message NotFound
+            deactivate SPage
+            deactivate ScenariosController
+        end
+    end
+
+
+@enduml

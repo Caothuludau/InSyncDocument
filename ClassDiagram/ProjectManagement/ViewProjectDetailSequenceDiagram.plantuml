@@ -1,0 +1,50 @@
+@startuml
+skinparam classAttributeIconSize 0
+Title Get Project By ID Sequence Diagram
+
+actor "User" as U
+boundary "Project Management Page" as PPage
+participant "ProjectsController" as ProjectsController
+participant "IProjectRepository" as IProjectRepo
+participant "IUserRepository" as IUserRepo
+participant "IMapper" as Mapper
+database "DbContext" as DbContext
+
+U -> PPage : Request to get project (id)
+activate PPage
+
+PPage -> ProjectsController : Call GetProjectById(id)
+activate ProjectsController
+
+ProjectsController -> ProjectsController : Validate ModelState
+alt ModelState invalid
+    ProjectsController -> PPage : Return Message BadRequest
+    deactivate PPage
+    deactivate ProjectsController
+else Valid ModelState
+    ProjectsController -> IProjectRepo : Get project by ID
+    activate IProjectRepo
+    IProjectRepo -> DbContext : Query project from database by ID
+    activate DbContext
+    DbContext --> IProjectRepo : Return project data
+    deactivate DbContext
+    IProjectRepo --> ProjectsController : Return project
+    deactivate IProjectRepo
+
+    alt Project found
+        ProjectsController -> Mapper : Map project to ViewProjectDto
+        activate Mapper
+        Mapper --> ProjectsController : Return ViewProjectDto
+        deactivate Mapper
+        ProjectsController -> PPage : Return Data View Project
+        deactivate ProjectsController
+        PPage --> U : Show project data
+        deactivate PPage
+    else Project not found
+        ProjectsController -> PPage : Return NotFound
+        deactivate PPage
+        deactivate ProjectsController
+    end
+end
+
+@enduml

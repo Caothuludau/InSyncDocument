@@ -1,6 +1,6 @@
-@startuml DeleteProjectClassDiagram
+@startuml ViewListProjectClassDiagram
 skinparam classAttributeIconSize 0
-Title Delete Project Class Diagram
+Title View List Project Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -13,7 +13,7 @@ Title Delete Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgViewHomePage <<Frame>> {  
+package pkgViewListProject <<Frame>> {  
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!ProjectsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase

@@ -1,0 +1,66 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Get All Projects Sequence Diagram
+
+actor "User" as U
+boundary "Project Management Page" as PPage
+participant "ProjectsController" as ProjectsController
+participant "IProjectRepository" as IProjectRepo
+participant "IUserRepository" as IUserRepo
+participant "IMapper" as Mapper
+participant "ResponsePaging" as ResponsePaging
+database "DbContext" as DbContext
+
+
+U -> PPage : Go to project management
+activate PPage
+
+PPage -> ProjectsController : Call GetAllProject(index, size, keySearch)
+activate ProjectsController
+
+ProjectsController -> ProjectsController : Validate if repositories and mapper are initialized
+alt Repositories or mapper not initialized
+    ProjectsController -> PPage : Return StatusCode(StatusCodes.Status500InternalServerError, "Application service has not been created")
+    deactivate PPage
+    deactivate ProjectsController
+else Repositories and mapper initialized
+    ProjectsController -> ProjectsController : Check if index or size are provided
+    alt No pagination parameters (index, size)
+        ProjectsController -> IProjectRepo : Get all projects by name search
+        activate IProjectRepo
+        IProjectRepo -> DbContext : Query all projects based on search key
+        activate DbContext
+        DbContext --> IProjectRepo : Return list of projects
+        deactivate DbContext
+        IProjectRepo --> ProjectsController : Return list of projects
+        deactivate IProjectRepo
+        ProjectsController -> ProjectsController : Count total projects
+    else Pagination parameters provided (index, size)
+        ProjectsController -> IProjectRepo : Get paginated projects by name search
+        activate IProjectRepo
+        IProjectRepo -> DbContext : Query paginated projects based on search key
+        activate DbContext
+        DbContext --> IProjectRepo : Return paginated list of projects
+        deactivate DbContext
+        IProjectRepo --> ProjectsController : Return paginated list of projects and total count
+        deactivate IProjectRepo
+    end
+
+    ProjectsController -> Mapper : Map projects to ViewProjectDto
+    activate Mapper
+    Mapper --> ProjectsController : Return mapped ViewProjectDto list
+    deactivate Mapper
+
+    ProjectsController -> ResponsePaging : Create response paging object
+    activate ResponsePaging
+    ResponsePaging --> ProjectsController : Return ResponsePaging object with data and total count
+    deactivate ResponsePaging
+    ProjectsController -> PPage : Return Ok(ResponsePaging)
+    deactivate ProjectsController
+    PPage --> U : Show projects with pagination
+    deactivate PPage
+end
+
+
+@enduml

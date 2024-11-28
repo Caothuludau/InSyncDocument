@@ -20,10 +20,8 @@ ProController -> ProController : Validate ModelState
 ProController -> ProController : Check if id matches updateProject.Id
 alt ID mismatch
     ProController -> Hp : Return BadRequest("Project ID information does not match")
-    deactivate ProController
-    Hp --> U : Notification error
-    deactivate Hp
-    
+
+    Hp --> U : Notification error   
 else ID matches
     ProController -> IProRepo : Check project exists by ID
     activate IProRepo
@@ -41,10 +39,7 @@ else ID matches
     ProController -> ProController : Check if existingProject is null
     alt Project not found
         ProController -> Hp : Return NotFound("Project not found.")
-        deactivate ProController
         Hp --> U : Notification error
-        deactivate Hp
-       
     else Project exists
         ProController -> Mapper : Map updateProjectDto to existing project
         activate Mapper

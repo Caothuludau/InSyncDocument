@@ -1,6 +1,6 @@
-@startuml DeleteProjectClassDiagram
+@startuml ViewProjectDetailClassDiagram
 skinparam classAttributeIconSize 0
-Title Delete Project Class Diagram
+Title View Project Detail Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -13,9 +13,9 @@ Title Delete Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgViewHomePage <<Frame>> {  
+package pkgViewProjectDetail <<Frame>> {  
     'include controller'
-    !includesub ../ControllersClassDiagram.plantuml!ScenariosController
+    !includesub ../ControllersClassDiagram.plantuml!ProjectsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
 
     
@@ -24,29 +24,33 @@ package pkgViewHomePage <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
     !includesub ../RepositoriesClassDiagram.plantuml!DbContext
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
-    !includesub ../RepositoriesClassDiagram.plantuml!IScenarioRepository
-    !includesub ../RepositoriesClassDiagram.plantuml!ScenarioRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
+
     'include Dto'
-    !includesub ../DtosClassDiagram.plantuml!ViewScenarioDto
-    !includesub ../ModelsClassDiagram.plantuml!Scenario
+    !includesub ../DtosClassDiagram.plantuml!ViewProjectDto
+    !includesub ../ModelsClassDiagram.plantuml!Project
+
 
 
 
     'set up realation ship' 
-    ControllerBase <|-- ScenariosController
+    ControllerBase <|-- ProjectsController
 
-    ScenariosController ..> ViewScenarioDto : return views
+    ProjectsController ..> ViewProjectDto : return views
+
 
     IRepositoryBase <|.. RepositoryBase
-    IScenarioRepository <|.. ScenarioRepository
-    ScenarioRepository o-- Scenario
+    IProjectRepository <|.. ProjectRepository
+    ProjectRepository o-- Project
 
-    IRepositoryBase <|-- IScenarioRepository 
-    RepositoryBase <|-- ScenarioRepository
+
+    IRepositoryBase <|-- IProjectRepository 
+    RepositoryBase <|-- ProjectRepository
 
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
-    ScenariosController o-- IScenarioRepository
-    ScenariosController o-- IMapper
+    ProjectsController o-- IProjectRepository
+    ProjectsController o-- IMapper
 }

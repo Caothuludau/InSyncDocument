@@ -1,0 +1,68 @@
+@startuml AddScenarioByUserClerkSequenceDiagram
+actor "User Clerk" as U
+boundary "Screen Add Scenario" as Client
+participant "ScenariosController" as ScenariosController
+participant "IUserRepository" as UserRepo
+participant "IProjectRepository" as ProjectRepo
+participant "IScenarioRepository" as ScenarioRepo
+participant "IMapper" as Mapper
+database "Database" as DB
+
+U -> Client : Send AddScenario request (AddScenarioUserClerkDto)
+activate Client
+
+Client -> ScenariosController : AddScenarioByUserClerk(AddScenarioUserClerkDto)
+activate ScenariosController
+
+
+    ScenariosController -> ScenariosController : Validate ModelState
+    alt Invalid ModelState
+        ScenariosController -> Client : Return Message BadRequest
+
+    else Valid ModelState
+        ScenariosController -> UserRepo : Get user by UserIdClerk
+        activate UserRepo
+        UserRepo -> DB : Execute SELECT operation (CheckExistUser)
+        DB --> UserRepo : Return user data
+        UserRepo --> ScenariosController : Return user object or null
+        deactivate UserRepo
+
+        alt User not found
+            ScenariosController -> Client : Return BadRequest("Don't exist user has id by : UserIdClerk")
+        else User exists
+            ScenariosController -> ProjectRepo : Check project existence by ProjectId
+            activate ProjectRepo
+            ProjectRepo -> DB : Execute SELECT operation (CheckContainsAsync)
+            DB --> ProjectRepo : Return project existence status
+            ProjectRepo --> ScenariosController : Return true/false
+            deactivate ProjectRepo
+
+            alt Project not found
+                ScenariosController -> Client : Return Message "Don't exist project has id by : ProjectId"
+            else Project exists
+                ScenariosController -> Mapper : Map AddScenarioUserClerkDto to Scenario
+                activate Mapper
+                Mapper --> ScenariosController : Return Scenario object
+                deactivate Mapper
+
+                ScenariosController -> ScenarioRepo : Add scenario to repository
+                activate ScenarioRepo
+                ScenarioRepo -> DB : Execute INSERT operation
+                DB --> ScenarioRepo : Return added scenario with ID
+                ScenarioRepo --> ScenariosController : Return scenario response
+                deactivate ScenarioRepo
+
+                alt Scenario added successfully
+                    ScenariosController -> Client : Return Message Ok
+                else Scenario addition failed
+                    ScenariosController -> Client : Return Error "Error occurred while adding the scenario"
+                    deactivate Client
+                    deactivate ScenariosController
+                end
+            end
+        end
+    end
+
+
+
+@enduml

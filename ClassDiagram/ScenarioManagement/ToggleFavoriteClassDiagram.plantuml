@@ -1,6 +1,6 @@
-@startuml UpdateProjectClassDiagram
+@startuml ToggleFavoriteClassDiagram
 skinparam classAttributeIconSize 0
-Title Update Project Class Diagram
+Title Toggle Favorite Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -13,9 +13,9 @@ Title Update Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgUpdateProject <<Frame>> {  
+package pkgToggleFavorite <<Frame>> {  
     'include controller'
-    !includesub ../ControllersClassDiagram.plantuml!ProjectsController
+    !includesub ../ControllersClassDiagram.plantuml!ScenariosController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
 
     
@@ -24,34 +24,26 @@ package pkgUpdateProject <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
     !includesub ../RepositoriesClassDiagram.plantuml!DbContext
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
-    !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
-    !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!IScenarioRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!ScenarioRepository
     'include Dto'
-    !includesub ../DtosClassDiagram.plantuml!UpdateProjectDto
-    !includesub ../ModelsClassDiagram.plantuml!Project
+    !includesub ../ModelsClassDiagram.plantuml!Scenario
 
 
 
     'set up realation ship' 
-    ControllerBase <|-- ProjectsController
-
-    ProjectsController ..> UpdateProjectDto : input update project
+    ControllerBase <|-- ScenariosController
 
     IRepositoryBase <|.. RepositoryBase
-    IProjectRepository <|.. ProjectRepository
-    ProjectRepository o-- Project
+    IScenarioRepository <|.. ScenarioRepository
+    ScenarioRepository o-- Scenario
 
-
-    IRepositoryBase <|-- IProjectRepository 
-    RepositoryBase <|-- ProjectRepository
+    IRepositoryBase <|-- IScenarioRepository 
+    RepositoryBase <|-- ScenarioRepository
 
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
-    ProjectsController o-- IProjectRepository
-    ProjectsController o-- IMapper
-
-
-
-
+    ScenariosController o-- IScenarioRepository
+    ScenariosController o-- IMapper
 }
