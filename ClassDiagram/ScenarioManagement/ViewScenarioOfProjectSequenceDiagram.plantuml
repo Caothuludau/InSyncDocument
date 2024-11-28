@@ -12,7 +12,7 @@ participant "IMapper" as Mapper
 database "SqlServer" as Db
 participant "ResponsePaging" as ResponsePaging
 
-U -> Hp : Request to get scenarios of project (projectId, createdBy, index, size, keySearch)
+U -> Hp : Choose project
 activate Hp
 
 Hp -> ScenariosController : Call GetScenarioOfProject(projectId, createdBy, index, size, keySearch)
@@ -21,8 +21,6 @@ activate ScenariosController
 ScenariosController -> ScenariosController : Validate ModelState
 alt ModelState invalid
     ScenariosController -> Hp : Return BadRequest("Invalid model state.")
-    deactivate Hp
-    deactivate ScenariosController
 else Valid ModelState
     ScenariosController -> IScenarioRepo : Get scenarios by projectId, createdBy, keySearch
     activate IScenarioRepo

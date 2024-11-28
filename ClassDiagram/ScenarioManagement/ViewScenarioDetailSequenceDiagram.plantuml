@@ -1,0 +1,40 @@
+@startuml ViewScenarioSequenceDiagram
+skinparam SequenceMessageAlignment center
+actor "User" as U
+boundary "Screen " as Screen
+participant "ScenariosController" as SC
+participant "IScenarioRepository" as Repo
+participant "IMapper" as Mapper
+database "Database" as DB
+
+U -> Screen : Click choose scenario
+activate Screen
+Screen -> SC : Send GetScenarioById request (id)
+activate SC
+
+    SC -> SC : Validate ModelState
+    alt Invalid ModelState
+        SC -> Screen : Show validation errors
+    else Valid ModelState
+        SC -> Repo : Get scenario by ID (with includes)
+        activate Repo
+        Repo -> DB : Execute SELECT operation
+        DB --> Repo : Return scenario or null
+        Repo --> SC : Return scenario or null
+        deactivate Repo
+
+        alt Scenario not found
+            SC -> Screen : Show error not found
+        else Scenario found
+            SC -> Mapper : Map scenario to ViewScenarioDto
+            activate Mapper
+            Mapper --> SC : Return ViewScenarioDto
+            deactivate Mapper
+            SC --> Screen : Render view
+            deactivate SC
+            deactivate Screen
+        end
+    end
+
+
+@enduml

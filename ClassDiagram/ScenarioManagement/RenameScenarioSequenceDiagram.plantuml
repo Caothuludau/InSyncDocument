@@ -1,67 +1,43 @@
 @startuml RenameScenarioSequenceDiagram
+skinparam SequenceMessageAlignment center
 actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController
 participant "IScenarioRepository" as IScenarioRepo
-participant "ScenarioRepository" as ScenarioRepo
-participant "Stopwatch" as Stopwatch
-participant "Response" as Response
 database "Database" as DB
 
 U -> SPage : Enter Name and click save scenario
 activate SPage
 
-    SPage -> ScenariosController : Call RenameScenario(id, renameScenarioDto)
-    activate ScenariosController
+SPage -> ScenariosController : Call RenameScenario(id, renameScenarioDto)
+activate ScenariosController
 
-    ScenariosController -> ScenariosController : Check model state validity
-    alt Invalid model state
-        ScenariosController -> SPage : Return BadRequest(ModelState)
-       
-    else Valid model state
-        ScenariosController -> ScenariosController : Validate ID consistency
-        alt ID mismatch
-            ScenariosController -> SPage : Return BadRequest("Scenario ID information does not match")
-            
-        else IDs match
-            ScenariosController -> IScenarioRepo : Get scenario by ID
+    ScenariosController -> ScenariosController : Validate ID consistency
+    alt ID mismatch
+        ScenariosController -> SPage : Return BadRequest("Scenario ID information does not match")
+
+    else IDs match
+        ScenariosController -> IScenarioRepo : Get scenario by ID
+        activate IScenarioRepo
+        IScenarioRepo -> DB : Query scenario by ID
+        DB --> IScenarioRepo : Return scenario data
+        deactivate IScenarioRepo
+
+        alt Scenario found
+            ScenariosController -> ScenariosController : Update scenario name and DateUpdated
+            ScenariosController -> IScenarioRepo : Update scenario in repository
             activate IScenarioRepo
-            IScenarioRepo -> ScenarioRepo : Query scenario by ID
-            activate ScenarioRepo
-            ScenarioRepo -> DB : Execute SELECT operation
-            DB --> ScenarioRepo : Return scenario data
-            deactivate ScenarioRepo
-            IScenarioRepo --> ScenariosController : Return scenario object
+            IScenarioRepo -> DB : Update scenario record
+            DB --> IScenarioRepo : Return update success
             deactivate IScenarioRepo
-
-            alt Scenario found
-                ScenariosController -> ScenariosController : Update scenario name and DateUpdated
-                ScenariosController -> IScenarioRepo : Update scenario in repository
-                activate IScenarioRepo
-                IScenarioRepo -> ScenarioRepo : Execute UPDATE operation
-                activate ScenarioRepo
-                ScenarioRepo -> DB : Update scenario record
-                DB --> ScenarioRepo : Return update success
-                deactivate ScenarioRepo
-                IScenarioRepo --> ScenariosController : Return update success
-                deactivate IScenarioRepo
-
-                ScenariosController -> Response : Return Ok with success message
-                activate Response
-                Response --> ScenariosController : Return response
-                deactivate Response
-                ScenariosController -> SPage : Return Ok("Scenario renamed successfully.")
-                
-                SPage --> U : Display success message
-                
-            else Scenario not found
-                ScenariosController -> SPage : Return NotFound("Scenario not found.")
-                deactivate SPage
-                deactivate ScenariosController
-            end
+            ScenariosController -> SPage : Return Ok("Scenario renamed successfully.")
+            SPage --> U : Display success message
+        else Scenario not found
+            ScenariosController -> SPage : Return NotFound("Scenario not found.")
+            deactivate ScenariosController
+            deactivate SPage
         end
     end
-
 
 
 @enduml

@@ -1,4 +1,5 @@
 @startuml AddScenarioByUserClerkSequenceDiagram
+skinparam SequenceMessageAlignment center
 actor "User Clerk" as U
 boundary "Screen Add Scenario" as Client
 participant "ScenariosController" as ScenariosController
@@ -8,7 +9,7 @@ participant "IScenarioRepository" as ScenarioRepo
 participant "IMapper" as Mapper
 database "Database" as DB
 
-U -> Client : Send AddScenario request (AddScenarioUserClerkDto)
+U -> Client : Enter Title Scenario and click add
 activate Client
 
 Client -> ScenariosController : AddScenarioByUserClerk(AddScenarioUserClerkDto)

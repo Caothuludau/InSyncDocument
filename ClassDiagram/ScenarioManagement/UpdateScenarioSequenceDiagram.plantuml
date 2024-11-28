@@ -1,11 +1,12 @@
 @startuml UpdateScenarioSequenceDiagram
+skinparam SequenceMessageAlignment center
 Title Update Scenario Sequence Diagram
 actor "User" as U
 boundary "Screen Udpate Scenario" as Screen
 participant "ScenariosController" as SC
 participant "IScenarioRepository" as Repo
 participant "IMapper" as Mapper
-participant "ScenarioRepository" as ScenarioRepo
+
 database "Database" as DB
 
 U -> Screen : Submit updated scenario

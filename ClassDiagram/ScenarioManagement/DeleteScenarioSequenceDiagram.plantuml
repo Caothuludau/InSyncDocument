@@ -1,4 +1,5 @@
 @startuml DeleteScenarioSequenceDiagram
+skin
 actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController

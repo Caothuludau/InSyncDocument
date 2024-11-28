@@ -1,11 +1,9 @@
 @startuml ToggleFavoriteScenarioSequenceDiagram
+skinparam SequenceMessageAlignment center
 actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController
 participant "IScenarioRepository" as IScenarioRepo
-participant "ScenarioRepository" as ScenarioRepo
-participant "Stopwatch" as Stopwatch
-participant "Response" as Response
 database "Database" as DB
 
 U -> SPage : click icon favorite scenario (id)
