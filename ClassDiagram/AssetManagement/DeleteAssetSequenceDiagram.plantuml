@@ -1,7 +1,7 @@
-@startuml DeleteProjectSequenceDiagram
+@startuml ViewHomePageSequenceDiagram
 skinparam classAttributeIconSize 0
 skinparam SequenceMessageAlignment center
-Title Delete Project Sequence Diagram
+Title ViewHomePage Sequence Diagram
 
 actor "User" as U
 boundary "Project Management Page" as Hp
@@ -13,7 +13,7 @@ database "SqlServer" as Db
 U -> Hp : Click button to delete project
 activate Hp
 
-Hp -> ProController : Call DeleteProject
+Hp -> ProController : Call Delete API (/api/projects/{id})
 activate ProController
 
 ProController -> IProRepo : Check if project exists (CheckContainsAsync)

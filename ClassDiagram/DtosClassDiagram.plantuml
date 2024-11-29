@@ -15,7 +15,7 @@ Title DTOs Class Diagram
 package dtos <<Frame>> {
    'Asset DTO'
     !startsub ViewAssetDto
-    class ViewAssetDto    {
+    class ViewAssetDto  <<dto>>  {
         + Id : Guid
         + ProjectId : Guid
         + ProjectName : string
@@ -28,7 +28,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateAssetDto
-    class UpdateAssetDto    {
+    class UpdateAssetDto  <<dto>>  {
         + Id : Guid
         + AssestName : string
         + Type : string
@@ -36,7 +36,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddAssetDto
-    class AddAssetDto    {
+    class AddAssetDto  <<dto>>  {
         + ProjectId : Guid
         + AssestName: string
         + Type : string
@@ -45,7 +45,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionAssetResponse
-    class ActionAssetResponse    {
+    class ActionAssetResponse  <<dto>>  {
         + Id : Guid
         + Message: string
     }
@@ -55,7 +55,7 @@ package dtos <<Frame>> {
 
     'CustomerReview DTO'
     !startsub ViewCustomerReviewDto
-    class ViewCustomerReviewDto    {
+    class ViewCustomerReviewDto <<dto>>   {
         + Id : Guid
         + Name : string
         + ImageUrl : string
@@ -67,7 +67,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddCustomerReviewDto
-    class AddCustomerReviewDto    {
+    class AddCustomerReviewDto  <<dto>>  {
         + Name : string
         + ImageUrl : string
         + JobTitle : string
@@ -76,7 +76,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateCustomerReviewDto
-    class UpdateCustomerReviewDto    {
+    class UpdateCustomerReviewDto  <<dto>>  {
         + Id : Guid
         + Name : string
         + ImageUrl : string
@@ -87,7 +87,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionCustomerReviewResponse
-    class ActionCustomerReviewResponse    {
+    class ActionCustomerReviewResponse  <<dto>>  {
         + Message : string
         + Id : Guid
     }
@@ -96,7 +96,7 @@ package dtos <<Frame>> {
 
    'CategoryDocuments DTO'
     !startsub ViewCategoryDocumentDto
-    class ViewCategoryDocumentDto    {
+    class ViewCategoryDocumentDto  <<dto>>  {
     + Id : Guid
     + Title : string
     + Description : string 
@@ -108,7 +108,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateCategoryDocumentDto
-    class UpdateCategoryDocumentDto    {
+    class UpdateCategoryDocumentDto  <<dto>>  {
     + Id : Guid
     + Title : string
     + Order : int
@@ -118,7 +118,7 @@ package dtos <<Frame>> {
 
 
     !startsub AddCategoryDocumentDto
-    class AddCategoryDocumentDto    {
+    class AddCategoryDocumentDto  <<dto>>  {
     + Title : string
     + Order : int
     + Description : string 
@@ -127,7 +127,7 @@ package dtos <<Frame>> {
 
 
     !startsub ActionCategoryDocumentResponse
-    class ActionCategoryDocumentResponse    {
+    class ActionCategoryDocumentResponse <<dto>>   {
     + Message : string
     + Id : Guid
     }
@@ -137,7 +137,7 @@ package dtos <<Frame>> {
     'Documents DTO'
     
     !startsub ViewDocumentDto
-    class ViewDocumentDto    {
+    class ViewDocumentDto  <<dto>>  {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -153,7 +153,7 @@ package dtos <<Frame>> {
 
 
     !startsub UpdateDocumentDto
-    class UpdateDocumentDto    {
+    class UpdateDocumentDto  <<dto>>  {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -165,7 +165,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddDocumentDto
-    class AddDocumentDto    {
+    class AddDocumentDto  <<dto>>  {
     + Slug : string
     + Title : string
     + Content : string 
@@ -176,7 +176,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionDocumentResponse
-    class ActionDocumentResponse    {
+    class ActionDocumentResponse  <<dto>>  {
     + Message : string
     + Id : Guid
     }
@@ -186,7 +186,7 @@ package dtos <<Frame>> {
     'Pages DTO'
 
     !startsub ViewPageDto
-    class ViewPageDto    {
+    class ViewPageDto  <<dto>>  {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -199,7 +199,7 @@ package dtos <<Frame>> {
 
 
     !startsub UpdatePageDto
-    class UpdatePageDto    {
+    class UpdatePageDto  <<dto>>  {
     + Id : Guid
     + Slug : string
     + Title : string
@@ -209,7 +209,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddPageDto
-    class AddPageDto    {
+    class AddPageDto  <<dto>>  {
     + Slug : string
     + Title : string
     + Content : string 
@@ -218,7 +218,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionPageResponse
-    class ActionPageResponse    {
+    class ActionPageResponse  <<dto>>  {
     + Message : string
     + Id : Guid
     }
@@ -227,7 +227,7 @@ package dtos <<Frame>> {
 
     'Project Dto
     !startsub ViewProjectDto
-    class ViewProjectDto    {
+    class ViewProjectDto  <<dto>>  {
         + Id : Guid
         + ProjectName : string
         + Description : string 
@@ -240,7 +240,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddProjectDto
-    class AddProjectDto    {
+    class AddProjectDto  <<dto>>  {
         + ProjectName : string
         + Description : string
         + UserId : Guid
@@ -249,7 +249,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddProjectClerkDto
-    class AddProjectClerkDto    {
+    class AddProjectClerkDto <<dto>>   {
         + ProjectName : string
         + Description : string
         + UserIdClerk : string
@@ -258,7 +258,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateProjectDto
-    class UpdateProjectDto    {
+    class UpdateProjectDto  <<dto>>  {
         + Id : Guid
         + ProjectName : string
         + Description : string
@@ -267,7 +267,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionProjectResponse
-    class ActionProjectResponse    {
+    class ActionProjectResponse  <<dto>>  {
         + Message : string
         + Id : Guid
     }
@@ -275,15 +275,17 @@ package dtos <<Frame>> {
     'ProjectDto'
 
     'Response Paging'
-    class ResponsePaging    {
+    !startsub ResponsePaging
+    class ResponsePaging  <<dto>>  {
         + data : T
         + totalOfData : int
     }
+    !endsub
     'Response Paging'
 
     'Scenario Dto
     !startsub ViewScenarioDto
-    class ViewScenarioDto    {
+    class ViewScenarioDto  <<dto>>  {
         + Id : Guid
         + ProjectId : Guid
         + ProjectName : string
@@ -302,7 +304,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddScenarioDto
-    class AddScenarioDto    {
+    class AddScenarioDto  <<dto>>  {
         + ProjectId : Guid
         + ScenarioName : string
         + Description : string 
@@ -315,7 +317,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddScenarioUserClerkDto
-    class AddScenarioUserClerkDto    {
+    class AddScenarioUserClerkDto  <<dto>>  {
         + ProjectId : Guid
         + ScenarioName : string
         + Description : string 
@@ -328,7 +330,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateScenarioDto
-    class UpdateScenarioDto    {
+    class UpdateScenarioDto <<dto>>   {
         + Id : Guid
         + ScenarioName : string
         + Description : string 
@@ -340,14 +342,14 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateRenameScenarioDto
-    class UpdateRenameScenarioDto    {
+    class UpdateRenameScenarioDto  <<dto>>  {
         + Id : Guid
         + ScenarioName : string
     }
     !endsub
 
     !startsub ActionScenarioResponse
-    class ActionScenarioResponse    {
+    class ActionScenarioResponse  <<dto>>  {
         + Message : string
         + Id : Guid
     }
@@ -357,7 +359,7 @@ package dtos <<Frame>> {
 
     'Subscription Plan Dtos
     !startsub ViewSubscriptionPlanDto
-    class ViewSubscriptionPlanDto    {
+    class ViewSubscriptionPlanDto <<dto>>   {
         + Id : Guid
         + SubscriptionsName : string
         + Status : bool
@@ -381,7 +383,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddSubscriptionPlanDto
-    class AddSubscriptionPlanDto    {
+    class AddSubscriptionPlanDto  <<dto>>  {
         + SubscriptionsName : string
         + Status : bool
         + Price : decimal
@@ -401,7 +403,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddSubscriptionPlanUserClerkDto
-    class AddSubscriptionPlanUserClerkDto    {
+    class AddSubscriptionPlanUserClerkDto  <<dto>>  {
         + SubscriptionsName : string
         + Status : bool
         + Price : decimal
@@ -421,7 +423,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateSubscriptionPlanDto
-    class UpdateSubscriptionPlanDto    {
+    class UpdateSubscriptionPlanDto  <<dto>>  {
         + Id : Guid
         + SubscriptionsName : string
         + Status : bool
@@ -441,7 +443,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionSubscriptionPlanResponse
-    class ActionSubscriptionPlanResponse    {
+    class ActionSubscriptionPlanResponse  <<dto>>  {
         + Message : string
         + Id : Guid
     }
@@ -450,7 +452,7 @@ package dtos <<Frame>> {
 
     'Tutorial Dtos
     !startsub ViewTutorialDto
-    class ViewTutorialDto    {
+    class ViewTutorialDto  <<dto>>  {
         + Id : Guid
         + Title : string
         + Content : string
@@ -464,7 +466,7 @@ package dtos <<Frame>> {
 
     'User Dtos
     !startsub Data
-    class Data    {
+    class Data  <<dto>>  {
         + Birthday : string
         + Created_At : long
         + Email_Addresses : EmailAddresses[] 
@@ -492,7 +494,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub EmailAddresses
-    class EmailAddresses    {
+    class EmailAddresses <<dto>>   {
         + Email_Address : string
         + Id : string
         + Linked_To : object[]
@@ -502,14 +504,14 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub Verification
-    class Verification    {
+    class Verification  <<dto>>  {
         + Status : string
         + Strategy : string
     }
     !endsub
 
     !startsub CreateUserDto
-    class CreateUserDto    {
+    class CreateUserDto  <<dto>>  {
         + Data : Data
         + Object : string
         + Type : string
@@ -517,7 +519,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateUserDto
-    class UpdateUserDto    {
+    class UpdateUserDto  <<dto>>  {
         + Data : Data
         + Object : string
         + Type : string
@@ -525,7 +527,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionUserResponse
-    class ActionUserResponse    {
+    class ActionUserResponse  <<dto>>  {
         + Message : string
         + Id : Guid
     }
@@ -539,7 +541,7 @@ package dtos <<Frame>> {
 
 'User Subscription Dtos
     !startsub ViewUserSubscriptionDto
-    class ViewUserSubscriptionDto    {
+    class ViewUserSubscriptionDto  <<dto>>  {
         + Id : Guid
         + SubscriptionPlanId : Guid
         + SubscriptionPlanName : string
@@ -554,7 +556,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddUserSubscriptionDto
-    class AddUserSubscriptionDto    {
+    class AddUserSubscriptionDto   <<dto>> {
         + SubscriptionPlanId : Guid
         + UserId : Guid
         + StripeCurrentPeriodEnd : DateTime
@@ -565,7 +567,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub AddUserSubscriptionUserClerkDto
-    class AddUserSubscriptionUserClerkDto    {
+    class AddUserSubscriptionUserClerkDto  <<dto>>  {
         + SubscriptionPlanId : Guid
         + UserIdClerk : string
         + StripeCurrentPeriodEnd : DateTime
@@ -576,7 +578,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub UpdateUserSubscriptionDto
-    class UpdateUserSubscriptionDto    {
+    class UpdateUserSubscriptionDto  <<dto>>  {
         + Id : Guid
         + SubscriptionPlanId : Guid
         + StripeCurrentPeriodEnd : DateTime
@@ -587,7 +589,7 @@ package dtos <<Frame>> {
     !endsub
 
     !startsub ActionUserSubscriptionResponse
-    class ActionUserSubscriptionResponse    {
+    class ActionUserSubscriptionResponse  <<dto>>  {
         + Message : string
         + Id : Guid
     }

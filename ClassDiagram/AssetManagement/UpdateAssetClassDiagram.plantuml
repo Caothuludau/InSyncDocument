@@ -1,7 +1,7 @@
-@startuml DeleteProjectClassDiagram
+@startuml UpdateAssetClassDiagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-Title Delete Project Class Diagram
+Title Update Asset Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -14,9 +14,9 @@ Title Delete Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgDeleteProject <<Frame>> {  
+package pkgUpdateAsset <<Frame>> {  
     'include controller'
-    !includesub ../ControllersClassDiagram.plantuml!ProjectsController
+    !includesub ../ControllersClassDiagram.plantuml!AssetsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
 
     
@@ -25,30 +25,32 @@ package pkgDeleteProject <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
     !includesub ../RepositoriesClassDiagram.plantuml!DbContext
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
-    !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
-    !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!IAssetRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!AssetRepository
     'include Dto'
-    !includesub ../ModelsClassDiagram.plantuml!Project
+    !includesub ../DtosClassDiagram.plantuml!UpdateAssetDto
+    !includesub ../ModelsClassDiagram.plantuml!Asset
 
 
 
     'set up realation ship' 
-    ControllerBase <|-- ProjectsController
+    ControllerBase <|-- AssetsController
 
+    AssetsController ..> UpdateAssetDto : input update Asset
 
     IRepositoryBase <|.. RepositoryBase
-    IProjectRepository <|.. ProjectRepository
-    ProjectRepository o-- Project
+    IAssetRepository <|.. AssetRepository
+    AssetRepository o-- Asset
 
 
-    IRepositoryBase <|-- IProjectRepository 
-    RepositoryBase <|-- ProjectRepository
+    IRepositoryBase <|-- IAssetRepository 
+    RepositoryBase <|-- AssetRepository
 
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
-    ProjectsController o-- IProjectRepository
-    ProjectsController o-- IMapper
+    AssetsController o-- IAssetRepository
+    AssetsController o-- IMapper
 
 
 

@@ -1,0 +1,69 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Update Project Sequence Diagram with Validation
+
+actor "User" as U
+boundary "Project Management Page" as Hp
+participant "ProjectsController" as ProController
+participant "IProjectRepository" as IProRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+participant "Mapper" as Mapper
+
+U -> Hp : Click button update project
+activate Hp
+
+Hp -> ProController : Call UpdateProject(id, updateProjectDto)
+activate ProController
+ProController -> ProController : Validate ModelState
+ProController -> ProController : Check if id matches updateProject.Id
+alt ID mismatch
+    ProController -> Hp : Return BadRequest("Project ID information does not match")
+
+    Hp --> U : Notification error   
+else ID matches
+    ProController -> IProRepo : Check project exists by ID
+    activate IProRepo
+    IProRepo -> ISContext : Get project by ID
+    activate ISContext
+    ISContext -> Db : Fetch project data by ID
+    activate Db
+    Db --> ISContext : Return project data
+    deactivate Db
+    ISContext --> IProRepo : Return project
+    deactivate ISContext
+    IProRepo --> ProController : Return project
+    deactivate IProRepo
+
+    ProController -> ProController : Check if existingProject is null
+    alt Project not found
+        ProController -> Hp : Return NotFound("Project not found.")
+        Hp --> U : Notification error
+    else Project exists
+        ProController -> Mapper : Map updateProjectDto to existing project
+        activate Mapper
+        Mapper --> ProController : Return mapped project
+        deactivate Mapper
+
+        ProController -> IProRepo : Update project
+        activate IProRepo
+        IProRepo -> ISContext : Save updated project
+        activate ISContext
+        ISContext -> Db : Update project data in SQL Server
+        activate Db
+        Db --> ISContext : Return updated project
+        deactivate Db
+        ISContext --> IProRepo : Notify update success
+        deactivate ISContext
+        IProRepo --> ProController : Return update success
+        deactivate IProRepo
+
+        ProController --> Hp : Return update response
+        deactivate ProController
+        Hp --> U : Show update success message
+        deactivate Hp
+    end
+end
+
+@enduml

@@ -1,5 +1,6 @@
 @startuml ViewScenarioOfProjectClassDiagram
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title View Scenario Of Project Class Diagram
 'Character	Visibility
 '-			private

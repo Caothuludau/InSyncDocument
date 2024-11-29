@@ -1,0 +1,88 @@
+@startuml UpdateScenarioSequenceDiagram
+skinparam SequenceMessageAlignment center
+actor "User" as U
+boundary "Edit Scenario Page" as SPage
+participant "ScenariosController" as ScenariosController
+participant "IScenarioRepository" as IScenarioRepo
+database "Database" as DB
+
+U -> SPage : Click "Save"
+activate SPage
+
+SPage -> ScenariosController : Call UpdateWebJsonScenario(id, webjson)
+activate ScenariosController
+
+    ScenariosController -> ScenariosController : Validate model state
+    alt Invalid model state
+        ScenariosController -> SPage : Return Message Bad Request
+    else Valid model state
+        ScenariosController -> IScenarioRepo : Get scenario by ID
+        activate IScenarioRepo
+        IScenarioRepo -> DB : Query scenario by ID
+        activate DB
+        DB --> IScenarioRepo : Return scenario data
+        deactivate DB
+        deactivate IScenarioRepo
+
+        alt Scenario not found
+            ScenariosController -> SPage : Return Message Not Found
+
+        else Scenario found
+            ScenariosController -> ScenariosController : Update scenario fields (DateUpdated, StepsWeb)
+            ScenariosController -> IScenarioRepo : Update scenario
+            activate IScenarioRepo
+            IScenarioRepo -> DB : Execute UPDATE operation
+            activate DB
+            DB --> IScenarioRepo : Return update success
+            deactivate DB
+            IScenarioRepo --> ScenariosController : Return data update success
+            deactivate IScenarioRepo
+
+            ScenariosController -> SPage : Return Message Success with ActionScenarioResponse
+            SPage --> U : Display success message
+            deactivate ScenariosController
+
+        end
+    end
+
+    
+    SPage -> ScenariosController : Call UpdateAndroidJsonScenario(id, androidjson)
+    activate ScenariosController
+
+
+    ScenariosController -> ScenariosController : Validate model state
+    alt Invalid model state
+        ScenariosController -> SPage : Return Message Bad Request
+    else Valid model state
+        ScenariosController -> IScenarioRepo : Get scenario by ID
+        activate IScenarioRepo
+        IScenarioRepo -> DB : Query scenario by ID
+        activate DB
+        DB --> IScenarioRepo : Return scenario data
+        deactivate DB
+        deactivate IScenarioRepo
+
+        alt Scenario not found
+            ScenariosController -> SPage : Return Message Not Found
+
+        else Scenario found
+            ScenariosController -> ScenariosController : Update scenario fields (DateUpdated, StepsAndroid)
+            ScenariosController -> IScenarioRepo : Update scenario
+            activate IScenarioRepo
+            IScenarioRepo -> DB : Execute UPDATE operation
+            activate DB
+            DB --> IScenarioRepo : Return update success
+            deactivate DB
+            IScenarioRepo --> ScenariosController : Return data update success
+            deactivate IScenarioRepo
+
+            ScenariosController -> SPage : Return Message Success with ActionScenarioResponse
+            SPage --> U : Display success message
+            deactivate ScenariosController
+            deactivate SPage
+        end
+    end
+
+    
+
+@enduml

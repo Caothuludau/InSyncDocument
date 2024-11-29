@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Get All Assets Sequence Diagram
+
+actor "User" as U
+boundary "Asset Management Page" as APage
+participant "AssetsController" as AssetsController
+participant "IAssetRepository" as IAssetRepo
+participant "IMapper" as Mapper
+participant "ResponsePaging" as ResponsePaging
+database "DbContext" as DbContext
+
+
+U -> APage : Go to Asset management
+activate APage
+
+APage -> AssetsController : Call GetAllAssetOfProject(index, size, keySearch)
+activate AssetsController
+
+    AssetsController -> AssetsController : Check if index or size are provided
+    alt No pagination parameters (index, size)
+        AssetsController -> IAssetRepo : Get all Assets matching
+        activate IAssetRepo
+        IAssetRepo -> DbContext : Query all Assets matching condition
+        activate DbContext
+        DbContext --> IAssetRepo : Return list of Assets
+        deactivate DbContext
+        IAssetRepo --> AssetsController : Return list of Assets
+        deactivate IAssetRepo
+        AssetsController -> AssetsController : Count total Assets
+    else Pagination parameters provided (index, size)
+        AssetsController -> IAssetRepo : Get paginated Assets by condition
+        activate IAssetRepo
+        IAssetRepo -> DbContext : Query paginated Assets based on condition
+        activate DbContext
+        DbContext --> IAssetRepo : Return paginated list of Assets
+        deactivate DbContext
+        IAssetRepo --> AssetsController : Return paginated list of Assets matching and total count
+        deactivate IAssetRepo
+    end
+
+    AssetsController -> Mapper : Map Assets to ViewAssetDtos
+    activate Mapper
+    Mapper --> AssetsController : Return mapped ViewAssetDtos list
+    deactivate Mapper
+
+    AssetsController -> ResponsePaging : Create response paging object
+    activate ResponsePaging
+    ResponsePaging --> AssetsController : Return ResponsePaging object with data and total count
+    deactivate ResponsePaging
+    AssetsController -> APage : Return Ok(ResponsePaging)
+    deactivate AssetsController
+    APage --> U : Show Assets with pagination
+    deactivate APage
+
+
+
+@enduml

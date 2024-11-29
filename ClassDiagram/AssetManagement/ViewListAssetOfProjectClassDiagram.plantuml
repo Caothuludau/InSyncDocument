@@ -1,7 +1,7 @@
-@startuml DeleteProjectClassDiagram
+@startuml ViewListAssetOfProjectClassDiagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-Title Delete Project Class Diagram
+Title View List Asset Of Project Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -14,7 +14,7 @@ Title Delete Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgDeleteProject <<Frame>> {  
+package pkgViewListProject <<Frame>> {  
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!ProjectsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
@@ -27,13 +27,18 @@ package pkgDeleteProject <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
     !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
     !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
+
     'include Dto'
+    !includesub ../DtosClassDiagram.plantuml!ViewAssetDto
     !includesub ../ModelsClassDiagram.plantuml!Project
+
 
 
 
     'set up realation ship' 
     ControllerBase <|-- ProjectsController
+
+    ProjectsController ..> ViewAssetDto : return views
 
 
     IRepositoryBase <|.. RepositoryBase
@@ -49,8 +54,4 @@ package pkgDeleteProject <<Frame>> {
     RepositoryBase o-- InSyncContext
     ProjectsController o-- IProjectRepository
     ProjectsController o-- IMapper
-
-
-
-
 }

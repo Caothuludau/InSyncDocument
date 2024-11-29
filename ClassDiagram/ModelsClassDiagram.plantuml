@@ -16,7 +16,7 @@ Title Models Class Diagram
 package pkgModels <<Frame>> {
 
     !startsub Asset
-    class Asset    {
+    class Asset <<model>>   {
         + Id : Guid
         + ProjectId : Guid
         + AssestName : string
@@ -29,7 +29,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub CategoryDocument
-    class CategoryDocument  {
+    class CategoryDocument <<model>> {
         + CategoryDocument()
         + Id : Guid
         + Title : string
@@ -41,7 +41,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Document
-    class Document  {
+    class Document <<model>> {
         + Id : Guid
         + Slug : string
         + Title : string
@@ -57,7 +57,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub CustomerReview
-    class CustomerReview    {
+    class CustomerReview  <<model>>  {
         + Id : Guid
         + Name : string
         + ImageUrl : string
@@ -69,7 +69,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Page
-    class Page   {
+    class Page <<model>>  {
         + Id : Guid
         + Slug : string
         + Title : string
@@ -81,7 +81,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Project
-    class Project    {
+    class Project  <<model>>  {
         + Project()
 
         + Id : Guid
@@ -98,7 +98,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub Scenario
-    class Scenario    {
+    class Scenario  <<model>>  {
         + Id : Guid
         + ProjectId : Guid
         + ScenarioName : string
@@ -116,7 +116,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub SubscriptionPlan
-    class SubscriptionPlan    {
+    class SubscriptionPlan  <<model>>  {
         + SubscriptionPlan()
         + Id : Guid
         + SubscriptionsName : string
@@ -142,7 +142,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub User
-    class User    {
+    class User  <<model>>  {
         + User()
 
         + Id : Guid
@@ -171,7 +171,7 @@ package pkgModels <<Frame>> {
     !endsub
 
     !startsub UserSubscription
-    class UserSubscription    {
+    class UserSubscription  <<model>>  {
         + Id : Guid
         + SubscriptionPlanId : Guid
         + UserId : Guid

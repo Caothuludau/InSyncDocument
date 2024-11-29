@@ -1,0 +1,66 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Crop and Upload Asset for Sequence Diagram
+
+actor "User" as U
+boundary "ModifyAsset Page" as Hp
+participant "Service Cloudinary" as SCloud
+participant "AssetsController" as AssController
+participant "IAssetRepository" as IAssRepo
+participant "IProjectRepository" as IProjectRepo
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Crop Image and choose image Crop and Click button to Upload Asset
+activate Hp
+Hp -> SCloud : Upload to cloudinary service
+activate SCloud
+SCloud --> Hp : Return upload result
+deactivate SCloud
+alt upload result success
+
+
+    Hp -> AssController : Call AddAsset(newAsset)
+    activate AssController
+    AssController -> AssController : Validate ModelState
+    AssController -> AssController : Check if ProjectId exists
+    alt Project not found
+        AssController -> Hp : Return Notification Error 400
+        deactivate AssController
+    else Project found
+        AssController -> IProjectRepo : Check if project exists by ProjectId
+        activate IProjectRepo
+        IProjectRepo -> Db : Fetch project by ProjectId
+        activate Db
+        Db --> IProjectRepo : Return project data
+        deactivate Db
+        IProjectRepo --> AssController : Return project data
+        deactivate IProjectRepo
+
+        AssController -> Mapper : Map UploadAssetDto to Asset
+        activate Mapper
+        Mapper --> AssController : Return mapped Asset
+        deactivate Mapper
+
+        AssController -> IAssRepo : Upload Asset
+        activate IAssRepo
+        IAssRepo -> Db : Insert new Asset into database
+        activate Db
+        Db --> IAssRepo : Return new Asset data
+        deactivate Db
+        IAssRepo --> AssController : Return Uploaded Asset
+        deactivate IAssRepo
+
+        AssController -> Hp : Return success response 200
+        deactivate AssController
+        
+        Hp --> U : Show success message
+
+    end
+else upload result fail
+     Hp  --> U : Notification Upload Error
+    deactivate Hp
+end
+
+@enduml

@@ -1,5 +1,6 @@
 @startuml DeletePaymentMethod
 Title DeletePaymentMethod Class Diagram
+skinparam classAttributeIconSize 0
 skinparam linetype ortho
 package pkgViewPortalStripe <<Frame>> {
   class StripeBillingPortalService {

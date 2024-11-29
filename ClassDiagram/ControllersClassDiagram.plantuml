@@ -17,11 +17,11 @@ Title Controller Class Diagram
 package pkgControllers <<Frame>> {   
 
     !startsub ControllerBase
-    abstract ControllerBase {}
+    abstract ControllerBase <<controller>> {}
     !endsub
     'User Controller'
     !startsub UsersController
-    class UsersController    {
+    class UsersController  <<controller>>  {
         - _userRepo : IUserRepository
 
         + CreateUser(userDto : CreateUserDto)
@@ -33,7 +33,7 @@ package pkgControllers <<Frame>> {
     'Assets Controller'
     !startsub AssetsController
     
-    class AssetsController    {
+    class AssetsController  <<controller>>  {
         - _assestRepo : IAssetRepository
         - _projectRepo : IProjectRepository
         - ITEM_PAGES_DEFAULT : int
@@ -56,7 +56,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub CategoryDocumentController
-    class CategoryDocumentController    {
+    class CategoryDocumentController  <<controller>>  {
         - _cateRepo : ICustomerReviewRepository
         
         + GetCategoryDocuments() 
@@ -71,7 +71,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub CustomerReviewsController
-    class CustomerReviewsController    {
+    class CustomerReviewsController  <<controller>>  {
         - _customerReviewRepo : ICustomerReviewRepository
 
         + GetCustomerReviews() 
@@ -88,7 +88,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub DocumentsController
-    class DocumentsController    {
+    class DocumentsController  <<controller>>  {
         - _documentRepo : IDocumentRepository
         - _cateRepo : ICategoryDocumentRepository
 
@@ -109,7 +109,7 @@ package pkgControllers <<Frame>> {
     !endsub
    
    !startsub PagesController
-    class PagesController    {
+    class PagesController  <<controller>>  {
         - _pageRepo :IPageRepository 
         
         + GetPages() 
@@ -127,7 +127,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub ProjectsController
-    class ProjectsController    {
+    class ProjectsController <<controller>>   {
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
 
@@ -146,7 +146,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub ScenariosController
-    class ScenariosController    {
+    class ScenariosController  <<controller>>  {
         - _scenarioRepo : IScenarioRepository
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
@@ -170,7 +170,7 @@ package pkgControllers <<Frame>> {
     !endsub
 
     !startsub SubscriptionPlansController
-    class SubscriptionPlansController    {
+    class SubscriptionPlansController  <<controller>>  {
         - _subscriptionPlanRepo : ISubscriptionPlanRepository
         - _userRepository : IUserRepository
 
@@ -187,7 +187,7 @@ package pkgControllers <<Frame>> {
 
 
     !startsub UserSubscriptionsController
-    class UserSubscriptionsController    {
+    class UserSubscriptionsController <<controller>>   {
         - _userSubRepo : IUserSubscriptionRepository
         - _userRepo : IUserRepository
         - _subRepo : ISubscriptionPlanRepository

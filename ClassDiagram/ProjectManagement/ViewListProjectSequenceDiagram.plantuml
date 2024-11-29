@@ -7,7 +7,6 @@ actor "User" as U
 boundary "Project Management Page" as PPage
 participant "ProjectsController" as ProjectsController
 participant "IProjectRepository" as IProjectRepo
-participant "IUserRepository" as IUserRepo
 participant "IMapper" as Mapper
 participant "ResponsePaging" as ResponsePaging
 database "DbContext" as DbContext
@@ -19,12 +18,7 @@ activate PPage
 PPage -> ProjectsController : Call GetAllProject(index, size, keySearch)
 activate ProjectsController
 
-ProjectsController -> ProjectsController : Validate if repositories and mapper are initialized
-alt Repositories or mapper not initialized
-    ProjectsController -> PPage : Return StatusCode(StatusCodes.Status500InternalServerError, "Application service has not been created")
-    deactivate PPage
-    deactivate ProjectsController
-else Repositories and mapper initialized
+
     ProjectsController -> ProjectsController : Check if index or size are provided
     alt No pagination parameters (index, size)
         ProjectsController -> IProjectRepo : Get all projects by name search
@@ -60,7 +54,7 @@ else Repositories and mapper initialized
     deactivate ProjectsController
     PPage --> U : Show projects with pagination
     deactivate PPage
-end
+
 
 
 @enduml

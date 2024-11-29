@@ -19,12 +19,12 @@ Title Repository Class Diagram
 
 package pkgRepositorys <<Frame>>{
 !startsub DbContext
-abstract DbContext {
+abstract DbContext <<abstract>> {
 }
 !endsub
 
 !startsub InSyncContext
-class InSyncContext {
+class InSyncContext <<context>> {
     + Assets : DbSet<Asset>
     + CategoryDocuments : DbSet<CategoryDocument>
     + CustomerReviews : DbSet<CustomerReview>
@@ -40,7 +40,7 @@ class InSyncContext {
 
     
 !startsub IRepositoryBase
-interface IRepositoryBase<T> {
+interface IRepositoryBase<T> <<irepository>> {
     + Add(entity: T)
     + Update(entity: T)
     + Delete(entity: T)
@@ -51,7 +51,7 @@ interface IRepositoryBase<T> {
 
 !startsub RepositoryBase
 
-class RepositoryBase<T>    {
+class RepositoryBase<T>  <<repository>>  {
     # _context : InSyncContext
     - disposed : bool
 }
@@ -60,15 +60,14 @@ class RepositoryBase<T>    {
 
 
 !startsub IAssetRepository
-
-
+interface IAssetRepository <<irepository>>   {
+    // Inherits from IRepositoryBase<Asset>
+}
 !endsub
  
 !startsub AssetRepository
-interface IAssetRepository    {
-    // Inherits from IRepositoryBase<Asset>
-}
-class AssetRepository    {
+
+class AssetRepository <<repository>>   {
     - _context : InSyncContext
     + AssetRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Asset>
@@ -78,14 +77,14 @@ class AssetRepository    {
 
 
 !startsub ICategoryDocumentRepository
-interface ICategoryDocumentRepository    {
+interface ICategoryDocumentRepository <<irepository>>   {
     + DeleteCategoryDocument(id : Guid) : Task
     // Inherits from IRepositoryBase<CategoryDocument>
 }
 !endsub
 
 !startsub CategoryDocumentRepository
-class CategoryDocumentRepository    {
+class CategoryDocumentRepository <<repository>>   {
     - _context : InSyncContext
     + CategoryDocumentRepository(context : InSyncContext)
     + DeleteCategoryDocument(id : Guid) : Task
@@ -95,13 +94,13 @@ class CategoryDocumentRepository    {
 
 
 !startsub ICustomerReviewRepository
-interface ICustomerReviewRepository    {
+interface ICustomerReviewRepository <<irepository>>   {
     // Inherits from IRepositoryBase<CustomerReview>
 }
 !endsub
 
 !startsub CustomerReviewRepository
-class CustomerReviewRepository    {
+class CustomerReviewRepository  <<repository>>  {
     - _context : InSyncContext
     + CustomerReviewRepository(context : InSyncContext)
     // Inherits from RepositoryBase<CustomerReview>
@@ -110,13 +109,13 @@ class CustomerReviewRepository    {
 
 
 !startsub IDocumentRepository
-interface IDocumentRepository    {
+interface IDocumentRepository  <<irepository>>  {
     // Inherits from IRepositoryBase<Document>
 }
 !endsub
 
 !startsub DocumentRepository
-class DocumentRepository    {
+class DocumentRepository <<repository>>   {
     - _context : InSyncContext
     + DocumentRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Document>
@@ -125,13 +124,13 @@ class DocumentRepository    {
 
 
 !startsub IPageRepository
-interface IPageRepository    {
+interface IPageRepository <<irepository>>   {
     // Inherits from IRepositoryBase<Page>
 }
 !endsub
 
 !startsub PageRepository
-class PageRepository    {
+class PageRepository  <<repository>>  {
     - _context : InSyncContext
     + PageRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Page>
@@ -140,14 +139,14 @@ class PageRepository    {
 
 
 !startsub IProjectRepository
-interface IProjectRepository    {
+interface IProjectRepository  <<irepository>>  {
     + DeleteProject(id : Guid) : Task
     // Inherits from IRepositoryBase<Project>
 }
 !endsub
 
 !startsub ProjectRepository
-class ProjectRepository    {
+class ProjectRepository <<repository>>   {
     - _context : InSyncContext
     + ProjectRepository(context : InSyncContext)
     + DeleteProject(id : Guid) : Task
@@ -157,13 +156,13 @@ class ProjectRepository    {
 
 
 !startsub IScenarioRepository
-interface IScenarioRepository    {
+interface IScenarioRepository  <<irepository>>  {
     // Inherits from IRepositoryBase<Scenario>
 }
 !endsub
 
 !startsub ScenarioRepository
-class ScenarioRepository    {
+class ScenarioRepository  <<irepository>>  {
     - _context : InSyncContext
     + ScenarioRepository(context : InSyncContext)
     // Inherits from RepositoryBase<Scenario>
@@ -173,14 +172,14 @@ class ScenarioRepository    {
 
 
 !startsub ISubscriptionPlanRepository
-interface ISubscriptionPlanRepository    {
+interface ISubscriptionPlanRepository <<irepository>>   {
     + DeleteSubscriptionPlan(id : Guid) : Task
     // Inherits from IRepositoryBase<SubscriptionPlan>
 }
 !endsub
 
 !startsub SubscriptionPlanRepository
-class SubscriptionPlanRepository    {
+class SubscriptionPlanRepository  <<repository>>  {
     - _context : InSyncContext
     + SubscriptionPlanRepository(context : InSyncContext)
     + DeleteSubscriptionPlan(id : Guid) : Task
@@ -189,13 +188,13 @@ class SubscriptionPlanRepository    {
 !endsub
 
 !startsub IUserRepository
-interface IUserRepository    {
+interface IUserRepository  <<irepository>>  {
     // Inherits from IRepositoryBase<User>
 }
 !endsub
 
 !startsub UserRepository
-class UserRepository    {
+class UserRepository  <<repository>>  {
     - _context : InSyncContext
     + UserRepository(context : InSyncContext)
     // Inherits from RepositoryBase<User>
@@ -204,13 +203,13 @@ class UserRepository    {
 
 
 !startsub IUserSubscriptionRepository
-interface IUserSubscriptionRepository    {
+interface IUserSubscriptionRepository  <<irepository>>  {
     // Inherits from IRepositoryBase<UserSubscription>
 }
 !endsub
 
 !startsub UserSubscriptionRepository
-class UserSubscriptionRepository    {
+class UserSubscriptionRepository  <<repository>>  {
     - _context : InSyncContext
     + UserRepository(context : InSyncContext)
     // Inherits from RepositoryBase<UserSubscription>

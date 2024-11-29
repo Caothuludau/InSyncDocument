@@ -1,0 +1,49 @@
+@startuml
+skinparam classAttributeIconSize 0
+Title Get Asset By ID Sequence Diagram
+
+actor "User" as U
+boundary "Asset Management Page" as PPage
+participant "AssetsController" as AssetsController
+participant "IAssetRepository" as IAssetRepo
+participant "IMapper" as Mapper
+database "DbContext" as DbContext
+
+U -> PPage : Request to get Asset (id)
+activate PPage
+
+PPage -> AssetsController : Call GetAssetById(id)
+activate AssetsController
+
+AssetsController -> AssetsController : Validate ModelState
+alt ModelState invalid
+    AssetsController -> PPage : Return Message BadRequest
+    deactivate PPage
+    deactivate AssetsController
+else Valid ModelState
+    AssetsController -> IAssetRepo : Get Asset by ID
+    activate IAssetRepo
+    IAssetRepo -> DbContext : Query Asset from database by ID
+    activate DbContext
+    DbContext --> IAssetRepo : Return Asset data
+    deactivate DbContext
+    IAssetRepo --> AssetsController : Return Asset
+    deactivate IAssetRepo
+
+    alt Asset found
+        AssetsController -> Mapper : Map Asset to ViewAssetDto
+        activate Mapper
+        Mapper --> AssetsController : Return ViewAssetDto
+        deactivate Mapper
+        AssetsController -> PPage : Return Data View Asset
+        deactivate AssetsController
+        PPage --> U : Show Asset data
+        deactivate PPage
+    else Asset not found
+        AssetsController -> PPage : Return NotFound
+        deactivate PPage
+        deactivate AssetsController
+    end
+end
+
+@enduml

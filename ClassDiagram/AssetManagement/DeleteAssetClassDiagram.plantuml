@@ -28,6 +28,7 @@ package pkgDeleteProject <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
     !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
     'include Dto'
+    !includesub ../DtosClassDiagram.plantuml!ViewProjectDto
     !includesub ../ModelsClassDiagram.plantuml!Project
 
 
@@ -35,6 +36,7 @@ package pkgDeleteProject <<Frame>> {
     'set up realation ship' 
     ControllerBase <|-- ProjectsController
 
+    ProjectsController ..> ViewProjectDto : return views
 
     IRepositoryBase <|.. RepositoryBase
     IProjectRepository <|.. ProjectRepository
