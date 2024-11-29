@@ -1,4 +1,6 @@
 @startuml ViewUpdateBillingInformationClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title View Or Update Billing Information Class Diagram
 package pkgViewUpdateBillingInformation <<Frame>> {
   class StripeBillingPortalService <<service>>{

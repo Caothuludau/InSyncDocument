@@ -1,6 +1,7 @@
 @startuml SignOutClassDiagram
 Title Sign Out Class Diagram
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 
 package pkgSignOut <<Frame>> {
 

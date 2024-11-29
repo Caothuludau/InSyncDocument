@@ -1,5 +1,7 @@
 @startuml ViewPortalStripe
-Title ViewPortalStripe Class DiagramBorderColor
+Title View Portal Stripe Class Diagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
 skinparam classAttributeIconSize 0
 ' Lớp chính xử lý sign-in
 package pkgViewPortalStripe <<Frame>> {

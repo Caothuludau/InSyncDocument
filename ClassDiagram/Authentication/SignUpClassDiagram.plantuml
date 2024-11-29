@@ -1,6 +1,7 @@
 @startuml SignUpClassDiagram
 skinparam classAttributeIconSize 0
-Title SignUp Class Diagram
+skinparam linetype ortho
+Title Sign Up Class Diagram
 'Character	Visibility
 '-			private
 '#			protected

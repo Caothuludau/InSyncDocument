@@ -1,5 +1,6 @@
 @startuml DTOs
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title DTOs Class Diagram
 'Character	Visibility
 '-			private

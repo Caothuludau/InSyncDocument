@@ -1,5 +1,6 @@
 @startuml ToggleFavoriteClassDiagram
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title Toggle Favorite Class Diagram
 'Character	Visibility
 '-			private

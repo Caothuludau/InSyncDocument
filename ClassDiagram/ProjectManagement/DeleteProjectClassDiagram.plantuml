@@ -1,5 +1,6 @@
 @startuml DeleteProjectClassDiagram
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title Delete Project Class Diagram
 'Character	Visibility
 '-			private

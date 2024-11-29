@@ -1,5 +1,6 @@
 @startuml Models
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title Models Class Diagram
 'Character	Visibility
 '-			private

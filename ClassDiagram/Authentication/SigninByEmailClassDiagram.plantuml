@@ -1,6 +1,7 @@
 @startuml SigninByEmailClerk
-Title SigninGoogleClerk Class DiagramBorderColor
+Title Signin Google Clerk Class DiagramBorderColor
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 ' Lớp chính xử lý sign-in
 package pkgSigninGoogleClerk <<Frame>>{
     class ClerkSignIn {

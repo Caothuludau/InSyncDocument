@@ -1,6 +1,6 @@
 @startuml Repositorys
 skinparam classAttributeIconSize 0
-skinparam classAttributeIconSize 0
+skinparam linetype ortho
 Title Repository Class Diagram
 
 'Character	Visibility
