@@ -15,7 +15,7 @@ database "DbContext" as DbContext
 U -> PPage : Go to project management
 activate PPage
 
-PPage -> ProjectsController : Call GetAllProject(index, size, keySearch)
+PPage -> ProjectsController : Call GetAllProject()
 activate ProjectsController
 
 
@@ -41,7 +41,7 @@ activate ProjectsController
         deactivate IProjectRepo
     end
 
-    ProjectsController -> Mapper : Map projects to ViewProjectDto
+    ProjectsController -> Mapper : Map projects to ViewProjectDtos
     activate Mapper
     Mapper --> ProjectsController : Return mapped ViewProjectDto list
     deactivate Mapper

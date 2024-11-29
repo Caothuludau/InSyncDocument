@@ -1,0 +1,36 @@
+@startuml ViewLogSessionHistorySequenceDiagram
+skinparam SequenceMessageAlignment center
+title View Log Session History Sequence Diagram 
+
+actor "User" as U
+participant "View Log Session Page" as Page
+participant "LogSessionService" as Service
+participant "FirebaseClient" as Client
+database "Firebase Database" as DB
+
+U -> Page : Access the LogSession list page
+activate Page
+
+Page -> Page : fetchLogSessions(scenarioId)
+Page -> Service : getLogSessionsByScenarioId(scenarioId)
+activate Service
+
+Service -> Client : queryDocuments("log_sessions", { "scenarioId": scenarioId })
+activate Client
+
+Client -> DB : Query documents by ScenarioId
+activate DB
+DB --> Client : Return document list
+deactivate DB
+
+Client --> Service : Return raw data
+deactivate Client
+
+Service -> Service : Map data to LogSessionModel[]
+Service --> Page : Return LogSessionModel[]
+deactivate Service
+
+Page -> U : Render list of LogSession
+deactivate Page
+
+@enduml

@@ -1,58 +1,58 @@
 @startuml
 skinparam classAttributeIconSize 0
 skinparam SequenceMessageAlignment center
-Title Update Project Sequence Diagram with Validation
+Title Update Asset Sequence Diagram with Validation
 
 actor "User" as U
-boundary "Project Management Page" as Hp
-participant "ProjectsController" as ProController
-participant "IProjectRepository" as IProRepo
+boundary "Asset Management Page" as Hp
+participant "AssetsController" as ProController
+participant "IAssetRepository" as IProRepo
 participant "InSyncContext" as ISContext
 database "SqlServer" as Db
 participant "Mapper" as Mapper
 
-U -> Hp : Click button update project
+U -> Hp : Enter data and Click button update Asset
 activate Hp
 
-Hp -> ProController : Call UpdateProject(id, updateProjectDto)
+Hp -> ProController : Call UpdateAsset(id, updateAssetDto)
 activate ProController
 ProController -> ProController : Validate ModelState
-ProController -> ProController : Check if id matches updateProject.Id
+ProController -> ProController : Check if id matches updateAsset.Id
 alt ID mismatch
-    ProController -> Hp : Return BadRequest("Project ID information does not match")
+    ProController -> Hp : Return Message Erorr, 400
 
     Hp --> U : Notification error   
 else ID matches
-    ProController -> IProRepo : Check project exists by ID
+    ProController -> IProRepo : Check Asset exists by ID
     activate IProRepo
-    IProRepo -> ISContext : Get project by ID
+    IProRepo -> ISContext : Get Asset by ID
     activate ISContext
-    ISContext -> Db : Fetch project data by ID
+    ISContext -> Db : Fetch Asset data by ID
     activate Db
-    Db --> ISContext : Return project data
+    Db --> ISContext : Return Asset data
     deactivate Db
-    ISContext --> IProRepo : Return project
+    ISContext --> IProRepo : Return Asset
     deactivate ISContext
-    IProRepo --> ProController : Return project
+    IProRepo --> ProController : Return Asset
     deactivate IProRepo
 
-    ProController -> ProController : Check if existingProject is null
-    alt Project not found
-        ProController -> Hp : Return NotFound("Project not found.")
+    ProController -> ProController : Check if existingAsset is null
+    alt Asset not found
+        ProController -> Hp : Return Message Not Found 404
         Hp --> U : Notification error
-    else Project exists
-        ProController -> Mapper : Map updateProjectDto to existing project
+    else Asset exists
+        ProController -> Mapper : Map updateAssetDto to existing Asset
         activate Mapper
-        Mapper --> ProController : Return mapped project
+        Mapper --> ProController : Return mapped Asset
         deactivate Mapper
 
-        ProController -> IProRepo : Update project
+        ProController -> IProRepo : Update Asset
         activate IProRepo
-        IProRepo -> ISContext : Save updated project
+        IProRepo -> ISContext : Save updated Asset
         activate ISContext
-        ISContext -> Db : Update project data in SQL Server
+        ISContext -> Db : Update Asset data in SQL Server
         activate Db
-        Db --> ISContext : Return updated project
+        Db --> ISContext : Return updated Asset
         deactivate Db
         ISContext --> IProRepo : Notify update success
         deactivate ISContext

@@ -1,0 +1,33 @@
+@startuml CancelSubscriptionPlanSequenceDiagram
+skinparam SequenceMessageAlignment center
+title Cancel Subscription Plan Sequence Diagram 
+
+actor User as U
+participant "Stripe Subscription Management page" as FE
+participant "StripeAPI" as API
+participant "Database" as DB
+
+U -> FE: Request to Cancel Subscription
+activate FE
+FE -> API: retrieveSubscription(subscriptionId)
+activate API
+API -> API: Fetch Subscription Details
+API --> FE: Return Subscription Details
+deactivate API
+
+FE -> U: Display Subscription Info
+U -> FE: Confirms Cancellation
+FE -> API: cancelSubscription(subscriptionId, atPeriodEnd)
+activate API
+API -> API: Update Subscription Status (status: 'canceled' or 'cancel_at_period_end')
+API --> FE: Return Confirmation
+deactivate API
+
+FE -> DB: Update Subscription Status
+activate DB
+DB -> DB: Save Updated Status
+deactivate DB
+
+FE -> U: Display Cancellation Confirmation
+deactivate FE
+@enduml

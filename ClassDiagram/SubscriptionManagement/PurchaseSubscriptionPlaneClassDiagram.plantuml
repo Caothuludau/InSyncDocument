@@ -1,0 +1,40 @@
+@startuml PurchaseSubscriptionClassDiagram
+Title Purchase Subscription Class Diagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+package pgkPurchaseSubscription{
+
+
+class StripeAPI {
+    + createPaymentIntent(amount: double, currency: string): PaymentIntent
+    + confirmPaymentIntent(paymentIntentId: string): PaymentIntent
+    + cancelPaymentIntent(paymentIntentId: string): PaymentIntent
+}
+
+class PaymentIntent {
+    - id: string
+    - amount: double
+    - currency: string
+    - status: string
+    + getStatus(): string
+}
+
+class User {
+    - id: string
+    - name: string
+    - email: string
+    + makePurchase(amount: double, currency: string): PaymentIntent
+}
+
+class Database {
+    + savePaymentIntent(paymentIntent: PaymentIntent): void
+    + getPaymentIntent(paymentIntentId: string): PaymentIntent
+    + updatePaymentStatus(paymentIntentId: string, status: string): void
+}
+
+User --> StripeAPI : uses
+StripeAPI --> PaymentIntent
+User --> Database : stores
+Database --> PaymentIntent : saves
+}
+@enduml

@@ -1,0 +1,39 @@
+@startuml CancelSubscriptionClassDiagram
+Title Cancel Subscription Class Diagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+package pgkCancelSubscription{
+
+
+class StripeAPI {
+    + retrieveSubscription(subscriptionId: string): Subscription
+    + cancelSubscription(subscriptionId: string, atPeriodEnd: boolean): Subscription
+}
+
+class Subscription {
+    - id: string
+    - status: string
+    - cancelAtPeriodEnd: boolean
+    - currentPeriodEnd: datetime
+    + getStatus(): string
+    + isActive(): boolean
+}
+
+class User {
+    - id: string
+    - name: string
+    - email: string
+    + cancelSubscription(subscriptionId: string): void
+}
+
+class Database {
+    + getSubscription(subscriptionId: string): Subscription
+    + updateSubscriptionStatus(subscriptionId: string, status: string): void
+}
+
+User --> StripeAPI : uses
+StripeAPI --> Subscription
+User --> Database : stores
+Database --> Subscription : updates
+}
+@enduml

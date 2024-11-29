@@ -1,18 +1,35 @@
-@startuml DeleteProjectSequenceDiagram
-Title Delete Project Sequence Diagram
+@startuml ScenarioLogSequenceDiagram
+skinparam SequenceMessageAlignment center
+title Sequence Diagram - Fetch Scenario Log (Next.js with Firebase)
 
-actor User
-entity ProjectsController
-entity IProjectRepository
-entity ProjectRepository
-entity Project
+actor "User" as U
+participant "ScenarioLogPage" as Page
+participant "ScenarioService" as Service
+participant "FirebaseClient" as Client
+database "Firebase Database" as DB
 
-User -> ProjectsController : Send delete request (projectId)
-ProjectsController -> IProjectRepository : Call deleteProject(projectId)
-IProjectRepository -> ProjectRepository : Call deleteProject(projectId)
-ProjectRepository -> Project : Delete project from database
-ProjectRepository -> IProjectRepository : Return deletion result
-IProjectRepository -> ProjectsController : Return deletion result
-ProjectsController -> User : Return success/failure response
+U -> Page : Access the Scenario Log page
+activate Page
+
+Page -> Service : fetchScenarioById(id)
+activate Service
+
+Service -> Client : getDocument("scenarios", id)
+activate Client
+
+Client -> DB : Query document by ID
+activate DB
+DB --> Client : Return document data
+deactivate DB
+
+Client --> Service : Return raw data
+deactivate Client
+
+Service -> Service : Map data to ScenarioModel
+Service --> Page : Return ScenarioModel
+deactivate Service
+
+Page -> U : Render scenario log
+deactivate Page
 
 @enduml

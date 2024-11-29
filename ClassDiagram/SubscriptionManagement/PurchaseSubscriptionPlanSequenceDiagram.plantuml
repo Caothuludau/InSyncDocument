@@ -1,0 +1,34 @@
+@startuml PurchaseSubscriptionPlanSequenceDiagram
+skinparam SequenceMessageAlignment center
+title Purchase Subscription Plan Sequence Diagram 
+
+actor User as U
+participant "Upgrade Page" as FE
+participant "StripeAPI" as API
+participant "Database" as DB
+
+U -> FE: Initiates Purchase (amount, currency)
+activate FE
+FE -> API: createPaymentIntent(amount, currency)
+activate API
+API -> API: Generate PaymentIntent (id, status: 'requires_payment')
+API --> FE: Return PaymentIntent (id, status)
+deactivate API
+
+FE -> U: Display Payment Form
+U -> FE: Confirms Payment
+FE -> API: confirmPaymentIntent(paymentIntentId)
+activate API
+API -> API: Update Payment Status (status: 'succeeded')
+API --> FE: Return Confirmation (status)
+deactivate API
+
+FE -> DB: Save Payment Status
+activate DB
+DB -> DB: Update Payment Record
+DB --> FE : return upgrade success
+deactivate DB
+
+FE -> U: Payment Success
+deactivate FE
+@enduml

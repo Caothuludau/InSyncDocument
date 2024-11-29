@@ -1,40 +1,40 @@
-@startuml ViewHomePageSequenceDiagram
+@startuml DeleteAssetSequenceDiagram
 skinparam classAttributeIconSize 0
 skinparam SequenceMessageAlignment center
-Title ViewHomePage Sequence Diagram
+Title Delete Asset Sequence Diagram
 
 actor "User" as U
-boundary "Project Management Page" as Hp
-participant "ProjectsController" as ProController
-participant "IProjectRepository" as IProRepo
+boundary "Asset Management Page" as Hp
+participant "AssetsController" as ProController
+participant "IAssetRepository" as IProRepo
 participant "InSyncContext" as ISContext
 database "SqlServer" as Db
 
-U -> Hp : Click button to delete project
+U -> Hp : Click button to delete asset
 activate Hp
 
-Hp -> ProController : Call Delete API (/api/projects/{id})
+Hp -> ProController : Call DeleteAsset(id)
 activate ProController
 
-ProController -> IProRepo : Check if project exists (CheckContainsAsync)
+ProController -> IProRepo : Check if asset exists (CheckContainsAsync)
 activate IProRepo
-IProRepo -> ISContext : Query database for project existence
+IProRepo -> ISContext : Query database for asset existence
 activate ISContext
-ISContext -> Db : Check if project with ID exists in SQL Server
+ISContext -> Db : Check if asset with ID exists in SQL Server
 activate Db
-Db --> ISContext : Return project existence status
+Db --> ISContext : Return asset existence status
 deactivate Db
 ISContext --> IProRepo : Return existence status
 deactivate ISContext
-IProRepo --> ProController : Return project existence status
+IProRepo --> ProController : Return asset existence status
 deactivate IProRepo
 
-alt Project exists
-    ProController -> IProRepo : Call DeleteProject(id)
+alt Asset exists
+    ProController -> IProRepo : Call DeleteAsset(id)
     activate IProRepo
-    IProRepo -> ISContext : Delete project
+    IProRepo -> ISContext : Delete Asset
     activate ISContext
-    ISContext -> Db : Delete project from SQL Server
+    ISContext -> Db : Delete Asset from SQL Server
     activate Db
     Db --> ISContext : Delete success
     deactivate Db
@@ -42,13 +42,13 @@ alt Project exists
     deactivate ISContext
     IProRepo --> ProController : Return delete success
     deactivate IProRepo
-    ProController --> Hp : Return success response (Project deleted)
+    ProController --> Hp : Return success response (Asset deleted)
     
-    Hp --> U : Notify user (Project deleted successfully)
-else Project does not exist
+    Hp --> U : Notify user (Asset deleted successfully)
+else Asset does not exist
     ProController --> Hp : Return error response (Not Found)
     deactivate ProController
-    Hp --> U : Notify user (Project not found)
+    Hp --> U : Notify user (Asset not found)
 end
 
 deactivate Hp

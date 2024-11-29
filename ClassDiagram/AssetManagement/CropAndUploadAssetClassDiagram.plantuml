@@ -1,7 +1,7 @@
-@startuml UploadClassDiagram
+@startuml CropAndUploadClassDiagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-Title Upload Asset Class Diagram
+Title Crop And Upload Asset Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -14,7 +14,7 @@ Title Upload Asset Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgUpload <<Frame>> {  
+package pkgCropAndUpload <<Frame>> {  
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!AssetsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
