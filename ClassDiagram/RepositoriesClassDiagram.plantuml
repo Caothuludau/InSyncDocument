@@ -25,8 +25,6 @@ abstract DbContext {
 
 !startsub InSyncContext
 class InSyncContext {
-    + InSyncContext()
-    + InSyncContext(options : DbContextOptions<InSyncContext>)
     + Assets : DbSet<Asset>
     + CategoryDocuments : DbSet<CategoryDocument>
     + CustomerReviews : DbSet<CustomerReview>
@@ -37,32 +35,18 @@ class InSyncContext {
     + SubscriptionPlans : DbSet<SubscriptionPlan>
     + Users : DbSet<User>
     + UserSubscriptions : DbSet<UserSubscription>
-    # OnConfiguring(optionsBuilder : DbContextOptionsBuilder)
-    - OnModelCreatingPartial(modelBuilder:ModelBuilder )
 }
 !endsub
 
     
 !startsub IRepositoryBase
 interface IRepositoryBase<T> {
-    + Add(entity : T) : Task<T>
-    + Update(entity : T) : Task
-    + Delete(entity : T) : Task<T>
-    + DeleteMulti(where : Expression<Func<T, bool>>) : Task
-    + GetSingleByCondition(expression : Expression<Func<T, bool>>, 
-      includes : string[] <<nullable>>) : Task<T>
-    + GetAll(includes : string[] <<nullable>>) : IEnumerable<T>
-    + GetMulti(predicate : Expression<Func<T, bool>>, 
-      includes : string[] <<nullable>>) : IEnumerable<T>
-    + GetMultiPaging(filter : Expression<Func<T, bool>>, 
-      out total : int, 
-      index : int = 0, 
-      size : int = 50, 
-      includes : string[] <<nullable>>) : IEnumerable<T>
-    + CountAsync(where : Expression<Func<T, bool>>) : Task<int>
-    + CheckContainsAsync(predicate : Expression<Func<T, bool>>) : Task<bool>
+    + Add(entity: T)
+    + Update(entity: T)
+    + Delete(entity: T)
+    + GetSingleByCondition(...)
+    + GetAll(...)
 }
-
 !endsub
 
 !startsub RepositoryBase
@@ -70,25 +54,6 @@ interface IRepositoryBase<T> {
 class RepositoryBase<T>    {
     # _context : InSyncContext
     - disposed : bool
-    + RepositoryBase(context : InSyncContext)
-    + Add(entity : T) : Task<T>
-    + Update(entity : T) : Task
-    + Delete(entity : T) : Task<T>
-    + DeleteMulti(where : Expression<Func<T, bool>>) : Task
-    + GetSingleByCondition(expression : Expression<Func<T, bool>>, 
-      includes : string[] <<nullable>>) : Task<T>
-    + GetAll(includes : string[] <<nullable>>) : IEnumerable<T>
-    + GetMulti(predicate : Expression<Func<T, bool>>, 
-      includes : string[] <<nullable>>) : IEnumerable<T>
-    + GetMultiPaging(filter : Expression<Func<T, bool>>, 
-      out total : int, 
-      index : int = 0, 
-      size : int = 50, 
-      includes : string[] <<nullable>>) : IEnumerable<T>
-    + CountAsync(where : Expression<Func<T, bool>>) : Task<int>
-    + CheckContainsAsync(predicate : Expression<Func<T, bool>>) : Task<bool>
-    + Dispose() : void
-    - Dispose(disposing : bool) : void
 }
 !endsub
 

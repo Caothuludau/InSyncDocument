@@ -1,6 +1,8 @@
 @startuml ViewMarktingPageClassDiagram
 skinparam classAttributeIconSize 0
-Title ViewMarktingPage Class Diagram
+skinparam linetype ortho
+
+Title View Marketing Pages Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -74,7 +76,7 @@ package pkgViewMarkting <<Frame>> {
     IRepositoryBase <|-- IDocumentRepository 
     RepositoryBase <|-- DocumentRepository
 
-    IRepositoryBase <|-- IPageRepository 
+    IRepositoryBase <|-down- IPageRepository 
     RepositoryBase <|-- PageRepository
 
     DbContext <|--InSyncContext

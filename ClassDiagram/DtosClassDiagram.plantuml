@@ -19,10 +19,10 @@ package dtos <<Frame>> {
         + ProjectId : Guid
         + ProjectName : string
         + AssestName : string
-        + Type : string<<nullable>>
+        + Type : string
         + FilePath : string
         + DateCreated : DateTime
-        + DateUdpated : DateTime<<nullable>>
+        + DateUdpated : DateTime
     }
     !endsub
 
@@ -38,7 +38,7 @@ package dtos <<Frame>> {
     class AddAssetDto    {
         + ProjectId : Guid
         + AssestName: string
-        + Type : string<<nullable>>
+        + Type : string
         + FilePath : string
     }
     !endsub
@@ -57,7 +57,7 @@ package dtos <<Frame>> {
     class ViewCustomerReviewDto    {
         + Id : Guid
         + Name : string
-        + ImageUrl : string<<nullable>>
+        + ImageUrl : string
         + JobTitle : string
         + Review : string
         + DateCreated : DateTime
@@ -68,7 +68,7 @@ package dtos <<Frame>> {
     !startsub AddCustomerReviewDto
     class AddCustomerReviewDto    {
         + Name : string
-        + ImageUrl : string<<nullable>>
+        + ImageUrl : string
         + JobTitle : string
         + Review : string
     }
@@ -78,7 +78,7 @@ package dtos <<Frame>> {
     class UpdateCustomerReviewDto    {
         + Id : Guid
         + Name : string
-        + ImageUrl : string<<nullable>>
+        + ImageUrl : string
         + JobTitle : string
         + Review : string
         + IsShow : bool
@@ -98,10 +98,10 @@ package dtos <<Frame>> {
     class ViewCategoryDocumentDto    {
     + Id : Guid
     + Title : string
-    + Description : string <<nullable>>
+    + Description : string 
     + Order : int
     + DateCreated : DateTime
-    + DateUpdated : DateTime <<nullable>>
+    + DateUpdated : DateTime 
     + Documents : IEnumerable<ViewDocumentDto>
     }
     !endsub
@@ -111,7 +111,7 @@ package dtos <<Frame>> {
     + Id : Guid
     + Title : string
     + Order : int
-    + Description : string <<nullable>>
+    + Description : string 
     }
     !endsub
 
@@ -120,7 +120,7 @@ package dtos <<Frame>> {
     class AddCategoryDocumentDto    {
     + Title : string
     + Order : int
-    + Description : string <<nullable>>
+    + Description : string 
     }
     !endsub
 
@@ -140,11 +140,11 @@ package dtos <<Frame>> {
     + Id : Guid
     + Slug : string
     + Title : string
-    + Content : string <<nullable>>
-    + Note : string <<nullable>>
+    + Content : string 
+    + Note : string 
     + Order : int
     + DateCreated : DateTime
-    + DateUpdated : DateTime <<nullable>>
+    + DateUpdated : DateTime 
     + CategoryId : Guid
     + CategoryName : string
     }
@@ -156,8 +156,8 @@ package dtos <<Frame>> {
     + Id : Guid
     + Slug : string
     + Title : string
-    + Content : string <<nullable>>
-    + Note : string <<nullable>>
+    + Content : string 
+    + Note : string 
     + Order : int
     + CategoryId : Guid
     }
@@ -167,8 +167,8 @@ package dtos <<Frame>> {
     class AddDocumentDto    {
     + Slug : string
     + Title : string
-    + Content : string <<nullable>>
-    + Note : string <<nullable>>
+    + Content : string 
+    + Note : string 
     + Order : int
     + CategoryId : Guid
     }
@@ -189,10 +189,10 @@ package dtos <<Frame>> {
     + Id : Guid
     + Slug : string
     + Title : string
-    + Content : string <<nullable>>
-    + Note : string <<nullable>>
+    + Content : string 
+    + Note : string 
     + DateCreated : DateTime 
-    + DateUpdated : DateTime <<nullable>>
+    + DateUpdated : DateTime 
     }
     !endsub
 
@@ -202,8 +202,8 @@ package dtos <<Frame>> {
     + Id : Guid
     + Slug : string
     + Title : string
-    + Content : string <<nullable>>
-    + Note : string <<nullable>>
+    + Content : string 
+    + Note : string 
     }
     !endsub
 
@@ -211,8 +211,8 @@ package dtos <<Frame>> {
     class AddPageDto    {
     + Slug : string
     + Title : string
-    + Content : string <<nullable>>
-    + Note : string <<nullable>>
+    + Content : string 
+    + Note : string 
     }
     !endsub
 
@@ -229,11 +229,11 @@ package dtos <<Frame>> {
     class ViewProjectDto    {
         + Id : Guid
         + ProjectName : string
-        + Description : string <<nullable>>
+        + Description : string 
         + UserId : Guid
         + displayName : string
         + DateCreated : DateTime
-        + DateUpdated : DateTime<<nullable>>
+        + DateUpdated : DateTime
         + IsPublish : bool
     }
     !endsub
@@ -287,13 +287,13 @@ package dtos <<Frame>> {
         + ProjectId : Guid
         + ProjectName : string
         + Title : string
-        + Description : string <<nullable>>
+        + Description : string 
         + CreatedAt : DateTime
-        + UpdatedAt : DateTime <<nullable>>
-        + StepsWeb : string <<nullable>>
-        + StepsAndroid : string <<nullable>>
-        + IsFavorites : bool <<nullable>>
-        + ImageUrl : string <<nullable>>
+        + UpdatedAt : DateTime 
+        + StepsWeb : string 
+        + StepsAndroid : string 
+        + IsFavorites : bool 
+        + ImageUrl : string 
         + AuthorId : string
         + AuthorIdGuid: Guid
         + AuthorName : string
@@ -304,11 +304,11 @@ package dtos <<Frame>> {
     class AddScenarioDto    {
         + ProjectId : Guid
         + ScenarioName : string
-        + Description : string <<nullable>>
-        + StepsWeb : string <<nullable>>
-        + StepsAndroid : string <<nullable>>
-        + IsFavorites : bool <<nullable>>
-        + ImageUrl : string <<nullable>>
+        + Description : string 
+        + StepsWeb : string 
+        + StepsAndroid : string 
+        + IsFavorites : bool 
+        + ImageUrl : string 
         + CreatedBy : Guid
     }
     !endsub
@@ -317,11 +317,11 @@ package dtos <<Frame>> {
     class AddScenarioUserClerkDto    {
         + ProjectId : Guid
         + ScenarioName : string
-        + Description : string <<nullable>>
-        + StepsWeb : string <<nullable>>
-        + StepsAndroid : string <<nullable>>
-        + IsFavorites : bool <<nullable>>
-        + ImageUrl : string <<nullable>>
+        + Description : string 
+        + StepsWeb : string 
+        + StepsAndroid : string 
+        + IsFavorites : bool 
+        + ImageUrl : string 
         + UserIdClerk : string
     }
     !endsub
@@ -330,11 +330,11 @@ package dtos <<Frame>> {
     class UpdateScenarioDto    {
         + Id : Guid
         + ScenarioName : string
-        + Description : string <<nullable>>
-        + StepsWeb : string <<nullable>>
-        + StepsAndroid : string <<nullable>>
-        + IsFavorites : bool <<nullable>>
-        + ImageUrl : string <<nullable>>
+        + Description : string 
+        + StepsWeb : string 
+        + StepsAndroid : string 
+        + IsFavorites : bool 
+        + ImageUrl : string 
     }
     !endsub
 
@@ -365,17 +365,17 @@ package dtos <<Frame>> {
         + UserName : string
         + Content : string
         + DateCreated : DateTime
-        + DateUpdated : DateTime <<nullable>>
-        + MaxProjects : int  <<nullable>>
-        + MaxAssets : long <<nullable>>
-        + MaxScenarios : int <<nullable>>
-        + MaxUsersAccess : int <<nullable>>
-        + StorageLimit : long <<nullable>>
-        + SupportLevel : string <<nullable>>
-        + CustomFeaturesDescription : string <<nullable>>
-        + DataRetentionPeriod : long <<nullable>>
-        + PrioritySupport : bool <<nullable>>
-        + MonthlyReporting : bool <<nullable>>
+        + DateUpdated : DateTime 
+        + MaxProjects : int  
+        + MaxAssets : long 
+        + MaxScenarios : int 
+        + MaxUsersAccess : int 
+        + StorageLimit : long 
+        + SupportLevel : string 
+        + CustomFeaturesDescription : string 
+        + DataRetentionPeriod : long 
+        + PrioritySupport : bool 
+        + MonthlyReporting : bool 
     }
     !endsub
 
@@ -386,16 +386,16 @@ package dtos <<Frame>> {
         + Price : decimal
         + UserId : Guid
         + Content : string
-        + MaxProjects : int <<nullable>>
-        + MaxAssets : long <<nullable>>
-        + MaxScenarios : int <<nullable>>
-        + MaxUsersAccess : int <<nullable>>
-        + StorageLimit : long <<nullable>>
-        + SupportLevel : string <<nullable>>
-        + CustomFeaturesDescription : string <<nullable>>
-        + DataRetentionPeriod : long <<nullable>>
-        + PrioritySupport : bool <<nullable>>
-        + MonthlyReporting : bool <<nullable>>
+        + MaxProjects : int 
+        + MaxAssets : long 
+        + MaxScenarios : int 
+        + MaxUsersAccess : int 
+        + StorageLimit : long 
+        + SupportLevel : string 
+        + CustomFeaturesDescription : string 
+        + DataRetentionPeriod : long 
+        + PrioritySupport : bool 
+        + MonthlyReporting : bool 
     }
     !endsub
 
@@ -406,16 +406,16 @@ package dtos <<Frame>> {
         + Price : decimal
         + UserIdClerk : string
         + Content : string
-        + MaxProjects : int <<nullable>>
-        + MaxAssets : long <<nullable>>
-        + MaxScenarios : int <<nullable>>
-        + MaxUsersAccess : int <<nullable>>
-        + StorageLimit : long <<nullable>>
-        + SupportLevel : string <<nullable>>
-        + CustomFeaturesDescription : string <<nullable>>
-        + DataRetentionPeriod : long <<nullable>>
-        + PrioritySupport : bool <<nullable>>
-        + MonthlyReporting : bool <<nullable>>
+        + MaxProjects : int 
+        + MaxAssets : long 
+        + MaxScenarios : int 
+        + MaxUsersAccess : int 
+        + StorageLimit : long 
+        + SupportLevel : string 
+        + CustomFeaturesDescription : string 
+        + DataRetentionPeriod : long 
+        + PrioritySupport : bool 
+        + MonthlyReporting : bool 
     }
     !endsub
 
@@ -426,16 +426,16 @@ package dtos <<Frame>> {
         + Status : bool
         + Price : decimal
         + Content : string
-        + MaxProjects : int <<nullable>>
-        + MaxAssets : long <<nullable>>
-        + MaxScenarios : int <<nullable>>
-        + MaxUsersAccess : int <<nullable>>
-        + StorageLimit : long <<nullable>>
-        + SupportLevel : string <<nullable>>
-        + CustomFeaturesDescription : string <<nullable>>
-        + DataRetentionPeriod : long <<nullable>>
-        + PrioritySupport : bool <<nullable>>
-        + MonthlyReporting : bool <<nullable>>
+        + MaxProjects : int 
+        + MaxAssets : long 
+        + MaxScenarios : int 
+        + MaxUsersAccess : int 
+        + StorageLimit : long 
+        + SupportLevel : string 
+        + CustomFeaturesDescription : string 
+        + DataRetentionPeriod : long 
+        + PrioritySupport : bool 
+        + MonthlyReporting : bool 
     }
     !endsub
 
@@ -466,27 +466,27 @@ package dtos <<Frame>> {
     class Data    {
         + Birthday : string
         + Created_At : long
-        + Email_Addresses : EmailAddresses[] <<nullable>>
-        + First_Name : string <<nullable>>
-        + Gender : string <<nullable>>
-        + Id : string <<nullable>>
-        + Image_Url : string <<nullable>>
-        + Last_Name : string <<nullable>>
-        + Last_Sign_In_At : long <<nullable>>
-        + Object : string <<nullable>>
-        + Password_Enabled : bool <<nullable>>
-        + Phone_Numbers : string[] <<nullable>>
-        + Primary_Email_Address_Id : string <<nullable>>
-        + Primary_Phone_Number_Id : string <<nullable>>
-        + Primary_Web3_Wallet_Id : string <<nullable>>
-        + Private_Metadata : Dictionary<string, object> <<nullable>>
-        + Profile_Image_Url : string <<nullable>>
-        + Public_Metadata : Dictionary<string,object> <<nullable>>
-        + Two_Factor_Enabled : bool <<nullable>>
-        + Unsafe_Metadata : Dictionary <<nullable>>
+        + Email_Addresses : EmailAddresses[] 
+        + First_Name : string 
+        + Gender : string 
+        + Id : string 
+        + Image_Url : string 
+        + Last_Name : string 
+        + Last_Sign_In_At : long 
+        + Object : string 
+        + Password_Enabled : bool 
+        + Phone_Numbers : string[] 
+        + Primary_Email_Address_Id : string 
+        + Primary_Phone_Number_Id : string 
+        + Primary_Web3_Wallet_Id : string 
+        + Private_Metadata : Dictionary<string, object> 
+        + Profile_Image_Url : string 
+        + Public_Metadata : Dictionary<string,object> 
+        + Two_Factor_Enabled : bool 
+        + Unsafe_Metadata : Dictionary 
         + Updated_At : long 
-        + Username : object <<nullable>>
-        + Web3_Wallets : string[] <<nullable>>
+        + Username : object 
+        + Web3_Wallets : string[] 
     }
     !endsub
 

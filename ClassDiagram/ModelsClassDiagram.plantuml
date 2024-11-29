@@ -19,10 +19,10 @@ package pkgModels <<Frame>> {
         + Id : Guid
         + ProjectId : Guid
         + AssestName : string
-        + Type : string <<nullable>>
+        + Type : string 
         + FilePath : string
         + DateCreated : DateTime
-        + DateUdpated : DateTime <<nullable>>
+        + DateUdpated : DateTime 
         + Project : Project
     }
     !endsub
@@ -32,9 +32,9 @@ package pkgModels <<Frame>> {
         + CategoryDocument()
         + Id : Guid
         + Title : string
-        + Description : string<<nullable>>
+        + Description : string
         + DateCreated : DateTime
-        + DateUdpated : DateTime<<nullable>>
+        + DateUdpated : DateTime
         + Documents : ICollection<Document>
     }
     !endsub
@@ -44,11 +44,11 @@ package pkgModels <<Frame>> {
         + Id : Guid
         + Slug : string
         + Title : string
-        + Content : string <<nullable>>
-        + Note : string <<nullable>>
+        + Content : string 
+        + Note : string 
         + Order : int
         + DateCreated : DateTime
-        + DateUdpated : DateTime <<nullable>>
+        + DateUdpated : DateTime 
         + Documents : ICollection<Document>
         + CategoryId : Guid
         + Category : CategoryDocument
@@ -59,7 +59,7 @@ package pkgModels <<Frame>> {
     class CustomerReview    {
         + Id : Guid
         + Name : string
-        + ImageUrl : string<<nullable>>
+        + ImageUrl : string
         + JobTitle : string
         + Review : string
         + DateCreated : DateTime
@@ -72,10 +72,10 @@ package pkgModels <<Frame>> {
         + Id : Guid
         + Slug : string
         + Title : string
-        + Content : string<<nullable>>
-        + Note : string<<nullable>>
+        + Content : string
+        + Note : string
         + DateCreated : DateTime
-        + DateUdpated : DateTime<<nullable>>
+        + DateUdpated : DateTime
     }
     !endsub
 
@@ -85,10 +85,10 @@ package pkgModels <<Frame>> {
 
         + Id : Guid
         + ProjectName : string
-        + Description : string<<nullable>>
+        + Description : string
         + UserId : Guid
         + DateCreated : DateTime
-        + DateUpdated : DateTime<<nullable>>
+        + DateUpdated : DateTime
         + IsPublish : bool
         + User : User;
         + Assets : ICollection<Asset>
@@ -101,13 +101,13 @@ package pkgModels <<Frame>> {
         + Id : Guid
         + ProjectId : Guid
         + ScenarioName : string
-        + Description : string<<nullable>>
+        + Description : string
         + DateCreated : DateTime
-        + DateUpdated : DateTime<<nullable>>
-        + StepsWeb : string<<nullable>>
-        + StepsAndroid : string<<nullable>>
-        + IsFavorites : bool<<nullable>>
-        + ImageUrl : string<<nullable>>
+        + DateUpdated : DateTime
+        + StepsWeb : string
+        + StepsAndroid : string
+        + IsFavorites : bool
+        + ImageUrl : string
         + CreatedBy : Guid
         + CreatedByNavigation : User
         + Project : Project
@@ -124,17 +124,17 @@ package pkgModels <<Frame>> {
         + UserId : Guid
         + Content : string
         + DateCreated : DateTime
-        + DateUpdated : DateTime<<nullable>>
-        + MaxProjects : int<<nullable>>
-        + MaxAssets : long<<nullable>>
-        + MaxScenarios : int<<nullable>>
-        + MaxUsersAccess : int<<nullable>>
-        + StorageLimit : long<<nullable>>
-        + SupportLevel : string<<nullable>>
-        + CustomFeaturesDescription : string<<nullable>>
-        + DataRetentionPeriod : long<<nullable>>
-        + PrioritySupport : bool<<nullable>>
-        + MonthlyReporting : bool<<nullable>>
+        + DateUpdated : DateTime
+        + MaxProjects : int
+        + MaxAssets : long
+        + MaxScenarios : int
+        + MaxUsersAccess : int
+        + StorageLimit : long
+        + SupportLevel : string
+        + CustomFeaturesDescription : string
+        + DataRetentionPeriod : long
+        + PrioritySupport : bool
+        + MonthlyReporting : bool
         + User : User
         + UserSubscriptions : ICollection<UserSubscription>
     }
@@ -145,23 +145,23 @@ package pkgModels <<Frame>> {
         + User()
 
         + Id : Guid
-        + UserIdClerk : string<<nullable>>
+        + UserIdClerk : string
         + UserName : string
-        + PasswordHash : string<<nullable>>
+        + PasswordHash : string
         + Email : string
-        + DisplayName : string<<nullable>>
-        + EmailConfirmed : bool<<nullable>>
-        + PhoneNumber : string<<nullable>>
-        + LockoutEnd : DateTime<<nullable>>
-        + LockoutEnable : bool<<nullable>>
+        + DisplayName : string
+        + EmailConfirmed : bool
+        + PhoneNumber : string
+        + LockoutEnd : DateTime
+        + LockoutEnable : bool
         + AccessFailCount : long
-        + ImageUrl : string<<nullable>>
-        + Dob : DateTime<<nullable>>
-        + Address : string<<nullable>>
+        + ImageUrl : string
+        + Dob : DateTime
+        + Address : string
         + DateCreated : DateTime
-        + DateUpdated : DateTime<<nullable>>
+        + DateUpdated : DateTime
         + StatusUser : int
-        + Role : string<<nullable>>
+        + Role : string
         + Projects : ICollection<Project>
         + Scenarios : ICollection<Scenario>
         + SubscriptionPlans : ICollection<SubscriptionPlan>

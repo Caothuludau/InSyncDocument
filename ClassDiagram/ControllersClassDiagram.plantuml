@@ -22,10 +22,9 @@ package pkgControllers <<Frame>> {
     !startsub UsersController
     class UsersController    {
         - _userRepo : IUserRepository
-        - _mapper : IMapper
-        _logger : ILogger<UsersController>
-        + CreateUser(userDto : CreateUserDto) : Task<IActionResult>
-        + UpdateUser(userDto : UpdateUserDto) :  Task<IActionResult>
+
+        + CreateUser(userDto : CreateUserDto)
+        + UpdateUser(userDto : UpdateUserDto)
     }
     !endsub
     
@@ -38,72 +37,52 @@ package pkgControllers <<Frame>> {
         - _projectRepo : IProjectRepository
         - ITEM_PAGES_DEFAULT : int
         - INDEX_DEFAULT : int
-        - _mapper : IMapper
-        - _logger : ILogger<AssetsController>
-        - includes : string[]
         
-        + AssetsController(assestRepo : IAssetRepository,
-         projectRepo : IProjectRepository,
-          mapper : IMapper,
-           logger : ILogger<AssetsController>)
-        + GetAssets() : Task<IActionResult>
-        + GetAllAsset(index : int <<nullable>>,
-        size : int <<nullable>>,
-        keySearch : string <<nullable>>) : Task<IActionResult>
+        + GetAssets() 
+        + GetAllAsset(index : int,
+        size : int,
+        keySearch : string) 
         + GetAllAssetOfProject(idProject : Guid, 
-        index : int<<nullable>>, 
-        size : int<<nullable>>, 
-        keySearch : string<<nullable>>) : Task<IActionResult>
-        + GetAssetById(id : Guid) : Task<IActionResult>
-        + AddAsset(newAsset : AddAssetDto) : Task<IActionResult>
+        index : int, 
+        size : int, 
+        keySearch : string) 
+        + GetAssetById(id : Guid) 
+        + AddAsset(newAsset : AddAssetDto) 
         + UpdateAsset(id : Guid, 
-        updateAsset : UpdateAssetDto) : Task<IActionResult>
-        + DeleteAsset(id : Guid) : Task<IActionResult>
+        updateAsset : UpdateAssetDto) 
+        + DeleteAsset(id : Guid) 
     }
     !endsub
 
     !startsub CategoryDocumentController
     class CategoryDocumentController    {
         - _cateRepo : ICustomerReviewRepository
-        - _mapper : IMapper
-        - _logger : ILogger<CategoryDocumentController>
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - includes : string[]
         
-        + CategoryDocumentController(CateRepo : ICategoryDocumentRepository, 
-        mapper : IMapper ,logger : ILogger<CategoryDocumentController> )
-        + GetCategoryDocuments() : Task<IActionResult>
+        + GetCategoryDocuments() 
         + GetAllCategoryDocument(index : int, 
-        size : int, keySearch : string = "") : Task<IActionResult>
-        + GetCategoryDocumentById(id : Guid) : Task<IActionResult>
-        + AddCategoryDocument(newCate : AddCategoryDocumentDto) : Task<IActionResult>
+        size : int, keySearch : string) 
+        + GetCategoryDocumentById(id : Guid) 
+        + AddCategoryDocument(newCate : AddCategoryDocumentDto) 
         + UpdateCategoryDocument(id : Guid, 
-        updateCate : UpdateCategoryDocumentDto) : Task<IActionResult>
-        + DeleteCategoryDocument(id : Guid) : Task<IActionResult>
+        updateCate : UpdateCategoryDocumentDto) 
+        + DeleteCategoryDocument(id : Guid) 
     }
     !endsub
 
     !startsub CustomerReviewsController
     class CustomerReviewsController    {
         - _customerReviewRepo : ICustomerReviewRepository
-        - _mapper : IMapper
-        - _logger : ILogger<CustomerReviewsController>
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
 
-        + CustomerReviewsController(customerReviewRepo : ICustomerReviewRepository ,
-        mapper : IMapper,logger : ILogger<CustomerReviewsController> )
-        + GetCustomerReviews() : Task<IActionResult>
+        + GetCustomerReviews() 
         + GetAllCustomerReview(index : int, size : int, 
-        keySearch : string = "") : Task<IActionResult>
+        keySearch : string) 
         + GetAllCustomerReviewIsPublish(index : int, size : int, 
-        isPublish : bool, keySearch : string = "") : Task<IActionResult>
-        + GetCustomerReviewById(id : Guid) : Task<IActionResult>
-        + AddCustomerReview(newReview : AddCustomerReviewDto) : Task<IActionResult>
+        isPublish : bool, keySearch : string ) 
+        + GetCustomerReviewById(id : Guid) 
+        + AddCustomerReview(newReview : AddCustomerReviewDto) 
         + UpdateCustomerReview(id : Guid, 
-        updateReview : UpdateCustomerReviewDto) : Task<IActionResult>
-        + DeleteCustomerReview(id : Guid) : Task<IActionResult>
+        updateReview : UpdateCustomerReviewDto) 
+        + DeleteCustomerReview(id : Guid) 
     }
     !endsub
 
@@ -111,52 +90,38 @@ package pkgControllers <<Frame>> {
     class DocumentsController    {
         - _documentRepo : IDocumentRepository
         - _cateRepo : ICategoryDocumentRepository
-        - _mapper : IMapper
-        - _logger : ILogger<DocumentsController>
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - includes : string[]
 
-        + DocumentsController(documentRepo : IDocumentRepository ,mapper : IMapper 
-            ,logger : ILogger<DocumentsController> ,cateRepo : ICategoryDocumentRepository )
-        + GetDocuments() : Task<IActionResult>
+        + GetDocuments() 
         + GetAllDocumentWithPaging(index : int, size : int, 
-        keySearch : string = "") : Task<IActionResult>
+        keySearch : string ) 
         + GetAllDocumentCategory(index : int, size : int, 
-        categoryId : Guid, keySearch : string = "") : Task<IActionResult>
-        + GetDocumentById(id : Guid) : Task<IActionResult>
-        + GetDocumentBySlug(slug : string) : Task<IActionResult>
-        + AddDocument(newDocument : AddDocumentDto) : Task<IActionResult>
+        categoryId : Guid, keySearch : string ) 
+        + GetDocumentById(id : Guid) 
+        + GetDocumentBySlug(slug : string) 
+        + AddDocument(newDocument : AddDocumentDto) 
         + UpdateDocument(id : Guid, 
-        updateDocument : UpdateDocumentDto) : Task<IActionResult>
+        updateDocument : UpdateDocumentDto) 
         + UpdateDocumentBySlug(slug : string, 
-        updateDocument : UpdateDocumentDto) : Task<IActionResult>
-        + DeleteDocument(id : Guid) : Task<IActionResult>
+        updateDocument : UpdateDocumentDto) 
+        + DeleteDocument(id : Guid) 
     }
     !endsub
    
    !startsub PagesController
     class PagesController    {
         - _pageRepo :IPageRepository 
-        - _mapper : IMapper
-        - _logger : ILogger<PagesController>
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - includes : string[]
-
-        + PagesController(pageRepo :IPageRepository ,mapper : IMapper 
-            ,logger : ILogger<PagesController>)
-        + GetPages() : Task<IActionResult>
+        
+        + GetPages() 
         + GetAllPage(index : int, size : int, 
-        keySearch : string = "") : Task<IActionResult>
-        + GetPageById(id : Guid) : Task<IActionResult>
-        + GetPageBySlug(slug : string) : Task<IActionResult>
-        + AddPage(newPage : AddPageDto) : Task<IActionResult>
+        keySearch : string ) 
+        + GetPageById(id : Guid) 
+        + GetPageBySlug(slug : string) 
+        + AddPage(newPage : AddPageDto) 
         + UpdatePage(id : Guid, 
-        updatePage : UpdatePageDto) : Task<IActionResult>
+        updatePage : UpdatePageDto) 
         + UpdatePageBySlug(slug : string, 
-        updatePage : UpdatePageDto) : Task<IActionResult>
-        + DeletePage(id : Guid) : Task<IActionResult>
+        updatePage : UpdatePageDto) 
+        + DeletePage(id : Guid) 
     }
     !endsub
 
@@ -164,25 +129,18 @@ package pkgControllers <<Frame>> {
     class ProjectsController    {
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
-        - _logger : ILogger<ProjectsController>
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - _mapper : IMapper
-        + includes : string[]
 
-        + ProjectsController(projectRepo : IProjectRepository, userRepo : IUserRepository, 
-        mapper : IMapper,logger : ILogger<ProjectsController> )
-        + GetProjects() : Task<IActionResult>
-        + GetAllProject(index : int, size : int, keySearch : string = "") : Task<IActionResult>
+        + GetProjects() 
+        + GetAllProject(index : int, size : int, keySearch : string ) 
         + GetAllProjectIsPublishOfUser(userId : Guid, index : int, size : int, 
-        isPublish : bool, keySearch : string = "") : Task<IActionResult>
+        isPublish : bool, keySearch : string ) 
         + GetAllProjectIsPublishByUserIdClerk(userIdClerk : string, 
-        isPublish : bool, index : int, size : int, keySearch : string = "") : Task<IActionResult>
-        + GetProjectById(id : Guid) : Task<IActionResult>
-        + AddProject(newProject : AddProjectDto) : Task<IActionResult>
-        + AddProjectUserClerk(newProject : AddProjectClerkDto) : Task<IActionResult>
-        + UpdateProject(id : Guid, updateProject : UpdateProjectDto) : Task<IActionResult>
-        + DeleteProject(id : Guid) : Task<IActionResult>
+        isPublish : bool, index : int, size : int, keySearch : string ) 
+        + GetProjectById(id : Guid) 
+        + AddProject(newProject : AddProjectDto) 
+        + AddProjectUserClerk(newProject : AddProjectClerkDto) 
+        + UpdateProject(id : Guid, updateProject : UpdateProjectDto) 
+        + DeleteProject(id : Guid) 
     }
     !endsub
 
@@ -191,29 +149,22 @@ package pkgControllers <<Frame>> {
         - _scenarioRepo : IScenarioRepository
         - _projectRepo : IProjectRepository
         - _userRepo : IUserRepository
-        - _logger : ILogger<ScenariosController> 
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - _mapper : IMapper
-        - includes : string[]
 
-        + ScenariosController(scenarioRop : IScenarioRepository ,userRepo : IUserRepository ,
-          projectRepo : IProjectRepository ,mapper : IMapper ,logger : ILogger<ScenariosController> )
-        + GetScenarios() : Task<IActionResult>
-        + GetAllScenarios(index : int, size : int, keySearch : string = "") : Task<IActionResult>
-        + GetScenarioById(id : Guid) : Task<IActionResult>
-        + GetScenarioOfProject(projectId : Guid, createdBy : Guid, index : int, size : int, keySearch : string = "") : Task<IActionResult>
-        + GetScenarioOfProjectByUserClerk(projectId : Guid, userIdClerk : string, index : int, size : int, keySearch : string = "") : Task<IActionResult>
-        + GetAllScenarioByUserIdClerk(userIdClerk : string, index : int, size : int, keySearch : string) : Task<IActionResult>
-        + GetAllScenarioByUserId(userId : Guid, keySearch : string, index : int, size : int) : Task<IActionResult>
-        + AddScenario(newScenario : AddScenarioDto) : Task<IActionResult>
-        + AddScenarioByUserClerk(newScenario : AddScenarioUserClerkDto) : Task<IActionResult>
-        + UpdateScenario(id : Guid, updateScenario : UpdateScenarioDto) : Task<IActionResult>
-        + ToggleFavoriteScenario(id : Guid) : Task<IActionResult>
-        + UpdateWebJsonScenario(id : Guid, webjson : string) : Task<IActionResult>
-        + UpdateAndroidJsonScenario(id : Guid, androidjson : string) : Task<IActionResult>
-        + RenameScenario(id : Guid ,renameScenario : UpdateRenameScenarioDto ) : Task<IActionResult> 
-        + DeleteScenario(id : Guid ) : Task<IActionResult>
+        + GetScenarios() 
+        + GetAllScenarios(index : int, size : int, keySearch : string ) 
+        + GetScenarioById(id : Guid) 
+        + GetScenarioOfProject(projectId : Guid, createdBy : Guid, index : int, size : int, keySearch : string ) 
+        + GetScenarioOfProjectByUserClerk(projectId : Guid, userIdClerk : string, index : int, size : int, keySearch : string ) 
+        + GetAllScenarioByUserIdClerk(userIdClerk : string, index : int, size : int, keySearch : string) 
+        + GetAllScenarioByUserId(userId : Guid, keySearch : string, index : int, size : int) 
+        + AddScenario(newScenario : AddScenarioDto) 
+        + AddScenarioByUserClerk(newScenario : AddScenarioUserClerkDto) 
+        + UpdateScenario(id : Guid, updateScenario : UpdateScenarioDto) 
+        + ToggleFavoriteScenario(id : Guid) 
+        + UpdateWebJsonScenario(id : Guid, webjson : string) 
+        + UpdateAndroidJsonScenario(id : Guid, androidjson : string) 
+        + RenameScenario(id : Guid ,renameScenario : UpdateRenameScenarioDto )  
+        + DeleteScenario(id : Guid ) 
     }
     !endsub
 
@@ -221,22 +172,15 @@ package pkgControllers <<Frame>> {
     class SubscriptionPlansController    {
         - _subscriptionPlanRepo : ISubscriptionPlanRepository
         - _userRepository : IUserRepository
-        - _logger : ILogger<SubscriptionPlansController> 
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - _mapper : IMapper
-        - includes : string[]
-        + SubscriptionPlansController(subscriptionPlanRepo :ISubscriptionPlanRepository ,
-            userRepository : IUserRepository ,mapper :IMapper ,
-            logger : ILogger<SubscriptionPlansController> )
-        + GetSubscriptionPlans() : Task<IActionResult>
-        + GetAllSubsciptionPlan(index : int, size : int, keySearch : string) : Task<IActionResult>
-        + GetSubsciptionPlanById(id : Guid) : Task<IActionResult>
-        + AddSubsciptionPlan(newSubscription : AddSubscriptionPlanDto) : Task<IActionResult>
-        + AddSubsciptionPlanUserClerk(newSubscription : AddSubscriptionPlanUserClerkDto) : Task<IActionResult>
+
+        + GetSubscriptionPlans() 
+        + GetAllSubsciptionPlan(index : int, size : int, keySearch : string) 
+        + GetSubsciptionPlanById(id : Guid) 
+        + AddSubsciptionPlan(newSubscription : AddSubscriptionPlanDto) 
+        + AddSubsciptionPlanUserClerk(newSubscription : AddSubscriptionPlanUserClerkDto) 
         + UpdateSubscriptionPlan(id : Guid, 
-        updateSubsciption : UpdateSubscriptionPlanDto) : Task<IActionResult>
-        + DeleteSubsciptionPlan(id : Guid) : Task<IActionResult>
+        updateSubsciption : UpdateSubscriptionPlanDto) 
+        + DeleteSubsciptionPlan(id : Guid) 
     }
     !endsub
 
@@ -246,33 +190,30 @@ package pkgControllers <<Frame>> {
         - _userSubRepo : IUserSubscriptionRepository
         - _userRepo : IUserRepository
         - _subRepo : ISubscriptionPlanRepository
-        - _logger : ILogger<UserSubscriptionsController> 
-        - ITEM_PAGES_DEFAULT : int
-        - INDEX_DEFAULT : int
-        - _webhookSecretCheckoutSessionSucceeded : string = "";
-        - _webhookSecretInvoicePaymentSucceeded  : string = "";
-        - _webhookSecretCustomerSubsciptionDeleted : string = "";
-        - _mapper : IMapper
+        - _webhookSecretCheckoutSessionSucceeded : string ;
+        - _webhookSecretInvoicePaymentSucceeded  : string ;
+        - _webhookSecretCustomerSubsciptionDeleted : string ;
+        
         - includes : string[]
         + UserSubscriptionsController(userSubRepo  : IUserSubscriptionRepository,
            userRepo : IUserRepository ,subRepo : ISubscriptionPlanRepository ,
         IMapper mapper, logger : ILogger<UserSubscriptionsController>)
-        + GetUserSubscriptions() : Task<IActionResult>
-        + GetAllUserSubscription(index : int, size : int) : Task<IActionResult>
-        + GetAllUserSubsciptionOfUser(userId : Guid, index : int, size : int) : Task<IActionResult>
-        + GetAllUserSubsciptionOfUserClerk(userIdClerk : string, index : int, size : int) : Task<IActionResult>
-        + GetUserSubsciptionOfUserNoExpired(userId : Guid) : Task<IActionResult>
-        + GetUserSubsciptionOfUserClerkNoExpired(userIdClerk : string) : Task<IActionResult>
-        + CheckUserSubsciptionOfUserClerkNonExpired(userIdClerk : string) : Task<IActionResult>
-        + GetAllUserSubsciptionOfSubsciption(subId : Guid, index : int, size : int) : Task<IActionResult>
-        + GetUserSubsciptionById(id : Guid) : Task<IActionResult>
-        + AddUserSubsciption(newUserSub : AddUserSubsciptionDto) : Task<IActionResult>
-        + AddUserSubsciptionUserClerk(newUserSub : AddUserSubsciptionUserClerkDto) : Task<IActionResult>
-        + UpdateUserSubsciption(Id : Guid, updateUserSub : UpdateUserSubsciptionDto) : Task<IActionResult>
-        + DeleteUserSubsciption(Id : Guid) : Task<IActionResult>
-        + HandleStripeEventCheckoutCompleted() : Task<IActionResult> 
-        + HandleStripeEventInvoicePayment() : Task<IActionResult> 
-        + HandleStripeEventCustomerSubsciptionDeleted() : Task<IActionResult> 
+        + GetUserSubscriptions() 
+        + GetAllUserSubscription(index : int, size : int) 
+        + GetAllUserSubsciptionOfUser(userId : Guid, index : int, size : int) 
+        + GetAllUserSubsciptionOfUserClerk(userIdClerk : string, index : int, size : int) 
+        + GetUserSubsciptionOfUserNoExpired(userId : Guid) 
+        + GetUserSubsciptionOfUserClerkNoExpired(userIdClerk : string) 
+        + CheckUserSubsciptionOfUserClerkNonExpired(userIdClerk : string) 
+        + GetAllUserSubsciptionOfSubsciption(subId : Guid, index : int, size : int) 
+        + GetUserSubsciptionById(id : Guid) 
+        + AddUserSubsciption(newUserSub : AddUserSubsciptionDto) 
+        + AddUserSubsciptionUserClerk(newUserSub : AddUserSubsciptionUserClerkDto) 
+        + UpdateUserSubsciption(Id : Guid, updateUserSub : UpdateUserSubsciptionDto) 
+        + DeleteUserSubsciption(Id : Guid) 
+        + HandleStripeEventCheckoutCompleted()  
+        + HandleStripeEventInvoicePayment()  
+        + HandleStripeEventCustomerSubsciptionDeleted()  
     }
     !endsub
 }
