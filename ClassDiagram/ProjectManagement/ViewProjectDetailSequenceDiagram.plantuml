@@ -7,7 +7,7 @@ boundary "Project Management Page" as PPage
 participant "ProjectsController" as ProjectsController
 participant "IProjectRepository" as IProjectRepo
 participant "IMapper" as Mapper
-database "DbContext" as DbContext
+database "SqlServer" as DbContext
 
 U -> PPage : Request to get project (id)
 activate PPage

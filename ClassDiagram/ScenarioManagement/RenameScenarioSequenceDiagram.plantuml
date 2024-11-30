@@ -4,7 +4,7 @@ actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController
 participant "IScenarioRepository" as IScenarioRepo
-database "Database" as DB
+database "SqlServer" as DB
 
 U -> SPage : Enter Name and click save scenario
 activate SPage

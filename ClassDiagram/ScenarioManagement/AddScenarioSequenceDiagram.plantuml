@@ -7,7 +7,7 @@ participant "IUserRepository" as UserRepo
 participant "IProjectRepository" as ProjectRepo
 participant "IScenarioRepository" as ScenarioRepo
 participant "IMapper" as Mapper
-database "Database" as DB
+database "SqlServer" as DB
 
 U -> Client : Enter Title Scenario and click add
 activate Client

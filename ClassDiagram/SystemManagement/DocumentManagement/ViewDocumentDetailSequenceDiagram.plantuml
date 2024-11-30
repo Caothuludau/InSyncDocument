@@ -1,0 +1,50 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title View Document Detail Sequence Diagram
+
+actor "User" as U
+boundary "Document Management Page" as PPage
+participant "DocumentsController" as DocumentsController
+participant "SlugocumentRepository" as SlugocumentRepo
+participant "IMapper" as Mapper
+database "DbContext" as DbContext
+
+U -> PPage : Click to view Document detail (Slug)
+activate PPage
+
+PPage -> DocumentsController : Call GetDocumentBySlug(Slug)
+activate DocumentsController
+
+DocumentsController -> DocumentsController : ValSlugate ModelState
+alt ModelState invalSlug
+    DocumentsController -> PPage : Return Message BadRequest
+    deactivate PPage
+    deactivate DocumentsController
+else ValSlug ModelState
+    DocumentsController -> SlugocumentRepo : Get Document by Slug
+    activate SlugocumentRepo
+    SlugocumentRepo -> DbContext : Query Document from database by Slug
+    activate DbContext
+    DbContext --> SlugocumentRepo : Return Document data
+    deactivate DbContext
+    SlugocumentRepo --> DocumentsController : Return Document
+    deactivate SlugocumentRepo
+
+    alt Document found
+        DocumentsController -> Mapper : Map Document to ViewDocumentDto
+        activate Mapper
+        Mapper --> DocumentsController : Return ViewDocumentDto
+        deactivate Mapper
+        DocumentsController -> PPage : Return Data View Document
+        deactivate DocumentsController
+        PPage --> U : Show Document data
+        deactivate PPage
+    else Document not found
+        DocumentsController -> PPage : Return NotFound
+        deactivate PPage
+        deactivate DocumentsController
+    end
+end
+
+@enduml

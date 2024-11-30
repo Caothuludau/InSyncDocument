@@ -1,0 +1,51 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Add CategoryDocument for  Sequence Diagram
+
+actor "Admin" as U
+boundary "Document Management Page" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "CategoryDocumentsController" as CaDocController
+participant "ICategoryDocumentRepository" as ICaDocRepo
+
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Enter Data and Click Add
+activate Hp
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+    Author -> CaDocController : Call AddCategoryDocumentUser()
+    activate CaDocController
+    CaDocController -> CaDocController : Validate ModelState
+
+    CaDocController -> Mapper : Map AddCategoryDocumentDto to CategoryDocument
+    activate Mapper
+    Mapper --> CaDocController : Return mapped CategoryDocument
+    deactivate Mapper
+
+    CaDocController -> ICaDocRepo : Add CategoryDocument
+    activate ICaDocRepo
+    ICaDocRepo -> Db : Insert new CategoryDocument into database
+    activate Db
+    Db --> ICaDocRepo : Return new CategoryDocument data
+    deactivate Db
+    ICaDocRepo --> CaDocController : Return added CategoryDocument
+    deactivate ICaDocRepo
+
+    CaDocController -> Hp : Return success response 200
+    deactivate CaDocController
+    Hp --> U : Show success message
+    
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+
+
+@enduml

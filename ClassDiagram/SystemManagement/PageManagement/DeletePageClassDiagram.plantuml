@@ -1,0 +1,57 @@
+@startuml AddPageClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+Title Add Page Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgAddPage <<Frame>> {  
+    'include controller'
+    !includesub ../../ControllersClassDiagram.plantuml!PagesController
+    !includesub ../../ControllersClassDiagram.plantuml!ControllerBase
+    !includesub ../../ControllersClassDiagram.plantuml!AdminAuthorizationAttribute
+
+    
+    'include Repository'
+    !includesub ../../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!IPageRepository
+    !includesub ../../RepositoriesClassDiagram.plantuml!PageRepository
+    'include Dto'
+    !includesub ../../ModelsClassDiagram.plantuml!Page
+
+
+    'set up realation ship' 
+    ControllerBase <|-- PagesController
+
+
+    IRepositoryBase <|.. RepositoryBase
+    IPageRepository <|.. PageRepository
+    PageRepository o-- Page
+
+
+    IRepositoryBase <|-- IPageRepository 
+    RepositoryBase <|-- PageRepository
+
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    PagesController o-- IPageRepository
+    PagesController o-- IMapper
+    PagesController ..> AdminAuthorizationAttribute : use
+
+
+
+
+}

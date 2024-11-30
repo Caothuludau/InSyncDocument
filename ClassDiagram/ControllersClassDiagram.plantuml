@@ -55,8 +55,8 @@ package pkgControllers <<Frame>> {
     }
     !endsub
 
-    !startsub CategoryDocumentController
-    class CategoryDocumentController  <<controller>>  {
+    !startsub CategoryDocumentsController
+    class CategoryDocumentsController  <<controller>>  {
         - _cateRepo : ICustomerReviewRepository
         
         + GetCategoryDocuments() 
@@ -215,6 +215,12 @@ package pkgControllers <<Frame>> {
         + HandleStripeEventCheckoutCompleted()  
         + HandleStripeEventInvoicePayment()  
         + HandleStripeEventCustomerSubsciptionDeleted()  
+    }
+!endsub
+    !startsub   AdminAuthorizationAttribute
+    class AdminAuthorizationAttribute {
+        - string _requiredRole = "admin"
+        + OnAuthorizationAsync(context: AuthorizationFilterContext): Task
     }
     !endsub
 }

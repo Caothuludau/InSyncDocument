@@ -1,0 +1,68 @@
+@startuml
+skinparam clDocAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Upload Document for Sequence Diagram
+
+actor "Admin" as U
+boundary "Document Management Page" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "DocumentsController" as DocController
+participant "IDocumentRepository" as IDocRepo
+participant "ICategoryRepository" as IDocumentRepo
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Enter Data and Click button to Save Document
+activate Hp
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+
+    Author -> DocController : Call AddDocument(newDocument)
+    activate DocController
+    DocController -> DocController : Validate ModelState
+    DocController -> DocController : Check if Category DocumentId exists
+    alt Category not found
+        DocController --> Hp : Return Notification Error 400
+        deactivate DocController
+        Hp --> U : Notification message error
+    else Category Document found
+        DocController -> IDocumentRepo : Check if Document exists by DocumentId
+        activate IDocumentRepo
+        IDocumentRepo -> Db : Fetch Document by DocumentId
+        activate Db
+        Db --> IDocumentRepo : Return Document data
+        deactivate Db
+        IDocumentRepo --> DocController : Return Document data
+        deactivate IDocumentRepo
+
+        DocController -> Mapper : Map AddDocumentDto to Document
+        activate Mapper
+        Mapper --> DocController : Return mapped Document
+        deactivate Mapper
+
+        DocController -> IDocRepo : Add Document
+        activate IDocRepo
+        IDocRepo -> Db : Insert new Document into database
+        activate Db
+        Db --> IDocRepo : Return new Document data
+        deactivate Db
+        IDocRepo --> DocController : Return Added Document
+        deactivate IDocRepo
+
+        DocController -> Hp : Return success response 200
+        deactivate DocController
+        
+        Hp --> U : Show success message
+
+    end
+ else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+deactivate Hp
+
+@enduml

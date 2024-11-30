@@ -1,0 +1,52 @@
+@startuml OverviewScreenSequenceDiagram
+skinparam SequenceMessageAlignment center
+title Overview Screen Sequence Diagram 
+
+actor Admin as A
+participant "OverviewPage (Client)" as FE
+participant "API Route (/api/overview)" as API
+participant "ClerkService" as CS
+participant "ClerkDatabase" as ClerkDB
+participant "StripeService" as SS
+participant "StripeDatabase" as StripeDB
+
+A -> FE: Open Overview Screen
+FE -> API: GET /api/overview
+activate API
+
+' Clerk Service Logic
+API -> ClerkDB: Query Recent Logins (limit)
+ClerkDB --> API: List of Recent Users
+
+API -> ClerkDB: Query New Registrations (lastNDays)
+ClerkDB --> API: List of New Users
+
+API -> ClerkDB: Query Total User Count
+ClerkDB --> API: Total User Count
+
+' Stripe Service Logic
+API -> StripeDB: Query Cached Revenue Data (lastNDays)
+alt Data in Cache
+    StripeDB --> API: Return Cached Revenue Data
+else No Data in Cache
+    API -> SS: fetchRevenueData(lastNDays)
+    activate SS
+    SS -> StripeDB: Query Revenue for Registered Users
+    activate StripeDB
+    StripeDB -> SS: Revenue Data
+    deactivate StripeDB
+
+    SS -> StripeDB: Query Revenue for New Customers
+    activate StripeDB
+    StripeDB -> SS: Revenue Data
+    deactivate StripeDB
+    SS --> API: Revenue Report
+    API -> StripeDB: Save Revenue Data to Cache
+    deactivate SS
+end
+
+API --> FE: JSON Response with Overview Data
+deactivate API
+
+FE -> A: Display Recent Logins, New Users, Total Users, Revenue Report
+@enduml

@@ -1,0 +1,49 @@
+@startuml
+skinparam classAttributeIconSize 0
+Title Get Page By slug Sequence Diagram
+
+actor "User" as U
+boundary "Screen Page Management " as PPage
+participant "PagesController" as PagesController
+participant "IPageRepository" as IPageRepo
+participant "IMapper" as Mapper
+database "SqlServer" as DbContext
+
+U -> PPage : Request to get Page (slug)
+activate PPage
+
+PPage -> PagesController : Call GetPageByslug(slug)
+activate PagesController
+
+PagesController -> PagesController : Valslugate ModelState
+alt ModelState invalslug
+    PagesController --> PPage : Return Message BadRequest
+    deactivate PPage
+    deactivate PagesController
+else Valslug ModelState
+    PagesController -> IPageRepo : Get Page by slug
+    activate IPageRepo
+    IPageRepo -> DbContext : Query Page from database by slug
+    activate DbContext
+    DbContext --> IPageRepo : Return Page data
+    deactivate DbContext
+    IPageRepo --> PagesController : Return data Page
+    deactivate IPageRepo
+
+    alt Page found
+        PagesController -> Mapper : Map Page to ViewPageDto
+        activate Mapper
+        Mapper --> PagesController : Return ViewPageDto
+        deactivate Mapper
+        PagesController --> PPage : Return Data View Page
+        deactivate PagesController
+        PPage --> U : Show Page data
+        deactivate PPage
+    else Page not found
+        PagesController --> PPage : Return NotFound
+        deactivate PPage
+        deactivate PagesController
+    end
+end
+
+@enduml

@@ -5,7 +5,7 @@ boundary "Screen " as Screen
 participant "ScenariosController" as SC
 participant "IScenarioRepository" as Repo
 participant "IMapper" as Mapper
-database "Database" as DB
+database "SqlServer" as DB
 
 U -> Screen : Click choose scenario
 activate Screen

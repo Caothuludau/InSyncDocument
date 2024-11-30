@@ -1,0 +1,60 @@
+@startumlView AllDocumentsAdminSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title View All Documents Admin Sequence Diagram
+
+actor "Admin" as U
+boundary "Document Management Page" as PPage
+participant "DocumentsController" as DocumentsController
+participant "IDocumentRepository" as IDocumentRepo
+participant "IMapper" as Mapper
+participant "ResponsePaging" as ResponsePaging
+database "SqlServer" as DbContext
+
+
+U -> PPage : Go to Document Management Admin
+activate PPage
+
+PPage -> DocumentsController : Call GetAllDocument()
+activate DocumentsController
+
+
+    DocumentsController -> DocumentsController : Check if index or size are provided
+    alt No pagination parameters (index, size)
+        DocumentsController -> IDocumentRepo : Get all Documents by name search
+        activate IDocumentRepo
+        IDocumentRepo -> DbContext : Query all Documents based on search key
+        activate DbContext
+        DbContext --> IDocumentRepo : Return list of Documents
+        deactivate DbContext
+        IDocumentRepo --> DocumentsController : Return list of Documents
+        deactivate IDocumentRepo
+        DocumentsController -> DocumentsController : Count total Documents
+    else Pagination parameters provided (index, size)
+        DocumentsController -> IDocumentRepo : Get paginated Documents by name search
+        activate IDocumentRepo
+        IDocumentRepo -> DbContext : Query paginated Documents based on search key
+        activate DbContext
+        DbContext --> IDocumentRepo : Return paginated list of Documents
+        deactivate DbContext
+        IDocumentRepo --> DocumentsController : Return paginated list of Documents and total count
+        deactivate IDocumentRepo
+    end
+
+    DocumentsController -> Mapper : Map Documents to ViewDocumentDtos
+    activate Mapper
+    Mapper --> DocumentsController : Return mapped ViewDocumentDto list
+    deactivate Mapper
+
+    DocumentsController -> ResponsePaging : Create response paging object
+    activate ResponsePaging
+    ResponsePaging --> DocumentsController : Return ResponsePaging object with data and total count
+    deactivate ResponsePaging
+    DocumentsController -> PPage : Return Ok(ResponsePaging)
+    deactivate DocumentsController
+    PPage --> U : Show Documents with pagination
+    deactivate PPage
+
+
+
+@enduml
