@@ -1,0 +1,25 @@
+@startuml UserManagementSequenceDiagram
+skinparam SequenceMessageAlignment center
+title User Management Sequence Diagram (Integration with Clerk)
+
+actor Admin as A
+participant "Admin Dashboard (UI)" as UI
+participant "UserManagementController" as Controller
+participant "ClerkService" as Service
+participant "ClerkAPI" as API
+
+A -> UI: Access User Management
+UI -> Controller: Request Redirect to Clerk Admin (userId)
+activate Controller
+Controller -> Service: GenerateAdminLink(userId)
+activate Service
+Service -> API: CreateAdminLink(userId)
+activate API
+API --> Service: Admin Link (URL)
+deactivate API
+Service --> Controller: Admin Link (URL)
+deactivate Service
+Controller --> UI: Redirect to Clerk Admin URL
+deactivate Controller
+UI -> A: Open Clerk Admin Page
+@enduml

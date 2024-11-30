@@ -1,7 +1,7 @@
-@startuml ViewProjectDetailClassDiagram
+@startuml ViewListProjectClassDiagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-Title View Project Detail Class Diagram
+Title View List Project Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -14,7 +14,7 @@ Title View Project Detail Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgViewProjectDetail <<Frame>> {  
+package pkgViewListProject <<Frame>> {  
     'include controller'
     !includesub ../../ControllersClassDiagram.plantuml!ProjectsController
     !includesub ../../ControllersClassDiagram.plantuml!ControllerBase

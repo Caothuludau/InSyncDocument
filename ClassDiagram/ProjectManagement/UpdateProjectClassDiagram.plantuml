@@ -18,6 +18,7 @@ package pkgUpdateProject <<Frame>> {
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!ProjectsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
+    !includesub ../ControllersClassDiagram.plantuml!AdminAuthorizationAttribute
 
     
     'include Repository'
@@ -27,30 +28,36 @@ package pkgUpdateProject <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
     !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
     !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
+        !includesub ../RepositoriesClassDiagram.plantuml!IUserRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!UserRepository
     'include Dto'
     !includesub ../DtosClassDiagram.plantuml!UpdateProjectDto
     !includesub ../ModelsClassDiagram.plantuml!Project
-
+    !includesub ../ModelsClassDiagram.plantuml!User
 
 
     'set up realation ship' 
     ControllerBase <|-- ProjectsController
 
-    ProjectsController ..> UpdateProjectDto : input update project
+    ProjectsController ..> UpdateProjectDto : Input Update Project
 
     IRepositoryBase <|.. RepositoryBase
     IProjectRepository <|.. ProjectRepository
+    IUserRepository <|.. UserRepository
     ProjectRepository o-- Project
-
+    UserRepository o-- User
 
     IRepositoryBase <|-- IProjectRepository 
     RepositoryBase <|-- ProjectRepository
-
+    IRepositoryBase <|-- IUserRepository 
+    RepositoryBase <|-- UserRepository
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
     ProjectsController o-- IProjectRepository
+    ProjectsController o-- IUserRepository
     ProjectsController o-- IMapper
+    ProjectsController ..> AdminAuthorizationAttribute : use
 
 
 

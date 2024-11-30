@@ -1,7 +1,7 @@
-@startuml AddPageClassDiagram
+@startuml ViewPageDetailClassDiagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-Title Add Page Class Diagram
+Title View Page Detail Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -14,11 +14,10 @@ Title Add Page Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgAddPage <<Frame>> {  
+package pkgViewPageDetail <<Frame>> {  
     'include controller'
     !includesub ../../ControllersClassDiagram.plantuml!PagesController
     !includesub ../../ControllersClassDiagram.plantuml!ControllerBase
-    !includesub ../../ControllersClassDiagram.plantuml!AdminAuthorizationAttribute
 
     
     'include Repository'
@@ -28,15 +27,19 @@ package pkgAddPage <<Frame>> {
     !includesub ../../RepositoriesClassDiagram.plantuml!InSyncContext
     !includesub ../../RepositoriesClassDiagram.plantuml!IPageRepository
     !includesub ../../RepositoriesClassDiagram.plantuml!PageRepository
+
     'include Dto'
-    !includesub ../../DtosClassDiagram.plantuml!AddPageDto
+    !includesub ../../DtosClassDiagram.plantuml!ViewPageDto
     !includesub ../../ModelsClassDiagram.plantuml!Page
+
+
 
 
     'set up realation ship' 
     ControllerBase <|-- PagesController
 
-    PagesController ..> AddPageDto : Input add Page
+    PagesController ..> ViewPageDto : return views
+
 
     IRepositoryBase <|.. RepositoryBase
     IPageRepository <|.. PageRepository
@@ -51,9 +54,4 @@ package pkgAddPage <<Frame>> {
     RepositoryBase o-- InSyncContext
     PagesController o-- IPageRepository
     PagesController o-- IMapper
-    PagesController ..> AdminAuthorizationAttribute : use
-
-
-
-
 }

@@ -1,0 +1,66 @@
+@startuml DeleteSubscriptionPlanSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Delete SubscriptionPlan Sequence Diagram
+
+actor "User" as U
+boundary "SubscriptionPlan Management SubscriptionPlan" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "SubscriptionPlansController" as SubscriptionPlanController
+participant "ISubscriptionPlanRepository" as ISubscriptionPlanRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+
+U -> Hp : Click button to delete SubscriptionPlan
+activate Hp
+
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+
+        Author -> SubscriptionPlanController : Call DeleteSubscriptionPlan()
+        activate SubscriptionPlanController
+
+        SubscriptionPlanController -> ISubscriptionPlanRepo : Check if SubscriptionPlan exists (CheckContainsAsync)
+        activate ISubscriptionPlanRepo
+        ISubscriptionPlanRepo -> ISContext : Query database for SubscriptionPlan existence
+        activate ISContext
+        ISContext -> Db : Check if SubscriptionPlan with ID exists in SQL Server
+        activate Db
+        Db --> ISContext : Return SubscriptionPlan existence status
+        deactivate Db
+        ISContext --> ISubscriptionPlanRepo : Return existence status
+        deactivate ISContext
+        ISubscriptionPlanRepo --> SubscriptionPlanController : Return SubscriptionPlan existence status
+        deactivate ISubscriptionPlanRepo
+
+        alt SubscriptionPlan exists
+            SubscriptionPlanController -> ISubscriptionPlanRepo : Call DeleteSubscriptionPlan(id)
+            activate ISubscriptionPlanRepo
+            ISubscriptionPlanRepo -> ISContext : Delete SubscriptionPlan
+            activate ISContext
+            ISContext -> Db : Delete SubscriptionPlan from SQL Server
+            activate Db
+            Db --> ISContext : Delete success
+            deactivate Db
+            ISContext --> ISubscriptionPlanRepo : Return delete success
+            deactivate ISContext
+            ISubscriptionPlanRepo --> SubscriptionPlanController : Return delete success
+            deactivate ISubscriptionPlanRepo
+            SubscriptionPlanController --> Hp : Return success response (SubscriptionPlan deleted)
+            
+            Hp --> U : Notify user (SubscriptionPlan deleted successfully)
+        else SubscriptionPlan does not exist
+            SubscriptionPlanController --> Hp : Return error response (Not Found)
+            deactivate SubscriptionPlanController
+            Hp --> U : Notify user (SubscriptionPlan not found)
+        end
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+deactivate Hp
+@enduml

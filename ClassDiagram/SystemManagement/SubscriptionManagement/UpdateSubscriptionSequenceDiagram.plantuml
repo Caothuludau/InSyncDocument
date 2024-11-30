@@ -1,0 +1,51 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Update SubscriptionPlan for  Sequence Diagram
+
+actor "Admin" as U
+boundary "Document Management SubscriptionPlan" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "SubscriptionPlansController" as SubscriptionPlanController
+participant "ISubscriptionPlanRepository" as ISubscriptionPlanRepo
+
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Enter Data and Click Update
+activate Hp
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+    Author -> SubscriptionPlanController : Call UpdateSubscriptionPlan()
+    activate SubscriptionPlanController
+    SubscriptionPlanController -> SubscriptionPlanController : Validate ModelState
+
+    SubscriptionPlanController -> Mapper : Map UpdateSubscriptionPlanDto to SubscriptionPlan
+    activate Mapper
+    Mapper --> SubscriptionPlanController : Return mapped SubscriptionPlan
+    deactivate Mapper
+
+    SubscriptionPlanController -> ISubscriptionPlanRepo : Update SubscriptionPlan
+    activate ISubscriptionPlanRepo
+    ISubscriptionPlanRepo -> Db : Update SubscriptionPlan into database
+    activate Db
+    Db --> ISubscriptionPlanRepo : Return update SubscriptionPlan data
+    deactivate Db
+    ISubscriptionPlanRepo --> SubscriptionPlanController : Return Updated SubscriptionPlan
+    deactivate ISubscriptionPlanRepo
+
+    SubscriptionPlanController -> Hp : Return success response 200
+    deactivate SubscriptionPlanController
+    Hp --> U : Show success message
+    
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+
+
+@enduml
