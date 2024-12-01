@@ -17,9 +17,8 @@ activate ProjectsController
 
 ProjectsController -> ProjectsController : Validate ModelState
 alt ModelState invalid
-    ProjectsController -> PPage : Return Message BadRequest
-    deactivate PPage
-    deactivate ProjectsController
+    ProjectsController --> PPage : Return Message BadRequest
+    PPage --> U : Show message error
 else Valid ModelState
     ProjectsController -> IProjectRepo : Get project by ID
     activate IProjectRepo
@@ -27,7 +26,7 @@ else Valid ModelState
     activate DbContext
     DbContext --> IProjectRepo : Return project data
     deactivate DbContext
-    IProjectRepo --> ProjectsController : Return project
+    IProjectRepo --> ProjectsController : Return project or null
     deactivate IProjectRepo
 
     alt Project found
@@ -35,12 +34,13 @@ else Valid ModelState
         activate Mapper
         Mapper --> ProjectsController : Return ViewProjectDto
         deactivate Mapper
-        ProjectsController -> PPage : Return Data View Project
+        ProjectsController --> PPage : Return Data View Project
         deactivate ProjectsController
         PPage --> U : Show project data
         deactivate PPage
     else Project not found
-        ProjectsController -> PPage : Return NotFound
+        ProjectsController --> PPage : Return NotFound
+        
         deactivate PPage
         deactivate ProjectsController
     end

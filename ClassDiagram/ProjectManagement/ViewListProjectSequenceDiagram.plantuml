@@ -29,7 +29,6 @@ activate ProjectsController
         deactivate DbContext
         IProjectRepo --> ProjectsController : Return list of projects
         deactivate IProjectRepo
-        ProjectsController -> ProjectsController : Count total projects
     else Pagination parameters provided (index, size)
         ProjectsController -> IProjectRepo : Get paginated projects by name search
         activate IProjectRepo
@@ -50,7 +49,7 @@ activate ProjectsController
     activate ResponsePaging
     ResponsePaging --> ProjectsController : Return ResponsePaging object with data and total count
     deactivate ResponsePaging
-    ProjectsController -> PPage : Return Ok(ResponsePaging)
+    ProjectsController --> PPage : Return response
     deactivate ProjectsController
     PPage --> U : Show projects with pagination
     deactivate PPage

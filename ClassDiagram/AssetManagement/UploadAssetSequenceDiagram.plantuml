@@ -24,10 +24,15 @@ alt upload result success
     Hp -> AssController : Call AddAsset(newAsset)
     activate AssController
     AssController -> AssController : Validate ModelState
-    AssController -> AssController : Check if ProjectId exists
+    AssController -> IProjectRepo : Check if ProjectId exists CheckContain()
+    activate IProjectRepo
+    IProjectRepo -> Db : Excute query in table Project database
+    activate Db
+    Db --> IProjectRepo : Return result
+    deactivate Db
+    IProjectRepo --> AssController : Return status exist project(true/false)
     alt Project not found
         AssController -> Hp : Return Notification Error 400
-        deactivate AssController
     else Project found
         AssController -> IProjectRepo : Check if project exists by ProjectId
         activate IProjectRepo

@@ -16,11 +16,10 @@ activate PPage
 PPage -> DocumentsController : Call GetDocumentBySlug(Slug)
 activate DocumentsController
 
-DocumentsController -> DocumentsController : ValSlugate ModelState
+DocumentsController -> DocumentsController : Validate Slug ModelState
 alt ModelState invalSlug
-    DocumentsController -> PPage : Return Message BadRequest
-    deactivate PPage
-    deactivate DocumentsController
+    DocumentsController --> PPage : Return Message BadRequest
+    PPage --> U : Show error message
 else ValSlug ModelState
     DocumentsController -> SlugocumentRepo : Get Document by Slug
     activate SlugocumentRepo
@@ -36,12 +35,11 @@ else ValSlug ModelState
         activate Mapper
         Mapper --> DocumentsController : Return ViewDocumentDto
         deactivate Mapper
-        DocumentsController -> PPage : Return Data View Document
-        deactivate DocumentsController
+        DocumentsController --> PPage : Return Data View Document
         PPage --> U : Show Document data
-        deactivate PPage
     else Document not found
-        DocumentsController -> PPage : Return NotFound
+        DocumentsController --> PPage : Return NotFound
+        PPage --> U : Show message not found
         deactivate PPage
         deactivate DocumentsController
     end

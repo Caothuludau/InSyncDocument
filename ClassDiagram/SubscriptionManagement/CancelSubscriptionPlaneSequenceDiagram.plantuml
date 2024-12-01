@@ -15,7 +15,7 @@ API -> API: Fetch Subscription Details
 API --> FE: Return Subscription Details
 deactivate API
 
-FE -> U: Display Subscription Info
+FE --> U: Display Subscription Info
 U -> FE: Confirms Cancellation
 FE -> API: cancelSubscription(subscriptionId, atPeriodEnd)
 activate API
@@ -25,9 +25,9 @@ deactivate API
 
 FE -> DB: Update Subscription Status
 activate DB
-DB -> DB: Save Updated Status
+DB --> FE: Return message success
 deactivate DB
 
-FE -> U: Display Cancellation Confirmation
+FE --> U: Display message success
 deactivate FE
 @enduml

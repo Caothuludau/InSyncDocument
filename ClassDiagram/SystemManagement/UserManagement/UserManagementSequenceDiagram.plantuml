@@ -21,5 +21,5 @@ Service --> Controller: Admin Link (URL)
 deactivate Service
 Controller --> UI: Redirect to Clerk Admin URL
 deactivate Controller
-UI -> A: Open Clerk Admin Page
+UI --> A: Open Clerk Admin Page
 @enduml

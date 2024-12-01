@@ -23,7 +23,9 @@ Stripe --> API : Return price data
 deactivate Stripe
 
 API -> Plan : Map products and prices to Plan objects
+activate Plan
 Plan --> API : Return list of Plan objects
+deactivate Plan
 API --> Page : Return data to view
 deactivate API
 

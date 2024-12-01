@@ -30,7 +30,7 @@ Service -> Service : Map data to LogModel[]
 Service --> Page : Return LogModel[]
 deactivate Service
 
-Page -> U : Render list of Logs
+Page --> U : Render list of Logs
 deactivate Page
 
 @enduml

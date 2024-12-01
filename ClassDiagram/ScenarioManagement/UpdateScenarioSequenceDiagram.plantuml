@@ -17,11 +17,13 @@ activate SC
 
     SC -> SC : Validate ModelState
     alt Invalid ModelState
-        SC -> Screen : Show validation errors
+        SC --> Screen : Show validation errors
+        Screen --> U : Show error message
     else Valid ModelState
-        SC -> SC : Check if IDs match (id == UpdateScenarioDto.Id)
+        SC -> SC : Check if IDs match 
         alt ID mismatch
-            SC -> Screen : Show error ("Scenario ID information does not match")
+            SC --> Screen : Return message error id not match
+            Screen --> U : Show error message
         else ID matches
             SC -> Repo : Get scenario by ID
             activate Repo
@@ -29,11 +31,12 @@ activate SC
             activate DB
             DB --> Repo : Return scenario or null
             deactivate DB
-            Repo --> SC : Return existing scenario
+            Repo --> SC : Return existing scenario or null
             deactivate Repo
 
             alt Scenario not found
-                SC -> Screen : Show error ("Scenario not found")
+                SC --> Screen : Return error "Scenario not found"
+                Screen --> U : Show error message
             else Scenario found
                 SC -> SC : Update DateUpdated
                 SC -> Mapper : Map UpdateScenarioDto to existing scenario
@@ -51,9 +54,11 @@ activate SC
                 deactivate Repo
 
                 alt Update successful 
-                    SC -> Screen : Show success message
+                    SC --> Screen : Return success message
+                    Screen --> U : Show success message
                 else Update failed
-                    SC -> Screen : Show error ("Error updating scenario")
+                    SC --> Screen : Return error ("Error updating scenario")
+                    Screen --> U : Show error message
                 end
             end
         end

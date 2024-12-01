@@ -18,8 +18,7 @@ activate SubscriptionPlansController
 SubscriptionPlansController -> SubscriptionPlansController : Valslugate ModelState
 alt ModelState invalslug
     SubscriptionPlansController --> PSubscriptionPlan : Return Message BadRequest
-    deactivate PSubscriptionPlan
-    deactivate SubscriptionPlansController
+    PSubscriptionPlan --> U : Show message error
 else Valslug ModelState
     SubscriptionPlansController -> ISubscriptionPlanRepo : Get SubscriptionPlan by slug
     activate ISubscriptionPlanRepo
@@ -36,11 +35,11 @@ else Valslug ModelState
         Mapper --> SubscriptionPlansController : Return ViewSubscriptionPlanDto
         deactivate Mapper
         SubscriptionPlansController --> PSubscriptionPlan : Return Data View SubscriptionPlan
-        deactivate SubscriptionPlansController
         PSubscriptionPlan --> U : Show SubscriptionPlan data
-        deactivate PSubscriptionPlan
+
     else SubscriptionPlan not found
         SubscriptionPlansController --> PSubscriptionPlan : Return NotFound
+        PSubscriptionPlan --> U : Show message Error
         deactivate PSubscriptionPlan
         deactivate SubscriptionPlansController
     end

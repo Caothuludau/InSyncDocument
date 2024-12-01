@@ -29,7 +29,6 @@ activate DocumentsController
         deactivate DbContext
         IDocumentRepo --> DocumentsController : Return list of Documents matching
         deactivate IDocumentRepo
-        DocumentsController -> DocumentsController : Count total Documents
     else Pagination parameters provided (index, size)
         DocumentsController -> IDocumentRepo : Get paginated Documents of category_id
         activate IDocumentRepo
@@ -50,7 +49,7 @@ activate DocumentsController
     activate ResponsePaging
     ResponsePaging --> DocumentsController : Return ResponsePaging object with data and total count
     deactivate ResponsePaging
-    DocumentsController -> PPage : Return Ok(ResponsePaging)
+    DocumentsController --> PPage : Return success response
     deactivate DocumentsController
     PPage --> U : Show Documents with pagination
     deactivate PPage

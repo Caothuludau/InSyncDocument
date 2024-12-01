@@ -16,7 +16,7 @@ activate Hp
 Hp -> ProController : Call DeleteAsset(id)
 activate ProController
 
-ProController -> IProRepo : Check if asset exists (CheckContainsAsync)
+ProController -> IProRepo : Check if asset exists (CheckContains)
 activate IProRepo
 IProRepo -> ISContext : Query database for asset existence
 activate ISContext

@@ -19,7 +19,7 @@ activate ProController
 ProController -> ProController : Validate ModelState
 ProController -> ProController : Check if id matches updateAsset.Id
 alt ID mismatch
-    ProController -> Hp : Return Message Erorr, 400
+    ProController --> Hp : Return Message Erorr, 400
 
     Hp --> U : Notification error   
 else ID matches
@@ -27,18 +27,17 @@ else ID matches
     activate IProRepo
     IProRepo -> ISContext : Get Asset by ID
     activate ISContext
-    ISContext -> Db : Fetch Asset data by ID
+    ISContext -> Db : Excute query in table Asset 
     activate Db
     Db --> ISContext : Return Asset data
     deactivate Db
-    ISContext --> IProRepo : Return Asset
+    ISContext --> IProRepo : Return data Asset
     deactivate ISContext
-    IProRepo --> ProController : Return Asset
+    IProRepo --> ProController : Return status exist Asset
     deactivate IProRepo
 
-    ProController -> ProController : Check if existingAsset is null
     alt Asset not found
-        ProController -> Hp : Return Message Not Found 404
+        ProController --> Hp : Return Message Not Found 404
         Hp --> U : Notification error
     else Asset exists
         ProController -> Mapper : Map updateAssetDto to existing Asset

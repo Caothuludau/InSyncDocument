@@ -29,7 +29,6 @@ activate SubscriptionPlansController
         deactivate DbContext
         ISubscriptionPlanRepo --> SubscriptionPlansController : Return list of SubscriptionPlans
         deactivate ISubscriptionPlanRepo
-        SubscriptionPlansController -> SubscriptionPlansController : Count total SubscriptionPlans
     else Pagination parameters provided (index, size)
         SubscriptionPlansController -> ISubscriptionPlanRepo : Get paginated SubscriptionPlans by name search
         activate ISubscriptionPlanRepo
@@ -50,7 +49,7 @@ activate SubscriptionPlansController
     activate ResponsePaging
     ResponsePaging --> SubscriptionPlansController : Return ResponsePaging object with data and total count
     deactivate ResponsePaging
-    SubscriptionPlansController -> PSubscriptionPlan : Return Ok(ResponsePaging)
+    SubscriptionPlansController -> PSubscriptionPlan : Return data response
     deactivate SubscriptionPlansController
     PSubscriptionPlan --> U : Show SubscriptionPlans with pagination
     deactivate PSubscriptionPlan

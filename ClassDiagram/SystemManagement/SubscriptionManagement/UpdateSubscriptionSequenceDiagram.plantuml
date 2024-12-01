@@ -35,7 +35,7 @@ alt Request with token role admin
     ISubscriptionPlanRepo --> SubscriptionPlanController : Return Updated SubscriptionPlan
     deactivate ISubscriptionPlanRepo
 
-    SubscriptionPlanController -> Hp : Return success response 200
+    SubscriptionPlanController --> Hp : Return success response 200
     deactivate SubscriptionPlanController
     Hp --> U : Show success message
     

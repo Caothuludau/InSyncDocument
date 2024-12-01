@@ -29,7 +29,6 @@ activate PagesController
         deactivate DbContext
         IPageRepo --> PagesController : Return list of Pages
         deactivate IPageRepo
-        PagesController -> PagesController : Count total Pages
     else Pagination parameters provided (index, size)
         PagesController -> IPageRepo : Get paginated Pages by name search
         activate IPageRepo
@@ -50,7 +49,7 @@ activate PagesController
     activate ResponsePaging
     ResponsePaging --> PagesController : Return ResponsePaging object with data and total count
     deactivate ResponsePaging
-    PagesController -> PPage : Return Ok(ResponsePaging)
+    PagesController --> PPage : Return data response
     deactivate PagesController
     PPage --> U : Show Pages with pagination
     deactivate PPage

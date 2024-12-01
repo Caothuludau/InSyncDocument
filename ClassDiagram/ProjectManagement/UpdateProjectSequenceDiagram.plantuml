@@ -19,7 +19,7 @@ activate ProController
 ProController -> ProController : Validate ModelState
 ProController -> ProController : Check if id matches updateProject.Id
 alt ID mismatch
-    ProController -> Hp : Return error message 400
+    ProController --> Hp : Return error message 400
 
     Hp --> U : Notification error   
 else ID matches
@@ -31,14 +31,13 @@ else ID matches
     activate Db
     Db --> ISContext : Return project data
     deactivate Db
-    ISContext --> IProRepo : Return project
+    ISContext --> IProRepo : Return data retrieve
     deactivate ISContext
-    IProRepo --> ProController : Return project
+    IProRepo --> ProController : Return status exist(true/false)
     deactivate IProRepo
 
-    ProController -> ProController : Check if existingProject is null
     alt Project not found
-        ProController -> Hp : Return Message NotFound 404
+        ProController --> Hp : Return Message NotFound 404
         Hp --> U : Notification error
     else Project exists
         ProController -> Mapper : Map updateProjectDto to existing project

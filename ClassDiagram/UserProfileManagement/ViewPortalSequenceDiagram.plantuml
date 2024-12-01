@@ -22,7 +22,7 @@ deactivate StripeDB
 BillingService --> PortalScreen: sessionUrl
 deactivate BillingService
 
-PortalScreen -> UserActor: Redirect to sessionUrl
+PortalScreen --> UserActor: Redirect to sessionUrl
 
 UserActor -> PortalScreen: Access portal via sessionUrl
 activate PortalScreen
@@ -42,7 +42,7 @@ alt Session Valid
 
   BillingService --> PortalRenderer: Render portal view
   activate PortalRenderer
-  PortalRenderer -> UserActor: Display portal view (subscription, payment methods, invoices)
+  PortalRenderer --> UserActor: Display portal view (subscription, payment methods, invoices)
   deactivate PortalRenderer
 else Session Invalid/Expired
   BillingService --> PortalScreen: Error message (Session expired or invalid)

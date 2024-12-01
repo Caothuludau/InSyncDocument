@@ -27,18 +27,19 @@ StripeAPI --> BillingService: BillingInformation
 deactivate StripeAPI
 
 BillingService --> PortalViewScreen: BillingInformation
-PortalViewScreen -> UserActor: Display current billing information
+PortalViewScreen --> UserActor: Display current billing information
 deactivate BillingService
 
 ' == User Updates Billing Information ==
 UserActor -> PortalViewScreen: Submit updated billing information
-activate PortalViewScreen
+
 
 PortalViewScreen -> BillingService: updateUserBillingInformation(customerId, updatedBillingInfo)
 activate BillingService
 
 BillingService -> StripeAPI: Update billing information
 activate StripeAPI
+
 
 StripeAPI -> StripeDB: UPDATE billing info WHERE customerId
 activate StripeDB
@@ -49,7 +50,8 @@ StripeAPI --> BillingService: Update Confirmation
 deactivate StripeAPI
 
 BillingService --> PortalViewScreen: Update Confirmation
-PortalViewScreen -> UserActor: Notify billing information updated successfully
+deactivate BillingService
+PortalViewScreen --> UserActor: Notify billing information updated successfully
 deactivate BillingService
 deactivate PortalViewScreen
 @enduml

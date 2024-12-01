@@ -1,5 +1,5 @@
 @startuml DeleteScenarioSequenceDiagram
-skin
+skinparam SequenceMessageAlignment center
 actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController
@@ -17,7 +17,8 @@ activate ScenariosController
 
     ScenariosController -> ScenariosController : Check model state validity
     alt Invalid model state
-        ScenariosController -> SPage : Return BadRequest(ModelState)
+        ScenariosController --> SPage : Return BadRequest
+        SPage --> U : Show Error Message
         
     else Valid model state
         ScenariosController -> IScenarioRepo : Check if scenario exists by ID
@@ -46,13 +47,13 @@ activate ScenariosController
             deactivate ScenarioRepo
 
            
-            ScenariosController -> SPage : Return Ok("Scenario deleted successfully.")
+            ScenariosController --> SPage : Return Ok("Scenario deleted successfully.")
             SPage --> U : Display success message
 
         else Scenario does not exist
-            ScenariosController -> SPage : Return NotFound with error message
+            ScenariosController --> SPage : Return NotFound with error message
             deactivate ScenariosController
-            SPage -> U : Notificate Not found to delete
+            SPage --> U : Notificate Not found to delete
             deactivate SPage
         end
     end

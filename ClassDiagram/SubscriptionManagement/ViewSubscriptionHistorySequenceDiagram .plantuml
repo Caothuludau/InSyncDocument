@@ -23,9 +23,9 @@ else Cache Miss
     deactivate Cache
     Service -> Repo: Query Database (userId)
     activate Repo
+    Repo --> Service: Return Subscriptions or null
+    deactivate Repo
     alt Data Found
-        Repo --> Service: Return Subscriptions
-        deactivate Repo
         Service -> Cache: Store Subscriptions in Cache
         activate Cache
         Cache --> Service: Stored Successfully
@@ -34,7 +34,6 @@ else Cache Miss
         deactivate Repo
         Service -> API: Fetch Subscriptions (customerId, limit)
         activate API
-        API -> API: Retrieve Subscription Data
         API --> Service: Return Subscription List
         deactivate API
         Service -> Repo: Save Subscriptions to Database
@@ -49,6 +48,6 @@ else Cache Miss
 end
 Service --> FE: Return Subscription History
 deactivate Service
-FE -> U: Display Subscription History
+FE --> U: Display Subscription History
 deactivate FE
 @enduml

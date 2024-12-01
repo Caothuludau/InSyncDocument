@@ -14,23 +14,28 @@ activate SC
 
     SC -> SC : Validate ModelState
     alt Invalid ModelState
-        SC -> Screen : Show validation errors
+        SC --> Screen : Return validation errors
+        Screen --> U : Show error message
     else Valid ModelState
         SC -> Repo : Get scenario by ID (with includes)
         activate Repo
         Repo -> DB : Execute SELECT operation
+        activate DB
         DB --> Repo : Return scenario or null
+        deactivate DB
         Repo --> SC : Return scenario or null
         deactivate Repo
 
         alt Scenario not found
-            SC -> Screen : Show error not found
+            SC -> Screen : Return error not found
+            Screen --> U : Show error message
         else Scenario found
             SC -> Mapper : Map scenario to ViewScenarioDto
             activate Mapper
             Mapper --> SC : Return ViewScenarioDto
             deactivate Mapper
-            SC --> Screen : Render view
+            SC --> Screen : Return Data
+            Screen --> U : Render  View
             deactivate SC
             deactivate Screen
         end

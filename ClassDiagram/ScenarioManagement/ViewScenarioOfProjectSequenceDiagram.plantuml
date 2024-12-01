@@ -20,16 +20,10 @@ activate ScenariosController
 
 ScenariosController -> ScenariosController : Validate ModelState
 alt ModelState invalid
-    ScenariosController -> Hp : Return BadRequest("Invalid model state.")
+    ScenariosController --> Hp : Return BadRequest
+    Hp --> U : Show error message
 else Valid ModelState
-    ScenariosController -> IScenarioRepo : Get scenarios by projectId, createdBy, keySearch
-    activate IScenarioRepo
-    IScenarioRepo -> Db : Query scenarios from database (projectId, createdBy, keySearch)
-    activate Db
-    Db --> IScenarioRepo : Return list of scenarios
-    deactivate Db
-    IScenarioRepo --> ScenariosController : Return list of scenarios
-    deactivate IScenarioRepo
+   
 
     alt Paging provided (index, size)
         ScenariosController -> IScenarioRepo : Get paged scenarios with total count
@@ -61,7 +55,7 @@ else Valid ModelState
     ResponsePaging --> ScenariosController : Return ResponsePaging object
     deactivate ResponsePaging
 
-    ScenariosController -> Hp : Return Ok(ResponsePaging)
+    ScenariosController --> Hp : Return Ok(ResponsePaging)
     deactivate ScenariosController
     Hp --> U : Show scenarios for project
     deactivate Hp

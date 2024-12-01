@@ -15,6 +15,7 @@ activate ScenariosController
     ScenariosController -> ScenariosController : Validate model state
     alt Invalid model state
         ScenariosController -> SPage : Return Message Bad Request
+        SPage --> U : Show Message Error
     else Valid model state
         ScenariosController -> IScenarioRepo : Get scenario by ID
         activate IScenarioRepo
@@ -25,7 +26,8 @@ activate ScenariosController
         deactivate IScenarioRepo
 
         alt Scenario not found
-            ScenariosController -> SPage : Return Message Not Found
+            ScenariosController --> SPage : Return Message Not Found
+             SPage --> U : Show Message Error
 
         else Scenario found
             ScenariosController -> ScenariosController : Update scenario fields (DateUpdated, StepsWeb)
@@ -38,7 +40,7 @@ activate ScenariosController
             IScenarioRepo --> ScenariosController : Return data update success
             deactivate IScenarioRepo
 
-            ScenariosController -> SPage : Return Message Success with ActionScenarioResponse
+            ScenariosController --> SPage : Return Message Success with ActionScenarioResponse
             SPage --> U : Display success message
             deactivate ScenariosController
 
@@ -52,7 +54,8 @@ activate ScenariosController
 
     ScenariosController -> ScenariosController : Validate model state
     alt Invalid model state
-        ScenariosController -> SPage : Return Message Bad Request
+        ScenariosController --> SPage : Return Message Bad Request
+         SPage --> U : Show Error message
     else Valid model state
         ScenariosController -> IScenarioRepo : Get scenario by ID
         activate IScenarioRepo
@@ -63,8 +66,8 @@ activate ScenariosController
         deactivate IScenarioRepo
 
         alt Scenario not found
-            ScenariosController -> SPage : Return Message Not Found
-
+            ScenariosController --> SPage : Return Message Not Found
+            SPage --> U : Show Error message
         else Scenario found
             ScenariosController -> ScenariosController : Update scenario fields (DateUpdated, StepsAndroid)
             ScenariosController -> IScenarioRepo : Update scenario
@@ -76,8 +79,9 @@ activate ScenariosController
             IScenarioRepo --> ScenariosController : Return data update success
             deactivate IScenarioRepo
 
-            ScenariosController -> SPage : Return Message Success with ActionScenarioResponse
-            SPage --> U : Display success message
+            ScenariosController --> SPage : Return Message Success with ActionScenarioResponse
+             SPage --> U : Show Message Success
+
             deactivate ScenariosController
             deactivate SPage
         end

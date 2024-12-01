@@ -36,7 +36,9 @@ deactivate GO
 ' Hệ thống nhận mã xác thực từ Google
 U -> CS : Callback with authCode
 CS -> OS : receiveAuthCode(authCode)
+activate OS
 OS --> CS : Return OAuth session with status COMPLETED
+deactivate OS
 
 ' Trao đổi mã xác thực để lấy access token
 CS -> GO : exchangeAuthCode(authCode)
@@ -46,6 +48,7 @@ GO --> CS : Return AccessToken
 ' Lấy thông tin người dùng từ Google
 CS -> GO : getUserInfo(accessToken)
 GO --> CS : Return GoogleUserInfo (id, email, fullName)
+deactivate GO
 
 ' Kiểm tra người dùng trong hệ thống
 CS -> DB : Query user by email
@@ -57,7 +60,9 @@ else User does not exist
     DB --> CS : No user found
     CS -> DB : Save new user (GoogleUserInfo)
     DB --> CS : User saved
+    deactivate DB
     CS -> U : Sign-in successful (new user)
+    deactivate CS
 end
 deactivate DB
 

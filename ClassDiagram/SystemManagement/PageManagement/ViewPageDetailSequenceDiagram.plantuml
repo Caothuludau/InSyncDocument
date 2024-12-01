@@ -18,16 +18,15 @@ activate PagesController
 PagesController -> PagesController : Valslugate ModelState
 alt ModelState invalslug
     PagesController --> PPage : Return Message BadRequest
-    deactivate PPage
-    deactivate PagesController
+    PPage --> U  : Show message error
 else Valslug ModelState
     PagesController -> IPageRepo : Get Page by slug
     activate IPageRepo
     IPageRepo -> DbContext : Query Page from database by slug
     activate DbContext
-    DbContext --> IPageRepo : Return Page data
+    DbContext --> IPageRepo : Return Page data 
     deactivate DbContext
-    IPageRepo --> PagesController : Return data Page
+    IPageRepo --> PagesController : Return data Page or null
     deactivate IPageRepo
 
     alt Page found
@@ -36,13 +35,13 @@ else Valslug ModelState
         Mapper --> PagesController : Return ViewPageDto
         deactivate Mapper
         PagesController --> PPage : Return Data View Page
-        deactivate PagesController
         PPage --> U : Show Page data
-        deactivate PPage
+
     else Page not found
         PagesController --> PPage : Return NotFound
+                deactivate PagesController
+        PPage --> U : Redirect Main Screen
         deactivate PPage
-        deactivate PagesController
     end
 end
 

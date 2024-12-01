@@ -35,7 +35,7 @@ alt Request with token role admin
     ICaDocRepo --> CaDocController : Return added CategoryDocument
     deactivate ICaDocRepo
 
-    CaDocController -> Hp : Return success response 200
+    CaDocController --> Hp : Return success response 200
     deactivate CaDocController
     Hp --> U : Show success message
     

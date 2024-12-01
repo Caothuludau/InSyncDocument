@@ -25,10 +25,9 @@ deactivate API
 
 FE -> DB: Save Payment Status
 activate DB
-DB -> DB: Update Payment Record
 DB --> FE : return upgrade success
 deactivate DB
 
-FE -> U: Payment Success
+FE --> U: Show Payment Success
 deactivate FE
 @enduml

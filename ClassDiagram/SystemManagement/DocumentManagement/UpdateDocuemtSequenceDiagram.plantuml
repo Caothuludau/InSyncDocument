@@ -55,7 +55,7 @@ else ID matches
 
         DocController -> DocController : Check if existingDocument is null
         alt Document not found
-            DocController -> Hp : Return Message Not Found 404
+            DocController --> Hp : Return Message Not Found 404
             Hp --> U : Notification error
         else Document exists
             DocController -> Mapper : Map updateDocumentDto to existing Document

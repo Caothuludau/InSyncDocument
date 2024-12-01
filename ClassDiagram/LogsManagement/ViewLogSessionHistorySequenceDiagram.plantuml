@@ -30,7 +30,7 @@ Service -> Service : Map data to LogSessionModel[]
 Service --> Page : Return LogSessionModel[]
 deactivate Service
 
-Page -> U : Render list of LogSession
+Page --> U : Render list of LogSession
 deactivate Page
 
 @enduml

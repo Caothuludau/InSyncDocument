@@ -21,9 +21,16 @@ alt Request with token role admin
     Author -> SubscriptionPlanController : Call AddSubscriptionPlan()
     activate SubscriptionPlanController
     SubscriptionPlanController -> SubscriptionPlanController : Validate ModelState
-    SubscriptionPlanController -> SubscriptionPlanController : Check if UserIdClerk exists
+    SubscriptionPlanController -> IUserRepo : Check if UserId exists CheckContain()
+    activate IUserRepo
+    IUserRepo -> Db : Excute query in table User database
+    activate Db
+    Db --> IUserRepo : Return result
+    deactivate Db
+    IUserRepo --> SubscriptionPlanController : Return status exist user(true/false) 
 alt User not found
-    SubscriptionPlanController -> Hp : Return Notification Error 400
+    SubscriptionPlanController --> Hp : Return Notification Error 400
+    Hp --> U : Show message error
     deactivate Hp
     deactivate SubscriptionPlanController
 else User found
