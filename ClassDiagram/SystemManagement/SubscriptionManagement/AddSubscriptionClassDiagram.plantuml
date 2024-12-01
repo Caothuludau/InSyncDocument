@@ -1,0 +1,63 @@
+@startuml AddSubscriptionPlanClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+Title Add SubscriptionPlan Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgAddSubscriptionPlan <<Frame>> {  
+    'include controller'
+    !includesub ../../ControllersClassDiagram.plantuml!SubscriptionPlansController
+    !includesub ../../ControllersClassDiagram.plantuml!ControllerBase
+    !includesub ../../ControllersClassDiagram.plantuml!AdminAuthorizationAttribute
+
+    
+    'include Repository'
+    !includesub ../../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!ISubscriptionPlanRepository
+    !includesub ../../RepositoriesClassDiagram.plantuml!SubscriptionPlanRepository
+    !includesub ../../RepositoriesClassDiagram.plantuml!IUserRepository
+    !includesub ../../RepositoriesClassDiagram.plantuml!UserRepository
+    'include Dto'
+    !includesub ../../DtosClassDiagram.plantuml!AddSubscriptionPlanDto
+    !includesub ../../ModelsClassDiagram.plantuml!SubscriptionPlan
+    !includesub ../../ModelsClassDiagram.plantuml!User
+
+
+    'set up realation ship' 
+    ControllerBase <|-- SubscriptionPlansController
+
+    SubscriptionPlansController ..> AddSubscriptionPlanDto : Input add SubscriptionPlan
+
+    IRepositoryBase <|.. RepositoryBase
+    ISubscriptionPlanRepository <|.. SubscriptionPlanRepository
+    SubscriptionPlanRepository o-- SubscriptionPlan
+    IUserRepository <|.. UserRepository
+    UserRepository o-- User
+
+
+    IRepositoryBase <|-- ISubscriptionPlanRepository 
+    RepositoryBase <|-- SubscriptionPlanRepository
+    IRepositoryBase <|-- IUserRepository 
+    RepositoryBase <|-- UserRepository
+
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    SubscriptionPlansController o-- ISubscriptionPlanRepository
+    SubscriptionPlansController o-- IUserRepository
+    SubscriptionPlansController o-- IMapper
+    SubscriptionPlansController ..> AdminAuthorizationAttribute : use
+}

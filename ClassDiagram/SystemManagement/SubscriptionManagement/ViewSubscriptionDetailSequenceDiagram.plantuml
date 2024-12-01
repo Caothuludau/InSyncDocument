@@ -1,0 +1,48 @@
+@startuml
+skinparam classAttributeIconSize 0
+Title Get SubscriptionPlan By slug Sequence Diagram
+
+actor "User" as U
+boundary "Screen SubscriptionPlan Management " as PSubscriptionPlan
+participant "SubscriptionPlansController" as SubscriptionPlansController
+participant "ISubscriptionPlanRepository" as ISubscriptionPlanRepo
+participant "IMapper" as Mapper
+database "SqlServer" as DbContext
+
+U -> PSubscriptionPlan : Request to get SubscriptionPlan (slug)
+activate PSubscriptionPlan
+
+PSubscriptionPlan -> SubscriptionPlansController : Call GetSubscriptionPlanByslug(slug)
+activate SubscriptionPlansController
+
+SubscriptionPlansController -> SubscriptionPlansController : Valslugate ModelState
+alt ModelState invalslug
+    SubscriptionPlansController --> PSubscriptionPlan : Return Message BadRequest
+    PSubscriptionPlan --> U : Show message error
+else Valslug ModelState
+    SubscriptionPlansController -> ISubscriptionPlanRepo : Get SubscriptionPlan by slug
+    activate ISubscriptionPlanRepo
+    ISubscriptionPlanRepo -> DbContext : Query SubscriptionPlan from database by slug
+    activate DbContext
+    DbContext --> ISubscriptionPlanRepo : Return SubscriptionPlan data
+    deactivate DbContext
+    ISubscriptionPlanRepo --> SubscriptionPlansController : Return data SubscriptionPlan
+    deactivate ISubscriptionPlanRepo
+
+    alt SubscriptionPlan found
+        SubscriptionPlansController -> Mapper : Map SubscriptionPlan to ViewSubscriptionPlanDto
+        activate Mapper
+        Mapper --> SubscriptionPlansController : Return ViewSubscriptionPlanDto
+        deactivate Mapper
+        SubscriptionPlansController --> PSubscriptionPlan : Return Data View SubscriptionPlan
+        PSubscriptionPlan --> U : Show SubscriptionPlan data
+
+    else SubscriptionPlan not found
+        SubscriptionPlansController --> PSubscriptionPlan : Return NotFound
+        PSubscriptionPlan --> U : Show message Error
+        deactivate PSubscriptionPlan
+        deactivate SubscriptionPlansController
+    end
+end
+
+@enduml

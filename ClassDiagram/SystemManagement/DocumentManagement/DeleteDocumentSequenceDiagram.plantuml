@@ -1,0 +1,66 @@
+@startuml DeleteDocumentSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Delete Document Sequence Diagram
+
+actor "User" as U
+boundary "Document Management Page" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "DocumentsController" as ProController
+participant "IDocumentRepository" as IProRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+
+U -> Hp : Click button to delete Document
+activate Hp
+
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+
+        Author -> ProController : Call DeleteDocument
+        activate ProController
+
+        ProController -> IProRepo : Check if Document exists (CheckContainsAsync)
+        activate IProRepo
+        IProRepo -> ISContext : Query database for Document existence
+        activate ISContext
+        ISContext -> Db : Check if Document with ID exists in SQL Server
+        activate Db
+        Db --> ISContext : Return Document existence status
+        deactivate Db
+        ISContext --> IProRepo : Return existence status
+        deactivate ISContext
+        IProRepo --> ProController : Return Document existence status
+        deactivate IProRepo
+
+        alt Document exists
+            ProController -> IProRepo : Call DeleteDocument(id)
+            activate IProRepo
+            IProRepo -> ISContext : Delete Document
+            activate ISContext
+            ISContext -> Db : Delete Document from SQL Server
+            activate Db
+            Db --> ISContext : Delete success
+            deactivate Db
+            ISContext --> IProRepo : Return delete success
+            deactivate ISContext
+            IProRepo --> ProController : Return delete success
+            deactivate IProRepo
+            ProController --> Hp : Return success response (Document deleted)
+            
+            Hp --> U : Notify user (Document deleted successfully)
+        else Document does not exist
+            ProController --> Hp : Return error response (Not Found)
+            deactivate ProController
+            Hp --> U : Notify user (Document not found)
+        end
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+deactivate Hp
+@enduml

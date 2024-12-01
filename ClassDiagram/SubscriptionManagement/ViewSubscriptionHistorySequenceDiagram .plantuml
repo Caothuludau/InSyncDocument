@@ -1,0 +1,53 @@
+@startuml ViewSubscriptionHistorySequenceDiagram
+skinparam SequenceMessageAlignment center
+title View Subscription History Sequence Diagram 
+
+actor User as U
+participant "Frontend" as FE
+participant "SubscriptionService" as Service
+participant "SubscriptionCache" as Cache
+participant "SubscriptionRepository" as Repo
+participant "StripeAPI" as API
+
+U -> FE: Request to View Subscription History
+activate FE
+FE -> Service: Get Subscription History (userId)
+activate Service
+Service -> Cache: Fetch from Cache (userId)
+activate Cache
+alt Cache Hit
+    Cache --> Service: Return Cached Subscriptions
+    deactivate Cache
+else Cache Miss
+    Cache --> Service: Cache Miss
+    deactivate Cache
+    Service -> Repo: Query Database (userId)
+    activate Repo
+    Repo --> Service: Return Subscriptions or null
+    deactivate Repo
+    alt Data Found
+        Service -> Cache: Store Subscriptions in Cache
+        activate Cache
+        Cache --> Service: Stored Successfully
+        deactivate Cache
+    else No Data Found
+        deactivate Repo
+        Service -> API: Fetch Subscriptions (customerId, limit)
+        activate API
+        API --> Service: Return Subscription List
+        deactivate API
+        Service -> Repo: Save Subscriptions to Database
+        activate Repo
+        Repo --> Service: Saved Successfully
+        deactivate Repo
+        Service -> Cache: Store Subscriptions in Cache
+        activate Cache
+        Cache --> Service: Stored Successfully
+        deactivate Cache
+    end
+end
+Service --> FE: Return Subscription History
+deactivate Service
+FE --> U: Display Subscription History
+deactivate FE
+@enduml

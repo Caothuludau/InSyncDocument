@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Get All SubscriptionPlans Sequence Diagram
+
+actor "User" as U
+boundary "Screen SubscriptionPlan Management" as PSubscriptionPlan
+participant "SubscriptionPlansController" as SubscriptionPlansController
+participant "ISubscriptionPlanRepository" as ISubscriptionPlanRepo
+participant "IMapper" as Mapper
+participant "ResponsePaging" as ResponsePaging
+database "SqlServer" as DbContext
+
+
+U -> PSubscriptionPlan : Go to SubscriptionPlan management
+activate PSubscriptionPlan
+
+PSubscriptionPlan -> SubscriptionPlansController : Call GetAllSubscriptionPlan()
+activate SubscriptionPlansController
+
+
+    SubscriptionPlansController -> SubscriptionPlansController : Check if index or size are provided
+    alt No pagination parameters (index, size)
+        SubscriptionPlansController -> ISubscriptionPlanRepo : Get all SubscriptionPlans by name search
+        activate ISubscriptionPlanRepo
+        ISubscriptionPlanRepo -> DbContext : Query all SubscriptionPlans based on search key
+        activate DbContext
+        DbContext --> ISubscriptionPlanRepo : Return list of SubscriptionPlans
+        deactivate DbContext
+        ISubscriptionPlanRepo --> SubscriptionPlansController : Return list of SubscriptionPlans
+        deactivate ISubscriptionPlanRepo
+    else Pagination parameters provided (index, size)
+        SubscriptionPlansController -> ISubscriptionPlanRepo : Get paginated SubscriptionPlans by name search
+        activate ISubscriptionPlanRepo
+        ISubscriptionPlanRepo -> DbContext : Query paginated SubscriptionPlans based on search key
+        activate DbContext
+        DbContext --> ISubscriptionPlanRepo : Return paginated list of SubscriptionPlans
+        deactivate DbContext
+        ISubscriptionPlanRepo --> SubscriptionPlansController : Return paginated list of SubscriptionPlans and total count
+        deactivate ISubscriptionPlanRepo
+    end
+
+    SubscriptionPlansController -> Mapper : Map SubscriptionPlans to ViewSubscriptionPlanDtos
+    activate Mapper
+    Mapper --> SubscriptionPlansController : Return mapped ViewSubscriptionPlanDto list
+    deactivate Mapper
+
+    SubscriptionPlansController -> ResponsePaging : Create response paging object
+    activate ResponsePaging
+    ResponsePaging --> SubscriptionPlansController : Return ResponsePaging object with data and total count
+    deactivate ResponsePaging
+    SubscriptionPlansController -> PSubscriptionPlan : Return data response
+    deactivate SubscriptionPlansController
+    PSubscriptionPlan --> U : Show SubscriptionPlans with pagination
+    deactivate PSubscriptionPlan
+
+
+
+@enduml

@@ -4,7 +4,7 @@ actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController
 participant "IScenarioRepository" as IScenarioRepo
-database "Database" as DB
+database "SqlServer" as DB
 
 U -> SPage : Enter Name and click save scenario
 activate SPage
@@ -14,13 +14,16 @@ activate ScenariosController
 
     ScenariosController -> ScenariosController : Validate ID consistency
     alt ID mismatch
-        ScenariosController -> SPage : Return BadRequest("Scenario ID information does not match")
-
+        ScenariosController --> SPage : Return BadRequest
+        SPage --> U : Show Error Message
     else IDs match
         ScenariosController -> IScenarioRepo : Get scenario by ID
         activate IScenarioRepo
         IScenarioRepo -> DB : Query scenario by ID
+        activate DB
         DB --> IScenarioRepo : Return scenario data
+        deactivate DB
+        IScenarioRepo --> ScenariosController : return data scenario or null
         deactivate IScenarioRepo
 
         alt Scenario found
@@ -28,13 +31,17 @@ activate ScenariosController
             ScenariosController -> IScenarioRepo : Update scenario in repository
             activate IScenarioRepo
             IScenarioRepo -> DB : Update scenario record
+            activate DB
             DB --> IScenarioRepo : Return update success
+            deactivate DB
+            IScenarioRepo --> ScenariosController : return data update success
             deactivate IScenarioRepo
-            ScenariosController -> SPage : Return Ok("Scenario renamed successfully.")
+            ScenariosController --> SPage : Return Message Success
             SPage --> U : Display success message
         else Scenario not found
-            ScenariosController -> SPage : Return NotFound("Scenario not found.")
+            ScenariosController -> SPage : Return NotFound Message
             deactivate ScenariosController
+            SPage --> U : Show Message Error
             deactivate SPage
         end
     end

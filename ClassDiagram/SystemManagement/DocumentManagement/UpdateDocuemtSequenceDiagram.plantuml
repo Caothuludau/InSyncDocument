@@ -1,0 +1,87 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Update Document Sequence Diagram with Validation
+
+actor "User" as U
+boundary "Document Management Page" as Hp
+participant "DocumentsController" as DocController
+participant "ICategoryRepository" as ICaRepo
+participant "IDocumentRepository" as IDocRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+participant "Mapper" as Mapper
+
+U -> Hp : Enter data and Click button update Document
+activate Hp
+
+Hp -> DocController : Call UpdateDocument(id, updateDocumentDto)
+activate DocController
+DocController -> DocController : Validate ModelState
+DocController -> DocController : Check if id matches updateDocument.Id
+alt ID mismatch
+    DocController -> Hp : Return Message Erorr, 400
+    Hp --> U : Notification error   
+else ID matches
+    DocController -> ICaRepo : CheckContain(id) 
+    activate ICaRepo
+    ICaRepo -> ISContext : Get Category By Id
+    activate ISContext
+    ISContext -> Db : Execute query get Category
+    activate Db
+    Db --> ISContext : Return Category
+    deactivate Db
+    ISContext --> ICaRepo : return data category 
+    deactivate ISContext
+    ICaRepo --> DocController : return exist (true/false)
+    deactivate ICaRepo
+
+    alt Category Id dont existDb
+    DocController --> Hp : return Notification 400
+    Hp --> U : Notification error
+    else Category Id exist Db
+        DocController -> IDocRepo : Check Document exists by ID
+        activate IDocRepo
+        IDocRepo -> ISContext : Get Document by ID
+        activate ISContext
+        ISContext -> Db : Fetch Document data by ID
+        activate Db
+        Db --> ISContext : Return Document data
+        deactivate Db
+        ISContext --> IDocRepo : Return Document
+        deactivate ISContext
+        IDocRepo --> DocController : Return Document
+        deactivate IDocRepo
+
+        DocController -> DocController : Check if existingDocument is null
+        alt Document not found
+            DocController --> Hp : Return Message Not Found 404
+            Hp --> U : Notification error
+        else Document exists
+            DocController -> Mapper : Map updateDocumentDto to existing Document
+            activate Mapper
+            Mapper --> DocController : Return mapped Document
+            deactivate Mapper
+
+            DocController -> IDocRepo : Update Document
+            activate IDocRepo
+            IDocRepo -> ISContext : Save updated Document
+            activate ISContext
+            ISContext -> Db : Update Document data in SQL Server
+            activate Db
+            Db --> ISContext : Return updated Document
+            deactivate Db
+            ISContext --> IDocRepo : Notify update success
+            deactivate ISContext
+            IDocRepo --> DocController : Return update success
+            deactivate IDocRepo
+
+            DocController --> Hp : Return update response
+            deactivate DocController
+            Hp --> U : Show update success message
+            deactivate Hp
+        end
+    end
+end
+
+@enduml

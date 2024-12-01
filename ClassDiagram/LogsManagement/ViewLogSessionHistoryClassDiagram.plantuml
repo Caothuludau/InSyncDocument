@@ -1,0 +1,41 @@
+@startuml ViewLogSessionHistoryClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+title View Log Session History Class Diagram
+
+package "pkgViewLogSessionHistory" {
+    class LogSessionListPage {
+        + render(): JSX.Element
+        + fetchLogSessions(scenarioId: string): void
+    }
+
+    class LogSessionService {
+        + getLogSessionsByScenarioId(scenarioId: string): Promise<LogSessionModel[]>
+    }
+
+    class FirebaseClient {
+        + queryDocuments(collection: string, query: any): Promise<any[]>
+    }
+
+    LogSessionListPage o-- LogSessionService
+    LogSessionService o-- FirebaseClient
+
+    class LogSessionModel {
+        + id: string
+        + sessionName: string
+        + deviceName: string
+        + dateCreated: Date
+        + scenarioId: string
+    }
+    class LogModel {
+        + id: string
+        + deviceName: string
+        + dateCreated: Date
+        + contentLog : string
+        + note : string
+        + sessionId: string
+    }
+    LogSessionModel "1" -->"0..*" LogModel
+
+}
+@enduml

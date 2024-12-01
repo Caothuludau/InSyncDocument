@@ -1,0 +1,59 @@
+@startuml UpdateSubscriptionPlanClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+Title Update SubscriptionPlan Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgUpdateSubscriptionPlan <<Frame>> {  
+    'include controller'
+    !includesub ../../ControllersClassDiagram.plantuml!SubscriptionPlansController
+    !includesub ../../ControllersClassDiagram.plantuml!ControllerBase
+    !includesub ../../ControllersClassDiagram.plantuml!AdminAuthorizationAttribute
+
+    
+    'include Repository'
+    !includesub ../../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!ISubscriptionPlanRepository
+    !includesub ../../RepositoriesClassDiagram.plantuml!SubscriptionPlanRepository
+    'include Dto'
+    !includesub ../../DtosClassDiagram.plantuml!UpdateSubscriptionPlanDto
+    !includesub ../../ModelsClassDiagram.plantuml!SubscriptionPlan
+
+
+    'set up realation ship' 
+    ControllerBase <|-- SubscriptionPlansController
+
+    SubscriptionPlansController ..> UpdateSubscriptionPlanDto : Input Update SubscriptionPlan
+
+    IRepositoryBase <|.. RepositoryBase
+    ISubscriptionPlanRepository <|.. SubscriptionPlanRepository
+    SubscriptionPlanRepository o-- SubscriptionPlan
+
+
+    IRepositoryBase <|-- ISubscriptionPlanRepository 
+    RepositoryBase <|-- SubscriptionPlanRepository
+
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    SubscriptionPlansController o-- ISubscriptionPlanRepository
+    SubscriptionPlansController o-- IMapper
+    SubscriptionPlansController ..> AdminAuthorizationAttribute : use
+
+
+
+
+}

@@ -1,0 +1,40 @@
+@startuml ViewLogBySessionDetailClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+title View Log Session Detail Class Diagram
+
+package "pkgViewLogSessionDetail" {
+    class LogListPage {
+        + render(): JSX.Element
+        + fetchLogs(sessionLogId: string): void
+    }
+
+    class LogService {
+        + getLogsBySessionLogId(sessionLogId: string): Promise<LogModel[]>
+    }
+
+    class FirebaseClient {
+        + queryDocuments(collection: string, query: any): Promise<any[]>
+    }
+
+    LogListPage o-- LogService
+    LogService o-- FirebaseClient
+
+class LogSessionModel {
+        + id: string
+        + sessionName: string
+        + deviceName: string
+        + dateCreated: Date
+        + scenarioId: string
+    }
+    class LogModel {
+        + id: string
+        + deviceName: string
+        + dateCreated: Date
+        + contentLog : string
+        + note : string
+        + sessionId: string
+    }
+    LogSessionModel "1" -->"0..*" LogModel
+}
+@enduml

@@ -5,7 +5,7 @@ skinparam sequenceMessageAlign center
 actor User as UserActor
 boundary "Profile Update Screen" as ProfileScreen
 participant "UserInfoService" as UserService
-participant "Database" as DB
+participant "SqlServer" as DB
 
 UserActor -> ProfileScreen: Enter new profile details
 activate ProfileScreen
@@ -20,7 +20,6 @@ deactivate DB
 
 alt Validate data
   UserService -> ProfileScreen: Invalid data error
-  deactivate UserService
 else Update data
   UserService -> DB: UPDATE Users Information
   activate DB

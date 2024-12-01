@@ -1,0 +1,33 @@
+@startuml UserManagementClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+title User Management Class Diagram (Integration with Clerk)
+
+package "User Management System" {
+    class UserManagementController {
+        +RedirectToClerkAdmin(userId: string): string
+    }
+
+    class ClerkService {
+        +GenerateAdminLink(userId: string): string
+    }
+
+    class User {
+        -id: string
+        -email: string
+        -name: string
+        +getId(): string
+        +getEmail(): string
+    }
+}
+
+package "Third-Party Clerk Service" {
+    class ClerkAPI {
+        +CreateAdminLink(userId: string): string
+    }
+}
+
+UserManagementController --> ClerkService : "Uses"
+ClerkService --> ClerkAPI : "Delegates"
+ClerkService <-- User : "Fetches User Info"
+@enduml

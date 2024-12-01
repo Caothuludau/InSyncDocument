@@ -20,7 +20,7 @@ package pkgViewMarkting <<Frame>> {
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
     !includesub ../ControllersClassDiagram.plantuml!CategoryDocumentController
     !includesub ../ControllersClassDiagram.plantuml!DocumentsController
-    !includesub ../ControllersClassDiagram.plantuml!PagesController
+
 
     
     'include Repository'
@@ -32,27 +32,22 @@ package pkgViewMarkting <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!CategoryDocumentRepository
     !includesub ../RepositoriesClassDiagram.plantuml!IDocumentRepository
     !includesub ../RepositoriesClassDiagram.plantuml!DocumentRepository
-    !includesub ../RepositoriesClassDiagram.plantuml!IPageRepository
-    !includesub ../RepositoriesClassDiagram.plantuml!PageRepository
 
     'include Dto'
     !includesub ../DtosClassDiagram.plantuml!ViewCategoryDocumentDto
     !includesub ../ModelsClassDiagram.plantuml!CategoryDocument
     !includesub ../DtosClassDiagram.plantuml!ViewDocumentDto
     !includesub ../ModelsClassDiagram.plantuml!Document
-    !includesub ../DtosClassDiagram.plantuml!ViewPageDto
-    !includesub ../ModelsClassDiagram.plantuml!Page
+
 
 
     'set up realation ship' 
     ControllerBase <|-- CategoryDocumentController
     ControllerBase <|-- DocumentsController
-    ControllerBase <|-- PagesController
 
 
     CategoryDocumentController ..> ViewCategoryDocumentDto : return views
     DocumentsController ..> ViewDocumentDto : return views
-    PagesController ..> ViewPageDto : return views
     
     
 
@@ -64,10 +59,6 @@ package pkgViewMarkting <<Frame>> {
     IDocumentRepository <|.. DocumentRepository
     DocumentRepository o-- Document
 
-    IPageRepository <|.. PageRepository
-    PageRepository o-- Page
-
-    
 
 
     IRepositoryBase <|-- ICategoryDocumentRepository 
@@ -76,15 +67,12 @@ package pkgViewMarkting <<Frame>> {
     IRepositoryBase <|-- IDocumentRepository 
     RepositoryBase <|-- DocumentRepository
 
-    IRepositoryBase <|-down- IPageRepository 
-    RepositoryBase <|-- PageRepository
+
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
     CategoryDocumentController o-- ICategoryDocumentRepository
     DocumentsController o-- IDocumentRepository
-    PagesController o-- IPageRepository
-
    
 
 

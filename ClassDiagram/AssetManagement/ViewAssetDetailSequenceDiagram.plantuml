@@ -17,9 +17,7 @@ activate AssetsController
 
 AssetsController -> AssetsController : Validate ModelState
 alt ModelState invalid
-    AssetsController -> PPage : Return Message BadRequest
-    deactivate PPage
-    deactivate AssetsController
+    AssetsController --> PPage : Return Message BadRequest
 else Valid ModelState
     AssetsController -> IAssetRepo : Get Asset by ID
     activate IAssetRepo
@@ -35,8 +33,7 @@ else Valid ModelState
         activate Mapper
         Mapper --> AssetsController : Return ViewAssetDto
         deactivate Mapper
-        AssetsController -> PPage : Return Data View Asset
-        deactivate AssetsController
+        AssetsController --> PPage : Return Data View Asset
         PPage --> U : Show Asset data
         deactivate PPage
     else Asset not found

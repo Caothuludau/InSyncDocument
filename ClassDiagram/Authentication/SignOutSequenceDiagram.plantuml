@@ -17,7 +17,7 @@ skinparam sequenceMessageAlign center
     Service -> SessionMgr: invalidateSession(sessionId)
     activate SessionMgr
 
-    SessionMgr -> DB: DELETE FROM Sessions WHERE sessionId = ?
+    SessionMgr -> DB: DELETE Sessions
     activate DB
     DB --> SessionMgr: Success
     deactivate DB
@@ -25,7 +25,7 @@ skinparam sequenceMessageAlign center
     SessionMgr --> Service: Session invalidated
     deactivate SessionMgr
 
-    Service -> DB: UPDATE Users SET isSignedIn = false WHERE userId = ?
+    Service -> DB: Update User session logout
     activate DB
     DB --> Service: Success
     deactivate DB

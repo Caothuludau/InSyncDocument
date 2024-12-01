@@ -1,0 +1,66 @@
+@startuml DeleteCategoryDocumentSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Delete CategoryDocument Sequence Diagram
+
+actor "User" as U
+boundary "CategoryDocument Management Page" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "CategoryDocumentsController" as ProController
+participant "ICategoryDocumentRepository" as IProRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+
+U -> Hp : Click button to delete CategoryDocument
+activate Hp
+
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+
+        Author -> ProController : Call DeleteCategoryDocument
+        activate ProController
+
+        ProController -> IProRepo : Check if CategoryDocument exists (CheckContainsAsync)
+        activate IProRepo
+        IProRepo -> ISContext : Query database for CategoryDocument existence
+        activate ISContext
+        ISContext -> Db : Check if CategoryDocument with ID exists in SQL Server
+        activate Db
+        Db --> ISContext : Return CategoryDocument existence status
+        deactivate Db
+        ISContext --> IProRepo : Return existence status
+        deactivate ISContext
+        IProRepo --> ProController : Return CategoryDocument existence status
+        deactivate IProRepo
+
+        alt CategoryDocument exists
+            ProController -> IProRepo : Call DeleteCategoryDocument(id)
+            activate IProRepo
+            IProRepo -> ISContext : Delete CategoryDocument
+            activate ISContext
+            ISContext -> Db : Delete CategoryDocument from SQL Server
+            activate Db
+            Db --> ISContext : Delete success
+            deactivate Db
+            ISContext --> IProRepo : Return delete success
+            deactivate ISContext
+            IProRepo --> ProController : Return delete success
+            deactivate IProRepo
+            ProController --> Hp : Return success response (CategoryDocument deleted)
+            
+            Hp --> U : Notify user (CategoryDocument deleted successfully)
+        else CategoryDocument does not exist
+            ProController --> Hp : Return error response (Not Found)
+            deactivate ProController
+            Hp --> U : Notify user (CategoryDocument not found)
+        end
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+deactivate Hp
+@enduml

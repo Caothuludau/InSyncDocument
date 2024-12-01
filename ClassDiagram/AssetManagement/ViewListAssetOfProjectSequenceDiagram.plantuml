@@ -15,7 +15,7 @@ database "DbContext" as DbContext
 U -> APage : Go to Asset management
 activate APage
 
-APage -> AssetsController : Call GetAllAssetOfProject(index, size, keySearch)
+APage -> AssetsController : Call GetAllAssetOfProject()
 activate AssetsController
 
     AssetsController -> AssetsController : Check if index or size are provided
@@ -28,7 +28,6 @@ activate AssetsController
         deactivate DbContext
         IAssetRepo --> AssetsController : Return list of Assets
         deactivate IAssetRepo
-        AssetsController -> AssetsController : Count total Assets
     else Pagination parameters provided (index, size)
         AssetsController -> IAssetRepo : Get paginated Assets by condition
         activate IAssetRepo

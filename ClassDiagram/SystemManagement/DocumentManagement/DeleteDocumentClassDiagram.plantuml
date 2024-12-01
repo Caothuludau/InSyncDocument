@@ -1,0 +1,57 @@
+@startuml AddDocumentClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+Title Add Document Class Diagram
+'Character	Visibility
+'-			private
+'#			protected
+'~			package private
+'+			public
+
+'Extension	<|--	Quan hệ mở rộng từ (là extends hoặc implements nhưng ko có annotations trong code)
+'Composition	*--	 Quan hệ gắn kết chặt chẽ : part - of
+'Aggregation	o--	Quan hệ liên kết giữa hai thực thể : use, has
+
+' Include các file vào trong file để sử dụng'
+
+package pkgAddDocument <<Frame>> {  
+    'include controller'
+    !includesub ../../ControllersClassDiagram.plantuml!DocumentsController
+    !includesub ../../ControllersClassDiagram.plantuml!ControllerBase
+    !includesub ../../ControllersClassDiagram.plantuml!AdminAuthorizationAttribute
+
+    
+    'include Repository'
+    !includesub ../../RepositoriesClassDiagram.plantuml!IRepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!RepositoryBase
+    !includesub ../../RepositoriesClassDiagram.plantuml!DbContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!InSyncContext
+    !includesub ../../RepositoriesClassDiagram.plantuml!IDocumentRepository
+    !includesub ../../RepositoriesClassDiagram.plantuml!DocumentRepository
+    'include Dto'
+    !includesub ../../ModelsClassDiagram.plantuml!Document
+
+
+    'set up realation ship' 
+    ControllerBase <|-- DocumentsController
+
+
+    IRepositoryBase <|.. RepositoryBase
+    IDocumentRepository <|.. DocumentRepository
+    DocumentRepository o-- Document
+
+
+    IRepositoryBase <|-- IDocumentRepository 
+    RepositoryBase <|-- DocumentRepository
+
+
+    DbContext <|--InSyncContext
+    RepositoryBase o-- InSyncContext
+    DocumentsController o-- IDocumentRepository
+    DocumentsController o-- IMapper
+    DocumentsController ..> AdminAuthorizationAttribute : use
+
+
+
+
+}

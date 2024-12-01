@@ -1,0 +1,74 @@
+@startuml
+skinparam clDocAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Upload Document for Sequence Diagram
+
+actor "Admin" as U
+boundary "Document Management Page" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "DocumentsController" as DocController
+participant "ICaDocumentRepository" as IDocRepo
+participant "ICategoryRepository" as ICaDocumentRepo
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Enter Data and Click button to Save Document
+activate Hp
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+
+    Author -> DocController : Call AddDocument(newDocument)
+    activate DocController
+    DocController -> DocController : Validate ModelState
+    DocController -> ICaDocumentRepo : Check if ProjectId exists CheckContain()
+    activate ICaDocumentRepo
+    ICaDocumentRepo -> Db : Excute query in table Project database
+    activate Db
+    Db --> ICaDocumentRepo : Return result
+    deactivate Db
+    ICaDocumentRepo --> DocController : Return status exist category(true/false) 
+    alt Category not found
+        DocController --> Hp : Return Notification Error 400
+        deactivate DocController
+        Hp --> U : Notification message error
+    else Category Document found
+        DocController -> ICaDocumentRepo : Check if Document exists by DocumentId
+        activate ICaDocumentRepo
+        ICaDocumentRepo -> Db : Fetch Document by DocumentId
+        activate Db
+        Db --> ICaDocumentRepo : Return Document data
+        deactivate Db
+        ICaDocumentRepo --> DocController : Return Document data
+        deactivate ICaDocumentRepo
+
+        DocController -> Mapper : Map AddDocumentDto to Document
+        activate Mapper
+        Mapper --> DocController : Return mapped Document
+        deactivate Mapper
+
+        DocController -> IDocRepo : Add Document
+        activate IDocRepo
+        IDocRepo -> Db : Insert new Document into database
+        activate Db
+        Db --> IDocRepo : Return new Document data
+        deactivate Db
+        IDocRepo --> DocController : Return Added Document
+        deactivate IDocRepo
+
+        DocController --> Hp : Return success response 200
+        deactivate DocController
+        
+        Hp --> U : Show success message
+
+    end
+ else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+deactivate Hp
+
+@enduml

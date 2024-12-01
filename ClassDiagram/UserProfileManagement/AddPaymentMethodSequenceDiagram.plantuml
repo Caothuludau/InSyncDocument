@@ -26,7 +26,7 @@ StripeAPI --> BillingService: Created PaymentMethod (id, type, last4, isDefault)
 deactivate StripeAPI
 
 BillingService --> PortalViewScreen: Created PaymentMethod (id, type, last4, isDefault)
-PortalViewScreen -> UserActor: Payment method added and displayed
+PortalViewScreen --> UserActor: Payment method added and displayed
 deactivate BillingService
 deactivate PortalViewScreen
 @enduml

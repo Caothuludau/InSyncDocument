@@ -1,7 +1,7 @@
-@startuml AddProjectClassDiagram
+@startuml UploadClassDiagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-Title Add Project Class Diagram
+Title Upload Asset Class Diagram
 'Character	Visibility
 '-			private
 '#			protected
@@ -14,9 +14,9 @@ Title Add Project Class Diagram
 
 ' Include các file vào trong file để sử dụng'
 
-package pkgAddProject <<Frame>> {  
+package pkgUploadAsset <<Frame>> {  
     'include controller'
-    !includesub ../ControllersClassDiagram.plantuml!ProjectsController
+    !includesub ../ControllersClassDiagram.plantuml!AssetsController
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
 
     
@@ -25,32 +25,32 @@ package pkgAddProject <<Frame>> {
     !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
     !includesub ../RepositoriesClassDiagram.plantuml!DbContext
     !includesub ../RepositoriesClassDiagram.plantuml!InSyncContext
-    !includesub ../RepositoriesClassDiagram.plantuml!IProjectRepository
-    !includesub ../RepositoriesClassDiagram.plantuml!ProjectRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!IAssetRepository
+    !includesub ../RepositoriesClassDiagram.plantuml!AssetRepository
     'include Dto'
-    !includesub ../DtosClassDiagram.plantuml!AddProjectDto
-    !includesub ../ModelsClassDiagram.plantuml!Project
+    !includesub ../DtosClassDiagram.plantuml!AddAssetDto
+    !includesub ../ModelsClassDiagram.plantuml!Asset
 
 
 
     'set up realation ship' 
-    ControllerBase <|-- ProjectsController
+    ControllerBase <|-- AssetsController
 
-    ProjectsController ..> AddProjectDto : Input add project
+    AssetsController ..> AddAssetDto : Input add Asset
 
     IRepositoryBase <|.. RepositoryBase
-    IProjectRepository <|.. ProjectRepository
-    ProjectRepository o-- Project
+    IAssetRepository <|.. AssetRepository
+    AssetRepository o-- Asset
 
 
-    IRepositoryBase <|-- IProjectRepository 
-    RepositoryBase <|-- ProjectRepository
+    IRepositoryBase <|-- IAssetRepository 
+    RepositoryBase <|-- AssetRepository
 
 
     DbContext <|--InSyncContext
     RepositoryBase o-- InSyncContext
-    ProjectsController o-- IProjectRepository
-    ProjectsController o-- IMapper
+    AssetsController o-- IAssetRepository
+    AssetsController o-- IMapper
 
 
 

@@ -17,14 +17,20 @@ activate Hp
 Hp -> ProController : Call AddProjectUserClerk(newProject)
 activate ProController
 ProController -> ProController : Validate ModelState
-ProController -> ProController : Check if UserIdClerk exists
-alt User not found
-    ProController -> Hp : Return Notification Error 400
-    deactivate Hp
-    deactivate ProController
-else User found
-    ProController -> IUserRepo : Check if user exists by UserIdClerk
+    ProController -> IUserRepo : Check if User exists CheckContain()
     activate IUserRepo
+    IUserRepo -> Db : Excute query in table User database
+    activate Db
+    Db --> IUserRepo : Return result
+    deactivate Db
+    IUserRepo --> ProController : Return status exist user(true/false) 
+
+alt User not found
+    ProController --> Hp : Return Notification Error 400
+    Hp --> U : Show Error message
+else User found
+    ProController -> IUserRepo : Get user by userClerkId
+
     IUserRepo -> Db : Fetch user by UserIdClerk
     activate Db
     Db --> IUserRepo : Return user data
@@ -46,7 +52,7 @@ else User found
     IProRepo --> ProController : Return added project
     deactivate IProRepo
 
-    ProController -> Hp : Return success response 200
+    ProController --> Hp : Return success response 200
     deactivate ProController
     Hp --> U : Show success message
     deactivate Hp

@@ -1,0 +1,45 @@
+@startuml ViewAdminDashBoardClassDiagram
+Title View Admin Dashboard Class Diagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+package pkgViewAdminDashBoard <<Frame>> {
+class OverviewPage {
+    + useEffect()
+    + fetchOverviewData(): Promise<void>
+    - renderOverview()
+}
+
+class ClerkService {
+    + fetchRecentLogins(limit: int): List<User>
+    + fetchNewRegistrations(lastNDays: int): List<User>
+    + getTotalUserCount(): int
+}
+
+class StripeService {
+    + fetchRevenueData(lastNDays: int): RevenueReport
+}
+
+class OverviewAPI {
+    + getOverviewData(req, res): JSON
+}
+
+class RevenueReport {
+    - totalRevenue: float
+    - revenueByDay: Map<Date, float>
+    - newCustomerRevenue: float
+}
+
+class User {
+    - id: string
+    - name: string
+    - email: string
+    - registrationDate: datetime
+    - lastLoginDate: datetime
+}
+
+OverviewPage --> OverviewAPI : "calls"
+OverviewAPI --> ClerkService : "uses"
+OverviewAPI --> StripeService : "uses"
+ClerkService --> User : "manages"
+StripeService --> RevenueReport : "returns"
+@enduml

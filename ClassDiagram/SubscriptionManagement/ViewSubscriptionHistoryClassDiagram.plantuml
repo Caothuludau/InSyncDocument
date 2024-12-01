@@ -1,0 +1,52 @@
+@startuml ViewSubscriptionHistoryClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+title View Subscription History Class Diagram
+
+package "pkgViewSubscriptionPlan" {
+
+class User {
+    - id: string
+    - name: string
+    - email: string
+    + viewSubscriptionHistory(): List<Subscription>
+}
+
+class SubscriptionService {
+    + getSubscriptionHistory(userId: string): List<Subscription>
+}
+
+class SubscriptionCache {
+    + fetch(userId: string): List<Subscription>
+    + store(userId: string, subscriptions: List<Subscription>): void
+    + invalidate(userId: string): void
+}
+
+class SubscriptionRepository {
+    + findByUserId(userId: string): List<Subscription>
+    + save(userId: string, subscriptions: List<Subscription>): void
+}
+
+class StripeAPI {
+    + retrieveSubscriptions(customerId: string, limit: int): List<Subscription>
+}
+
+class Subscription {
+    - id: string
+    - planName: string
+    - status: string
+    - createdAt: datetime
+    - periodStart: datetime
+    - periodEnd: datetime
+    + getFormattedDuration(): string
+}
+
+' Relationships
+User --> SubscriptionService : "requests history"
+SubscriptionService --> SubscriptionCache : "checks cache"
+SubscriptionService --> SubscriptionRepository : "queries data"
+SubscriptionService --> StripeAPI : "fetches if not found"
+StripeAPI --> Subscription : "provides details"
+SubscriptionRepository --> Subscription : "stores/retrieves"
+}
+@enduml

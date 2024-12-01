@@ -1,0 +1,66 @@
+@startuml DeletePageSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Delete Page Sequence Diagram
+
+actor "User" as U
+boundary "Page Management Page" as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "PagesController" as PageController
+participant "IPageRepository" as IPageRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+
+U -> Hp : Click button to delete Page
+activate Hp
+
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+
+        Author -> PageController : Call DeletePage
+        activate PageController
+
+        PageController -> IPageRepo : Check if Page exists (CheckContainsAsync)
+        activate IPageRepo
+        IPageRepo -> ISContext : Query database for Page existence
+        activate ISContext
+        ISContext -> Db : Check if Page with ID exists in SQL Server
+        activate Db
+        Db --> ISContext : Return Page existence status
+        deactivate Db
+        ISContext --> IPageRepo : Return existence status
+        deactivate ISContext
+        IPageRepo --> PageController : Return Page existence status
+        deactivate IPageRepo
+
+        alt Page exists
+            PageController -> IPageRepo : Call DeletePage(id)
+            activate IPageRepo
+            IPageRepo -> ISContext : Delete Page
+            activate ISContext
+            ISContext -> Db : Delete Page from SQL Server
+            activate Db
+            Db --> ISContext : Delete success
+            deactivate Db
+            ISContext --> IPageRepo : Return delete success
+            deactivate ISContext
+            IPageRepo --> PageController : Return delete success
+            deactivate IPageRepo
+            PageController --> Hp : Return success response (Page deleted)
+            
+            Hp --> U : Notify user (Page deleted successfully)
+        else Page does not exist
+            PageController --> Hp : Return error response (Not Found)
+            deactivate PageController
+            Hp --> U : Notify user (Page not found)
+        end
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+deactivate Hp
+@enduml

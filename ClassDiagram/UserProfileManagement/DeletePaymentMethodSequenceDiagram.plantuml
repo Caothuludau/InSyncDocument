@@ -24,11 +24,11 @@ alt Payment Method Found
   StripeDB --> BillingService: Deletion success
   deactivate StripeDB
 
-  BillingService --> PortalViewScreen: Success response
-  PortalViewScreen -> UserActor: Payment method deleted
+  BillingService --> PortalViewScreen: Return Success response
+  PortalViewScreen -> UserActor:Show message Payment method deleted
 else Payment Method Not Found
-  BillingService --> PortalViewScreen: Error response (Payment method not found)
-  PortalViewScreen -> UserActor: Error message
+  BillingService --> PortalViewScreen: Return Error response (Payment method not found)
+  PortalViewScreen --> UserActor: Show Error message
 end
 
 deactivate BillingService

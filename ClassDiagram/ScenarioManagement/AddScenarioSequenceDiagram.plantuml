@@ -7,7 +7,7 @@ participant "IUserRepository" as UserRepo
 participant "IProjectRepository" as ProjectRepo
 participant "IScenarioRepository" as ScenarioRepo
 participant "IMapper" as Mapper
-database "Database" as DB
+database "SqlServer" as DB
 
 U -> Client : Enter Title Scenario and click add
 activate Client
@@ -18,8 +18,8 @@ activate ScenariosController
 
     ScenariosController -> ScenariosController : Validate ModelState
     alt Invalid ModelState
-        ScenariosController -> Client : Return Message BadRequest
-
+        ScenariosController --> Client : Return Message BadRequest
+        Client --> U : Show Message Error
     else Valid ModelState
         ScenariosController -> UserRepo : Get user by UserIdClerk
         activate UserRepo
@@ -29,7 +29,8 @@ activate ScenariosController
         deactivate UserRepo
 
         alt User not found
-            ScenariosController -> Client : Return BadRequest("Don't exist user has id by : UserIdClerk")
+            ScenariosController --> Client : Return Not Found "Don't exist user"
+            Client --> U : Show Message Error
         else User exists
             ScenariosController -> ProjectRepo : Check project existence by ProjectId
             activate ProjectRepo
@@ -39,7 +40,8 @@ activate ScenariosController
             deactivate ProjectRepo
 
             alt Project not found
-                ScenariosController -> Client : Return Message "Don't exist project has id by : ProjectId"
+                ScenariosController --> Client : Return Message Not Found
+                Client --> U : Show Message Error   
             else Project exists
                 ScenariosController -> Mapper : Map AddScenarioUserClerkDto to Scenario
                 activate Mapper
@@ -54,9 +56,11 @@ activate ScenariosController
                 deactivate ScenarioRepo
 
                 alt Scenario added successfully
-                    ScenariosController -> Client : Return Message Ok
+                    ScenariosController --> Client : Return Message Ok
+                    Client --> U : Show Message Success
                 else Scenario addition failed
-                    ScenariosController -> Client : Return Error "Error occurred while adding the scenario"
+                    ScenariosController --> Client : Return Error 
+                    Client --> U : Show Message Error
                     deactivate Client
                     deactivate ScenariosController
                 end

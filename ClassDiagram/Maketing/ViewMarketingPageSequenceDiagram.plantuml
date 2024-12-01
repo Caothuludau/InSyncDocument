@@ -31,24 +31,20 @@ Title ViewMarketingPage Sequence Diagram
         activate ISContext
         ISContext -> Db : Query In SQL Serve
         activate Db
-
+        Db --> ISContext : Page Data
+        deactivate Db
+        ISContext --> IPageRepo : Page Entity
+        deactivate ISContext
+        IPageRepo --> PageController : Return Page 
+        deactivate IPageRepo
+        PageController --> Pmk : Return ViewPageDto
+        deactivate PageController
         ' Chiều trả về từ SQL Server đến User
-        alt Page exist in db
-            Db --> ISContext : Page Data
-            ISContext --> IPageRepo : Page Entity
-            IPageRepo --> PageController : Return Page 
-            PageController --> Pmk : Return ViewPageDto
+        alt Page exist in db 
             Pmk --> U : Render View
         else Page don't exist in db
-            Db --> ISContext : No Page Data
-            deactivate Db
-            ISContext --> IPageRepo : return null
-            deactivate ISContext
-            IPageRepo --> PageController : return nul 
-            deactivate IPageRepo
-            PageController --> Pmk : message , 400
-            deactivate PageController
-            Pmk --> U : Redirect Home Page
+            Pmk -> U : Redirect Home Page
+            deactivate Pmk
         end
 
 @enduml

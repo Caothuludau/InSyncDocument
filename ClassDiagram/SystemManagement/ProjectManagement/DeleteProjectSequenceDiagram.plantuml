@@ -1,0 +1,55 @@
+@startuml DeleteProjectSequenceDiagram
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Delete Project Sequence Diagram
+
+actor "User" as U
+boundary "Project Management Page" as Hp
+participant "ProjectsController" as ProController
+participant "IProjectRepository" as IProRepo
+participant "InSyncContext" as ISContext
+database "SqlServer" as Db
+
+U -> Hp : Click button to delete project
+activate Hp
+
+Hp -> ProController : Call DeleteProject
+activate ProController
+
+ProController -> IProRepo : Check if project exists (CheckContainsAsync)
+activate IProRepo
+IProRepo -> ISContext : Query database for project existence
+activate ISContext
+ISContext -> Db : Check if project with ID exists in SQL Server
+activate Db
+Db --> ISContext : Return project existence status
+deactivate Db
+ISContext --> IProRepo : Return existence status
+deactivate ISContext
+IProRepo --> ProController : Return project existence status
+deactivate IProRepo
+
+alt Project exists
+    ProController -> IProRepo : Call DeleteProject(id)
+    activate IProRepo
+    IProRepo -> ISContext : Delete project
+    activate ISContext
+    ISContext -> Db : Delete project from SQL Server
+    activate Db
+    Db --> ISContext : Delete success
+    deactivate Db
+    ISContext --> IProRepo : Return delete success
+    deactivate ISContext
+    IProRepo --> ProController : Return delete success
+    deactivate IProRepo
+    ProController --> Hp : Return success response (Project deleted)
+    
+    Hp --> U : Notify user (Project deleted successfully)
+else Project does not exist
+    ProController --> Hp : Return error response (Not Found)
+    deactivate ProController
+    Hp --> U : Notify user (Project not found)
+end
+
+deactivate Hp
+@enduml

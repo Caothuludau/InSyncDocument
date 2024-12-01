@@ -1,0 +1,74 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam SequenceMessageAlignment center
+Title Add SubscriptionPlan for  Sequence Diagram
+
+actor "Admin" as U
+boundary " Screen SubscriptionPlan Management " as Hp
+participant "AdminAuthorizationAttribute" as Author
+participant "SubscriptionPlansController" as SubscriptionPlanController
+participant "ISubscriptionPlanRepository" as ISubscriptionPlanRepo
+participant "IUserRepository" as IUserRepo
+
+participant "Mapper" as Mapper
+database "SqlServer" as Db
+
+U -> Hp : Enter Data and Click Add
+activate Hp
+Hp -> Author : Check permissions
+activate Author
+alt Request with token role admin
+    Author -> SubscriptionPlanController : Call AddSubscriptionPlan()
+    activate SubscriptionPlanController
+    SubscriptionPlanController -> SubscriptionPlanController : Validate ModelState
+    SubscriptionPlanController -> IUserRepo : Check if UserId exists CheckContain()
+    activate IUserRepo
+    IUserRepo -> Db : Excute query in table User database
+    activate Db
+    Db --> IUserRepo : Return result
+    deactivate Db
+    IUserRepo --> SubscriptionPlanController : Return status exist user(true/false) 
+alt User not found
+    SubscriptionPlanController --> Hp : Return Notification Error 400
+    Hp --> U : Show message error
+    deactivate Hp
+    deactivate SubscriptionPlanController
+else User found
+    SubscriptionPlanController -> IUserRepo : Check if user exists by UserIdClerk
+    activate IUserRepo
+    IUserRepo -> Db : Fetch user by UserIdClerk
+    activate Db
+    Db --> IUserRepo : Return user data
+    deactivate Db
+    IUserRepo --> SubscriptionPlanController : Return user data
+    deactivate IUserRepo
+
+    SubscriptionPlanController -> Mapper : Map AddSubscriptionPlanDto to SubscriptionPlan
+    activate Mapper
+    Mapper --> SubscriptionPlanController : Return mapped SubscriptionPlan
+    deactivate Mapper
+
+    SubscriptionPlanController -> ISubscriptionPlanRepo : Add SubscriptionPlan
+    activate ISubscriptionPlanRepo
+    ISubscriptionPlanRepo -> Db : Insert new SubscriptionPlan into database
+    activate Db
+    Db --> ISubscriptionPlanRepo : Return new SubscriptionPlan data
+    deactivate Db
+    ISubscriptionPlanRepo --> SubscriptionPlanController : Return added SubscriptionPlan
+    deactivate ISubscriptionPlanRepo
+
+    SubscriptionPlanController --> Hp : Return success response 200
+    deactivate SubscriptionPlanController
+    Hp --> U : Show success message
+    end
+    
+else Request with token not role admin
+    Author --> Hp : Return Error UnAuthorization
+    deactivate Author
+    Hp --> U : Notification UnAuthorization
+    deactivate Hp
+end
+
+
+
+@enduml

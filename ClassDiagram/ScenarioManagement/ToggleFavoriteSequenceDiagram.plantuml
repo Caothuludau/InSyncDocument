@@ -4,7 +4,7 @@ actor "User" as U
 boundary "Scenario Management Page" as SPage
 participant "ScenariosController" as ScenariosController
 participant "IScenarioRepository" as IScenarioRepo
-database "Database" as DB
+database "SqlServer" as DB
 
 U -> SPage : click icon favorite scenario (id)
 activate SPage
@@ -14,7 +14,8 @@ activate ScenariosController
 
     ScenariosController -> ScenariosController : Check model state validity
     alt Invalid model state
-        ScenariosController -> SPage : Return BadRequest(ModelState)
+        ScenariosController --> SPage : Return BadRequest(ModelState)
+        SPage --> U : Show error message
     else Valid model state
         ScenariosController -> IScenarioRepo : Get scenario by ID
         activate IScenarioRepo
@@ -40,10 +41,11 @@ activate ScenariosController
             deactivate IScenarioRepo
 
             
-            ScenariosController -> SPage : Return  Ok("Scenario updated favorite successfully.")
+            ScenariosController --> SPage : Return message success
             SPage --> U : Display success message
         else Scenario not found
-            ScenariosController -> SPage : Return Message NotFound
+            ScenariosController --> SPage : Return Message NotFound
+            SPage --> U : Show error message
             deactivate SPage
             deactivate ScenariosController
         end

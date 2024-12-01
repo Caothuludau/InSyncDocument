@@ -1,0 +1,36 @@
+@startuml ViewLogSessionDetailSequenceDiagram
+skinparam SequenceMessageAlignment center
+title View Log Session Detail Sequence Diagram 
+
+actor "User" as U
+participant "PopupLogListPage" as Page
+participant "LogService" as Service
+participant "FirebaseClient" as Client
+database "Firebase Database" as DB
+
+U -> Page : Click View Log Session Detail
+activate Page
+
+Page -> Page : fetchLogs(sessionLogId)
+Page -> Service : getLogsBySessionLogId(sessionLogId)
+activate Service
+
+Service -> Client : queryDocuments("logs", { "sessionLogId": sessionLogId })
+activate Client
+
+Client -> DB : Query documents by SessionLogId
+activate DB
+DB --> Client : Return document list
+deactivate DB
+
+Client --> Service : Return raw data
+deactivate Client
+
+Service -> Service : Map data to LogModel[]
+Service --> Page : Return LogModel[]
+deactivate Service
+
+Page --> U : Render list of Logs
+deactivate Page
+
+@enduml
