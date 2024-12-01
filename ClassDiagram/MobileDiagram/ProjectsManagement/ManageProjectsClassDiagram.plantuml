@@ -1,0 +1,36 @@
+@startuml ViewProjectClassDiagram
+
+title View Project Class Diagram (Mobile with Fragment and Adapter)
+skinparam classAttributeIconSize 0
+
+' Main System
+package "pkgViewProjectMobile" {
+
+    !includesub ../../MobileModelClassDiagram.plantuml!Project
+
+    ' UI Layer
+    class ViewProjectFragment {
+        + onCreateView(): View
+        + displayProjectDetails(): void
+        + handleUserInteraction(): void
+    }
+
+    ' Adapter Layer
+    class ProjectAdapter {
+        + setProjectList(projects: List<Project>): void
+        + onBindViewHolder(holder: ProjectViewHolder, position: int): void
+        + getItemCount(): int
+    }
+
+    class ProjectViewHolder {
+        + bind(project: Project): void
+    }
+}
+
+' Relationships
+Project --> ViewProjectFragment
+ProjectAdapter --> Project : "Uses"
+ViewProjectFragment --> ProjectAdapter : "Manages"
+ProjectAdapter *-- ProjectViewHolder : "Holds"
+
+@enduml

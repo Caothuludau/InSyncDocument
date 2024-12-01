@@ -1,0 +1,26 @@
+@startuml ViewScenarioContentClassDiagram
+
+title View Scenario Content Class Diagram
+skinparam classAttributeIconSize 0
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+package "pkgViewScenarioCode" {
+
+    !includesub ../../MobileModelClassDiagram.plantuml!Scenario
+
+    ' UI Layer
+    class ViewScenarioCodeActivity {
+        + onCreate(): void
+        + displayScenarioDetails(scenarioId: String): void
+    }
+
+    ' API Layer
+    class ScenarioActivity {
+        + fetchScenarioDetails(scenarioId: String): Scenario
+    }
+}
+
+' Relationships
+ScenarioActivity --> Scenario : "Uses"
+Scenario --> ViewScenarioCodeActivity : "Displays"
+@enduml

@@ -1,0 +1,42 @@
+@startuml ManageProjectSequenceDiagram
+Title Manage Projects Sequence Diagram
+
+actor User
+
+participant "ProjectFragment" as Fragment
+participant "ProjectViewModel" as ViewModel
+participant "Project" as ProjectModel
+
+== View Projects Flow ==
+User -> Fragment: Clicks on "View Projects"
+Fragment -> ViewModel: getProjects()
+ViewModel -> ProjectModel: Fetch list of projects
+ProjectModel --> ViewModel: Return project list
+ViewModel --> Fragment: Return project list
+Fragment -> User: Display project list
+
+== Search Projects Flow ==
+User -> Fragment: Inputs search criteria
+Fragment -> ViewModel: searchProjects(criteria)
+ViewModel -> ProjectModel: Filter projects by criteria
+ProjectModel --> ViewModel: Return filtered list
+ViewModel --> Fragment: Return filtered list
+Fragment -> User: Display search results
+
+== Update Project Flow ==
+User -> Fragment: Clicks on "Update" button
+Fragment -> ViewModel: updateProject(projectId, newDetails)
+ViewModel -> ProjectModel: Update project with newDetails
+ProjectModel --> ViewModel: Return success/failure status
+ViewModel --> Fragment: Notify success/failure
+Fragment -> User: Display update confirmation
+
+== Delete Project Flow ==
+User -> Fragment: Clicks on "Delete" button
+Fragment -> ViewModel: deleteProject(projectId)
+ViewModel -> ProjectModel: Remove project by projectId
+ProjectModel --> ViewModel: Return success/failure status
+ViewModel --> Fragment: Notify success/failure
+Fragment -> User: Display deletion confirmation
+
+@enduml

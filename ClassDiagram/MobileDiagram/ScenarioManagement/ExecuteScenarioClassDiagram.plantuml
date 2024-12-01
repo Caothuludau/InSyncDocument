@@ -1,0 +1,39 @@
+@startuml ExecuteActionClassDiagram
+
+title Execute Action Class Diagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "pkgExecuteActionCode" {
+
+    ' Base Scenario Class
+    !includesub ../../MobileModelClassDiagram.plantuml!Scenario
+    ' UI Layer
+    class ViewScenarioCodeActivity {
+        + onCreate(): void
+        + displayScenarioDetails(scenarioId: String): void
+        + initializeOverlay(): void
+        + onOverlayButtonClick(): void
+    }
+
+    ' Overlay Action Logic
+    class ActionOverlay {
+        + showOverlay(): void
+        + hideOverlay(): void
+        + initializeButton(action: String): void
+    }
+
+    ' Action Execution Layer
+    class ExecuteService {
+        + executeScenario(scenario: Scenario): void
+        + logExecutionDetails(scenario: Scenario): void
+    }
+}
+
+' Relationships
+ExecuteService --> Scenario : "Executes"
+Scenario --> ViewScenarioCodeActivity : "Details"
+ViewScenarioCodeActivity --> ActionOverlay : "Initializes"
+ActionOverlay --> ExecuteService : "Triggers"
+
+@enduml

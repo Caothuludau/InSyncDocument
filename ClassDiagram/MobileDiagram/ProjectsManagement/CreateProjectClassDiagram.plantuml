@@ -1,0 +1,29 @@
+@startuml CreateProjectClassDiagram
+
+
+Title Create Project Class Diagram
+skinparam classAttributeIconSize 0
+
+' Main System
+package "pkgCreateProject" {
+    !includesub ../../MobileModelClassDiagram.plantuml!Project
+
+    ' UI Layer
+    class CreateProjectFragment {
+        + onCreateView(): View
+        + onProjectCreateClicked(): void
+        + validateInputs(title: String, description: String): Boolean
+    }
+
+    ' Data Handler Layer
+    class ProjectViewModel {
+        + createProject(title: String, description: String): void
+        + validateUniqueProjectName(title: String): Boolean
+    }
+}
+
+' Relationships
+CreateProjectFragment --> ProjectViewModel : "Uses"
+ProjectViewModel *-- Project : "Manages"
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml DeleteScenarioClassDiagram
+
+title Delete Scenario Class Diagram (Mobile)
+
+' Main System
+package "pkgViewScenarioMobile" {
+
+    !includesub ../../MobileModelClassDiagram.plantuml!Scenario
+    
+    ' UI Layer
+    class ViewScenarioActivity {
+        + onCreate(): void
+        + displayScenarioDetails(): void
+        + handleDeleteScenario(): void
+    }
+
+    ' Adapter Layer
+    class ScenarioAdapter {
+        + setScenarioList(scenarios: List<Scenario>): void
+        + onBindViewHolder(holder: ScenarioViewHolder, position: int): void
+        + getItemCount(): int
+    }
+    
+    class ScenarioViewHolder {
+        + bind(scenario: Scenario): void
+    }
+
+    ' API Layer
+    class ScenarioAPI {
+        + deleteScenarioById(id: int): void
+    }
+}
+
+' Relationships
+Scenario --> ViewScenarioActivity : "Used by"
+ViewScenarioActivity --> ScenarioService : "Calls"
+ScenarioAdapter --> Scenario : "Uses"
+ViewScenarioActivity --> ScenarioAdapter : "Manages"
+ScenarioAdapter *-- ScenarioViewHolder : "Holds"
+
+@enduml

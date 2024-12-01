@@ -1,0 +1,34 @@
+@startuml ViewScenarioSequenceDiagram
+
+title View Scenario Sequence Diagram (Mobile with Activity, Adapter, and API)
+
+actor User
+participant ViewScenarioActivity
+participant APIScenario
+participant ScenarioAdapter
+participant ScenarioViewHolder
+participant Scenario
+skinparam SequenceMessageAlignment center
+
+User -> ViewScenarioActivity : Launch Activity
+activate ViewScenarioActivity
+ViewScenarioActivity -> ViewScenarioActivity : onCreate()
+
+ViewScenarioActivity -> APIScenario : fetchScenarios()
+activate APIScenario
+APIScenario --> ViewScenarioActivity : List<Scenario> (scenarios)
+deactivate APIScenario
+
+ViewScenarioActivity -> ScenarioAdapter : Initialize Adapter
+activate ScenarioAdapter
+ViewScenarioActivity -> ScenarioAdapter : setScenarioList(scenarios)
+
+ScenarioAdapter -> ScenarioViewHolder : Create ViewHolder (for each scenario)
+activate ScenarioViewHolder
+ScenarioViewHolder <-- ScenarioAdapter : ViewHolder Created
+ScenarioAdapter -> ScenarioViewHolder : bind(scenario)
+ScenarioViewHolder --> ScenarioAdapter : ViewHolder Bind
+
+deactivate ViewScenarioActivity
+
+@enduml

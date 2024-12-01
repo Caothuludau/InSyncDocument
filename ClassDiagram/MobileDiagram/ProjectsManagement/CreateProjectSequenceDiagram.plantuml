@@ -1,0 +1,27 @@
+@startuml CreateProjectSequenceDiagram
+
+title Create Project Sequence Diagram
+actor User
+
+participant "CreateProjectFragment" as Fragment
+participant "ProjectViewModel" as ViewModel
+participant "Project" as Project
+
+User -> Fragment : onCreateView()
+Fragment -> Fragment : Initialize UI
+
+User -> Fragment : onProjectCreateClicked()
+Fragment -> Fragment : validateInputs(title, description)
+Fragment -> ViewModel : validateUniqueProjectName(title)
+ViewModel --> Fragment : return validation result
+
+alt If validation succeeds
+    Fragment -> ViewModel : createProject(title, description)
+    ViewModel -> Project : Create project instance
+    Project --> ViewModel : Return project instance
+    ViewModel --> Fragment : Notify project created
+else If validation fails
+    Fragment --> User : Show validation error
+end
+
+@enduml

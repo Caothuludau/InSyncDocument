@@ -1,0 +1,16 @@
+@startuml DeleteScenarioSequenceDiagram
+
+actor User
+participant ViewScenarioActivity
+participant APIClient
+participant Services
+
+User -> ViewScenarioActivity : Click "Delete" button
+ViewScenarioActivity -> APIClient : Call DELETE /scenarios
+APIClient -> Services : Forward request
+Services -> Services : Process deletion logic
+Services --> APIClient : Response with success
+APIClient --> ViewScenarioActivity : Return success response
+ViewScenarioActivity -> User : Display success message
+
+@enduml

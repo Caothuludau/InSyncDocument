@@ -1,0 +1,20 @@
+@startuml ViewScenarioContentSequenceDiagram
+
+title View Scenario Content Sequence Diagram
+skinparam sequenceMessageAlign center
+
+actor User
+participant ViewScenarioActivity
+participant Scenario
+participant ViewScenarioCodeActivity
+
+
+User -> ViewScenarioActivity : Choose a Scenario
+activate ViewScenarioActivity
+ViewScenarioActivity -> Scenario : Get Scenario Details
+activate Scenario
+Scenario -> ViewScenarioCodeActivity : displayScenarioDetails(scenarioId)
+
+ViewScenarioCodeActivity -> User : Display Scenario Details
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml ExecuteActionSequenceDiagram
+
+title Execute Action Sequence Diagram
+actor User
+participant ViewScenarioCodeActivity
+participant ActionOverlay
+participant ScenarioExecutor
+participant Scenario
+participant UserDevice
+
+User -> ViewScenarioCodeActivity : Launch Activity
+activate ViewScenarioCodeActivity
+
+ViewScenarioCodeActivity -> ViewScenarioCodeActivity : onCreate()
+ViewScenarioCodeActivity -> ViewScenarioCodeActivity : initializeOverlay()
+ViewScenarioCodeActivity -> ActionOverlay : showOverlay()
+activate ActionOverlay
+
+User -> ViewScenarioCodeActivity : Click Overlay Button
+ViewScenarioCodeActivity -> ActionOverlay : onOverlayButtonClick()
+ActionOverlay -> ActionOverlay : initializeButton(action)
+ActionOverlay -> ScenarioExecutor : Trigger Execution
+activate ScenarioExecutor
+
+ScenarioExecutor -> Scenario : execute()
+activate Scenario
+
+ScenarioExecutor -> UserDevice : Interact with Device
+ScenarioExecutor -> ScenarioExecutor : logExecutionDetails(scenario)
+Scenario --> ScenarioExecutor : Execution Complete
+deactivate Scenario
+ScenarioExecutor --> ActionOverlay : Execution Complete
+ActionOverlay --> ViewScenarioCodeActivity : hideOverlay()
+deactivate ScenarioExecutor
+deactivate ActionOverlay
+deactivate ViewScenarioCodeActivity
+
+@enduml

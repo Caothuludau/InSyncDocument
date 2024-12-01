@@ -1,0 +1,42 @@
+@startuml ViewScenarioClassDiagram
+
+title View Scenario Class Diagram (Mobile with Activity, Adapter, and API)
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+' Main System
+package "pkgViewScenarioMobile" {
+
+    !includesub ../../MobileModelClassDiagram.plantuml!Scenario
+    
+    ' UI Layer
+    class ViewScenarioActivity {
+        + onCreate(): void
+        + displayScenarioDetails(): void
+        + handleUserInteraction(): void
+    }
+
+    ' Adapter Layer
+    class ScenarioAdapter {
+        + setScenarioList(scenarios: List<Scenario>): void
+        + onBindViewHolder(holder: ScenarioViewHolder, position: int): void
+        + getItemCount(): int
+    }
+    
+    class ScenarioViewHolder {
+        + bind(scenario: Scenario): void
+    }
+
+    ' API Layer
+    class APIScenario {
+        + fetchScenarios(): List<Scenario>
+    }
+}
+
+' Relationships
+Scenario --> ViewScenarioActivity
+ScenarioAdapter --> Scenario : "Uses"
+ViewScenarioActivity --> ScenarioAdapter : "Manages"
+ViewScenarioActivity --> APIScenario : "Fetches"
+ScenarioAdapter --> ScenarioViewHolder : "Holds"
+
+@enduml
