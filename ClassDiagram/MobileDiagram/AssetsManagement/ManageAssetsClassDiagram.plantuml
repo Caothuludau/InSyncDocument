@@ -1,0 +1,41 @@
+@startuml ManageAssetsClassDiagram
+
+title Manage Assets Class Diagram
+
+package pkgFragmentAssets{
+class ManageAssetsFragment {
+    + imageId: String
+    + onCreateView()
+    + onImageTap(imageId: String)
+    + onImageLongPress(imageId: String)
+}
+
+class UploadToCloudDialog {
+    + imageId: String
+    + showDialog(imageId: String)
+    + confirmUpload()
+}
+
+class APIService {
+    + getProjectDetails()
+    + addProjectAssets()
+    + deleteImage()
+}
+
+class ImageDetailsActivity {
+    + imageId: String
+    + displayImageDetails(imageId: String)
+    + deleteImage()
+}
+
+class CloudService {
+    + uploadToCloud(imageId: String)
+}
+}
+ManageAssetsFragment --> UploadToCloudDialog : interacts with
+ManageAssetsFragment --> ImageDetailsActivity : interacts with
+UploadToCloudDialog --> APIService : calls
+UploadToCloudDialog --> CloudService : calls
+ImageDetailsActivity --> APIService : calls
+
+@enduml

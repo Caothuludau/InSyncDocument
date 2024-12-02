@@ -1,0 +1,42 @@
+@startuml ViewLogHistorySequenceDiagram
+
+title View Log History Sequence Diagram with APIService
+
+actor User
+participant LogFragment
+participant APIService
+participant RecyclerView
+participant LogAdapter
+participant LogViewHolder
+
+User -> LogFragment : Launch LogFragment
+activate LogFragment
+LogFragment -> LogFragment : onCreateView()
+LogFragment -> LogFragment : setupRecyclerView()
+LogFragment -> APIService : fetchLogData()
+activate APIService
+APIService --> LogFragment : return logList
+deactivate APIService
+
+LogFragment --> LogAdapter : setLogs(logList)
+activate LogAdapter
+activate RecyclerView
+RecyclerView -> LogAdapter : onCreateViewHolder()
+
+LogAdapter -> LogViewHolder : Create ViewHolder
+activate LogViewHolder
+LogViewHolder --> LogFragment : Return view
+
+User -> RecyclerView : Scroll through logs
+RecyclerView -> LogAdapter : onBindViewHolder()
+LogAdapter -> LogViewHolder : bind(logItem)
+deactivate LogAdapter
+LogViewHolder --> LogFragment : Return view
+deactivate LogViewHolder
+deactivate RecyclerView
+
+User -> LogFragment : Select log item
+
+deactivate LogFragment
+
+@enduml

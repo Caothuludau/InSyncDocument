@@ -1,0 +1,32 @@
+@startuml CreateAssetSequenceDiagram
+
+title Create Asset Sequence Diagram
+
+actor User
+participant AssetFragment
+participant PermissionService
+participant CameraOverlay
+
+User -> AssetFragment : Clicks Create Asset Button
+activate AssetFragment
+AssetFragment -> PermissionService : requestRecordingPermission()
+activate PermissionService
+PermissionService --> AssetFragment : return isPermissionGranted(true/false)
+deactivate PermissionService
+
+alt If Permission Granted
+    AssetFragment -> CameraOverlay : showOverlay()
+    activate CameraOverlay
+    User -> CameraOverlay : Press Capture Button
+    CameraOverlay -> AssetFragment : captureImage()
+    
+else If Permission Denied
+    AssetFragment --> User : Show Permission Denied Message
+end
+
+User -> CameraOverlay : Close Overlay
+CameraOverlay --> User : hideOverlay()
+deactivate CameraOverlay
+deactivate AssetFragment
+
+@enduml

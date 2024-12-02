@@ -1,0 +1,43 @@
+@startuml ViewLogDetailSequenceDiagram
+
+title View Log Detail Sequence Diagram
+
+actor User
+participant LogFragment
+participant APIService
+participant LogDetailActivity
+participant LogSessionAdapter
+participant LogSessionViewHolder
+participant LogSession
+
+User -> LogFragment : Launch LogFragment
+activate LogFragment
+LogFragment -> APIService : fetchLogs()
+activate APIService
+APIService --> LogFragment : return logList
+deactivate APIService
+
+User -> LogFragment : Click "View" on a Log
+LogFragment -> LogDetailActivity : openLogDetail(logId)
+activate LogDetailActivity
+LogDetailActivity -> LogDetailActivity : onCreate()
+LogDetailActivity -> LogDetailActivity : setupRecyclerView()
+LogDetailActivity -> APIService : fetchLogSessions(logId)
+activate APIService
+APIService --> LogDetailActivity : return logSessions
+deactivate APIService
+
+LogDetailActivity --> LogSessionAdapter : setLogSessions(logSessions)
+activate LogSessionAdapter
+LogSessionAdapter -> LogSessionAdapter : Initialize with logSessions
+
+User -> LogSessionAdapter : Scroll through LogSessions
+LogSessionAdapter -> LogSessionViewHolder : onCreateViewHolder()
+activate LogSessionViewHolder
+LogSessionAdapter -> LogSessionViewHolder : bind(logSession)
+LogSessionViewHolder --> LogDetailActivity : Return view
+
+deactivate LogDetailActivity
+deactivate LogFragment
+
+@enduml

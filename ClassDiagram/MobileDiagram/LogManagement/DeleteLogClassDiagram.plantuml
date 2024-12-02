@@ -1,0 +1,42 @@
+@startuml DeleteClassDiagram
+
+title Delete Log Class Diagram
+skinparam linetype ortho
+package "pkgDeleteLog" {
+
+!includesub ../../MobileModelClassDiagram.plantuml!Log
+class LogFragment {
+    + onCreateView()
+    + setupRecyclerView()
+    + fetchLogData()
+    + deleteLog(logId: String)
+}
+
+class LogAdapter {
+    + logs: List<Log>
+    + onCreateViewHolder()
+    + onBindViewHolder()
+    + getItemCount()
+    + deleteLogAt(position: int)
+}
+
+class LogViewHolder {
+    + deleteButton: Button
+    + bind(logItem: Log, position: int)
+}
+
+class APIService {
+    + deleteLog(logId: String): Boolean
+}
+
+
+}
+
+LogFragment --> LogAdapter 
+LogAdapter --> LogViewHolder 
+LogAdapter --> Log 
+LogViewHolder --> Log 
+LogFragment --> APIService 
+APIService --> Log 
+
+@enduml

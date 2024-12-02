@@ -1,0 +1,35 @@
+@startuml ViewLogHistoryClassDiagram
+
+title View Log History Class Diagram
+
+package "pkgViewLogHistory" {
+
+!includesub ../../MobileModelClassDiagram.plantuml!Log
+
+class LogFragment {
+    + onCreateView()
+    + setupRecyclerView()
+    + fetchLogData()
+}
+
+class LogAdapter {
+    + logs: List<Log>
+    + onCreateViewHolder()
+    + onBindViewHolder()
+    + getItemCount()
+}
+
+class LogViewHolder {
+    + logTitle: TextView
+    + logDate: TextView
+    + bind(logItem: Log)
+}
+
+}
+
+LogFragment --> LogAdapter : uses
+LogAdapter --> LogViewHolder : creates
+LogAdapter --> Log : binds data
+LogViewHolder --> Log : binds data to views
+
+@enduml

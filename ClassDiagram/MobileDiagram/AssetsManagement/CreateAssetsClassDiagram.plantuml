@@ -1,0 +1,30 @@
+@startuml CreateAssetClassDiagram
+
+title Create Asset Class Diagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package pkgFragmentAssets{
+class AssetFragment {
+    + onCreateView()
+    + onClickCreateAssetButton()
+    + onCaptureButtonClick()
+    + onCloseOverlay()
+}
+
+class PermissionService {
+    + requestRecordingPermission()
+    + isPermissionGranted(): Boolean
+}
+
+class CameraOverlay {
+    + showOverlay()
+    + hideOverlay()
+    + captureImage()
+}
+}
+AssetFragment --> PermissionService : requests
+AssetFragment --> CameraOverlay : displays
+CameraOverlay --> AssetFragment : notify
+
+@enduml

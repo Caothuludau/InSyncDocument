@@ -1,0 +1,57 @@
+
+@startuml ManageAssetsSequenceDiagram
+
+title Manage Assets Sequence Diagram
+actor User
+participant ManageAssetsFragment
+
+participant UploadToCloudDialog
+participant APIService
+participant ImageDetailsActivity
+participant CloudService
+
+
+User -> ManageAssetsFragment : Launch Fragment
+activate ManageAssetsFragment
+ManageAssetsFragment -> ManageAssetsFragment : onCreateView()
+
+User -> ManageAssetsFragment : Tap on Image
+ManageAssetsFragment -> UploadToCloudDialog : onImageTap(imageId)
+activate UploadToCloudDialog
+UploadToCloudDialog -> UploadToCloudDialog : showDialog(imageId)
+UploadToCloudDialog -> APIService : getProjectDetails()
+activate APIService
+APIService --> UploadToCloudDialog : return projectDetails
+
+User -> UploadToCloudDialog : Confirm Upload
+UploadToCloudDialog -> CloudService : uploadToCloud(imageId)
+activate CloudService
+
+CloudService --> UploadToCloudDialog : Upload Success
+deactivate CloudService
+UploadToCloudDialog -> APIService : addProjectAssets()
+APIService --> UploadToCloudDialog : return uploadStatus
+deactivate APIService
+UploadToCloudDialog --> ManageAssetsFragment : Dismiss Dialog
+
+deactivate UploadToCloudDialog
+
+
+User -> ManageAssetsFragment : Long Press on Image
+ManageAssetsFragment -> ImageDetailsActivity : onImageLongPress(imageId)
+activate ImageDetailsActivity
+ImageDetailsActivity -> ImageDetailsActivity : displayImageDetails(imageId)
+User -> ImageDetailsActivity : View Image
+User -> ImageDetailsActivity : Delete Image
+ImageDetailsActivity --> APIService : deleteImage()
+activate APIService
+APIService --> ImageDetailsActivity : return deleteStatus
+deactivate APIService
+ImageDetailsActivity --> ManageAssetsFragment : Dismiss Activity
+
+
+deactivate ImageDetailsActivity
+
+deactivate ManageAssetsFragment
+
+@enduml

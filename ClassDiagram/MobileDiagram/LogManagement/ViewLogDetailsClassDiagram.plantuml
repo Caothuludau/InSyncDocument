@@ -1,0 +1,46 @@
+@startuml ViewLogDetailClassDiagram
+
+title View Log Detail Class Diagram
+package "pkgViewLogDetail" {
+
+!includesub ../../MobileModelClassDiagram.plantuml!LogSession
+class LogFragment {
+    + onCreateView()
+    + setupRecyclerView()
+    + fetchLogData()
+    + openLogDetail(logId: String)
+}
+
+class LogDetailActivity {
+    + onCreate()
+    + setupRecyclerView()
+    + fetchLogSessions(logId: String)
+}
+
+class LogSessionAdapter {
+    - logSessions: List<LogSession>
+    + onCreateViewHolder()
+    + onBindViewHolder()
+    + getItemCount()
+}
+
+class LogSessionViewHolder {
+    + sessionTime: TextView
+    + sessionAction: TextView
+    + bind(logSession: LogSession)
+}
+
+class APIService {
+    + fetchLogSessions(logId: String): List<LogSession>
+    + fetchLogs(): List<Log>
+}
+}
+
+LogFragment --> APIService : uses
+LogFragment --> LogDetailActivity : opens
+LogDetailActivity --> LogSessionAdapter : uses
+LogSessionAdapter --> LogSessionViewHolder : creates
+LogSessionAdapter --> LogSession : binds data
+LogSessionViewHolder --> LogSession : binds data to views
+
+@enduml
