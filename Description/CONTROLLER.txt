@@ -1,0 +1,34 @@
+CONTROLLER
+
+ControllerBase
+A base controller class that provides shared functionality for all other controllers. It acts as the foundation for common controller logic.
+
+UsersController
+A controller responsible for managing user operations, including creating and updating user information. Interacts with the user repository for data persistence.
+
+AssetsController
+A controller that manages asset-related operations, such as retrieving assets, adding new ones, updating existing assets, and deleting them. It supports pagination and searching, and handles assets within specific projects.
+
+CategoryDocumentController
+A controller designed to handle category document management. It allows fetching all categories, retrieving specific categories by ID, adding new categories, updating them, and deleting existing ones.
+
+CustomerReviewsController
+This controller manages customer reviews, enabling the creation, retrieval, updating, and deletion of reviews. It supports fetching published reviews and searching with pagination.
+
+DocumentsController
+Handles operations related to documents, including fetching all documents or category-specific documents, retrieving by ID or slug, and adding, updating, or deleting documents. Also supports updating documents by slug.
+
+PagesController
+Manages web pages by enabling operations such as retrieving all pages, getting specific pages by ID or slug, adding new pages, updating them by ID or slug, and deleting pages.
+
+ProjectsController
+Responsible for project management, including fetching all projects, retrieving user-specific projects, creating and updating projects, and deleting them. It supports publishing projects and handling project assignments for clerks.
+
+ScenariosController
+A controller for managing scenarios within projects. It supports creating, updating, renaming, and deleting scenarios. Additional functionality includes retrieving scenarios by project, user, or clerk, toggling favorites, and updating JSON configurations.
+
+SubscriptionPlansController
+Manages subscription plans, allowing the creation, retrieval, updating, and deletion of subscription plans. It also includes functionality for associating subscription plans with clerks.
+
+UserSubscriptionsController
+Handles user subscription operations, such as retrieving subscriptions by user, clerk, or subscription plan, checking expiration statuses, and managing Stripe webhook events. Supports adding, updating, and deleting user subscriptions.

@@ -1,0 +1,32 @@
+ENTITY
+
+Asset
+Represents a file or resource belonging to a project. Each asset is associated with a specific project and includes details like the asset name, type, file path, and timestamps for creation and updates.
+
+CategoryDocument
+Defines a category for grouping documents. It contains attributes such as title, description, and timestamps. Each category can be associated with multiple documents.
+
+Document
+Represents a specific document with attributes like slug, title, content, and an optional note. Documents are associated with a category and can also have hierarchical relationships with other documents.
+
+CustomerReview
+Captures feedback from customers, including their name, image, job title, review text, and visibility status. This model helps showcase user feedback and is timestamped for when reviews are created.
+
+Page
+Represents a standalone content page with fields for slug, title, content, and optional notes. Each page is timestamped for creation and updates, making it suitable for static content management.
+
+Project
+Represents a core unit of work within the system. Each project includes a name, description, user ownership, and timestamps. Projects can contain multiple assets and scenarios and can be marked as published or unpublished.
+
+Scenario
+Defines a series of steps for a specific project. Scenarios include attributes like name, description, web and Android-specific steps, and favorites status. Each scenario is tied to a project and includes metadata about its creator and timestamps.
+
+SubscriptionPlan
+Represents a subscription offering in the system. Includes attributes like name, status, price, and various limitations (e.g., max projects, max assets, storage limits). Advanced features like priority support, reporting, and custom features are also defined here. Each plan can be assigned to multiple users via subscriptions.
+
+User
+Represents a system user with personal details such as username, email, and address, along with security attributes like password hash and account lockout settings. Users can manage projects, scenarios, and subscriptions. They also have relationships with subscription plans and can be administrators for those plans.
+
+UserSubscription
+Tracks the relationship between a user and a subscription plan. Includes details like Stripe-related IDs for payment processing, subscription periods, and timestamps. Each subscription links a user to a specific subscription plan.
+

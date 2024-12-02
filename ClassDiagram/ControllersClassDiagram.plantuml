@@ -57,7 +57,7 @@ package pkgControllers <<Frame>> {
 
     !startsub CategoryDocumentsController
     class CategoryDocumentsController  <<controller>>  {
-        - _cateRepo : ICustomerReviewRepository
+        - _cateRepo : ICategoryDocumentRepository
         
         + GetCategoryDocuments() 
         + GetAllCategoryDocument(index : int, 

@@ -1,6 +1,6 @@
 @startuml SignSequenceDiagram
 skinparam classAttributeIconSize 0
-Title Sign Sequence Diagram
+Title SignIn Sequence Diagram
 'Character	Visibility
 '-			private
 '#			protected

@@ -1,0 +1,73 @@
+DTO
+
+Asset DTO
+ViewAssetDto: Represents the detailed information of an asset, including its project association, type, and creation and update timestamps.
+UpdateAssetDto: Used for updating an existing asset's name and type information.
+AddAssetDto: Captures the necessary data to create a new asset, including its project association and file path.
+ActionAssetResponse: Represents a response for asset-related actions, containing a message and the asset's unique identifier.
+
+CustomerReview DTO
+ViewCustomerReviewDto: Represents a customer's review details, including the reviewer's name, job title, review content, and visibility status.
+AddCustomerReviewDto: Contains the information required to add a new customer review, such as name, image URL, job title, and review content.
+UpdateCustomerReviewDto: Used for updating an existing customer review's details, including its visibility status.
+ActionCustomerReviewResponse: Provides a response message and the unique identifier of the customer review for actions performed.
+
+CategoryDocuments DTO
+ViewCategoryDocumentDto: Represents a category of documents with its details, such as title, description, order, and associated documents.
+UpdateCategoryDocumentDto: Used to update an existing category's title, order, and description.
+AddCategoryDocumentDto: Captures the necessary data to create a new category of documents.
+ActionCategoryDocumentResponse: Represents a response for category-related actions, containing a message and the category's unique identifier.
+
+Documents DTO
+ViewDocumentDto: Represents the detailed information of a document, including its content, category association, and timestamps for creation and updates.
+UpdateDocumentDto: Used for updating an existing document's details, such as title, content, and category association.
+AddDocumentDto: Captures the necessary data to create a new document, including its slug and category association.
+ActionDocumentResponse: Provides a response message and the unique identifier of the document for actions performed.
+
+Pages DTO
+ViewPageDto: Represents the detailed information of a page, including its content, slug, and timestamps for creation and updates.
+UpdatePageDto: Used for updating an existing page's details, such as title, content, and slug.
+AddPageDto: Captures the necessary data to create a new page with its content and slug.
+ActionPageResponse: Represents a response for page-related actions, containing a message and the page's unique identifier.
+
+Project DTOs
+ViewProjectDto: A data transfer object that represents a project with its basic details like ID, name, description, associated user, display name, timestamps for creation and updates, and publication status.
+AddProjectDto: A DTO used for creating a new project, containing fields such as project name, description, associated user, and publication status.
+AddProjectClerkDto: Similar to AddProjectDto, but used for associating a project with a clerk user by their ID.
+UpdateProjectDto: A DTO for updating existing project details, including its ID, name, description, and publication status.
+ActionProjectResponse: A response object that includes a message and the ID of the project after an action is performed.
+Response Paging
+ResponsePaging: A generic class for paginated responses, containing the data and the total count of items.
+
+Scenario DTOs
+ViewScenarioDto: A DTO representing a scenario with fields like ID, project details, title, description, steps for web and Android, favorite status, image URL, author information, and timestamps.
+AddScenarioDto: A DTO for creating a new scenario with details like project ID, name, description, steps for web and Android, favorite status, image URL, and the creator's ID.
+AddScenarioUserClerkDto: Similar to AddScenarioDto, but used for associating a scenario with a clerk user by their ID.
+UpdateScenarioDto: A DTO for updating an existing scenario, including fields for its ID, name, description, steps, favorite status, and image URL.
+UpdateRenameScenarioDto: A specialized DTO for renaming a scenario, containing only the scenario ID and its new name.
+ActionScenarioResponse: A response object containing a message and the ID of the scenario after an action is performed.
+
+Subscription Plan DTOs
+ViewSubscriptionPlanDto: A detailed DTO representing a subscription plan, including its ID, name, status, price, user details, content, various limits (projects, assets, scenarios, etc.), support levels, and additional features.
+AddSubscriptionPlanDto: A DTO for creating a new subscription plan, containing fields for name, status, price, limits, support level, and optional features like priority support or monthly reporting.
+AddSubscriptionPlanUserClerkDto: Similar to AddSubscriptionPlanDto, but includes a clerk user ID for associating the subscription plan with a specific clerk.
+UpdateSubscriptionPlanDto: A DTO for updating an existing subscription plan, including fields for its ID, updated details, limits, and features.
+ActionSubscriptionPlanResponse: A response object that includes a message and the ID of the subscription plan after an action is performed.
+
+Tutorial DTOs
+ViewTutorialDto: A DTO for viewing tutorials, including fields for ID, title, content, creation and update timestamps, visibility status, and display order.
+
+User DTOs
+Data: A model representing user data, containing attributes like personal details, email addresses, phone numbers, and metadata.
+EmailAddresses: A submodel for email details, including email address, ID, linked information, and verification status.
+Verification: A submodel for verification information, including status and strategy.
+CreateUserDto: A DTO for creating a new user, containing the user data, object type, and operation type.
+UpdateUserDto: A DTO for updating an existing user's details, similar to CreateUserDto.
+ActionUserResponse: A response object containing a message and the user's ID after an action is performed.
+
+User Subscription DTOs
+ViewUserSubscriptionDto: A DTO for viewing user subscriptions, including subscription and user details, Stripe information, and timestamps.
+AddUserSubscriptionDto: A DTO for adding a new subscription for a user, containing subscription details and Stripe-related fields.
+AddUserSubscriptionUserClerkDto: Similar to AddUserSubscriptionDto, but includes a clerk user ID for associating the subscription with a specific clerk.
+UpdateUserSubscriptionDto: A DTO for updating an existing user subscription, including its ID, updated details, and Stripe-related fields.
+ActionUserSubscriptionResponse: A response object that includes a message and the ID of the user subscription after an action is performed.

@@ -1,5 +1,5 @@
 @startuml SigninByEmailClerk
-Title Signin Google Clerk Class DiagramBorderColor
+Title Signin Google Clerk Class Diagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 ' Lớp chính xử lý sign-in

@@ -18,11 +18,9 @@ Title View Marketing Pages Class Diagram
 package pkgViewMarkting <<Frame>> {  
     'include controller'
     !includesub ../ControllersClassDiagram.plantuml!ControllerBase
-    !includesub ../ControllersClassDiagram.plantuml!CategoryDocumentController
+    !includesub ../ControllersClassDiagram.plantuml!CategoryDocumentsController
     !includesub ../ControllersClassDiagram.plantuml!DocumentsController
 
-
-    
     'include Repository'
     !includesub ../RepositoriesClassDiagram.plantuml!IRepositoryBase
     !includesub ../RepositoriesClassDiagram.plantuml!RepositoryBase
@@ -42,7 +40,7 @@ package pkgViewMarkting <<Frame>> {
 
 
     'set up realation ship' 
-    ControllerBase <|-- CategoryDocumentController
+    ControllerBase <|-- CategoryDocumentsController
     ControllerBase <|-- DocumentsController
 
 

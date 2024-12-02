@@ -1,0 +1,73 @@
+REPOSITORY
+
+DbContext
+An abstract base class that defines the overall structure and database context for the application. It serves as a blueprint for interacting with the underlying database.
+
+InSyncContext
+The main database context class, inheriting from DbContext. It defines DbSet properties for all entities in the system, such as Assets, Projects, Users, and others, to facilitate CRUD operations.
+
+IRepositoryBase<T>
+An interface defining the generic base repository operations, including methods for adding, updating, deleting, retrieving a single entity by condition, and retrieving all entities.
+
+RepositoryBase<T>
+A base implementation of IRepositoryBase<T> that provides shared logic for repository operations. It uses InSyncContext for database interactions and includes resource management to handle disposal.
+
+IAssetRepository
+An interface for repository operations specific to the Asset entity. Inherits generic operations from IRepositoryBase<Asset>.
+
+AssetRepository
+A repository implementation for managing Asset entities. Inherits shared behavior from RepositoryBase<Asset> and interacts with the InSyncContext.
+
+ICategoryDocumentRepository
+An interface for repository operations specific to the CategoryDocument entity. Includes a method for deleting a category document by its ID, in addition to generic operations.
+
+CategoryDocumentRepository
+A repository implementation for managing CategoryDocument entities. Inherits from RepositoryBase<CategoryDocument> and implements logic to delete a category document by ID.
+
+ICustomerReviewRepository
+An interface for repository operations specific to the CustomerReview entity. Inherits basic CRUD operations from IRepositoryBase<CustomerReview>.
+
+CustomerReviewRepository
+A repository implementation for managing CustomerReview entities. Extends RepositoryBase<CustomerReview> to interact with the InSyncContext.
+
+IDocumentRepository
+An interface for repository operations specific to the Document entity. Inherits basic repository functionality from IRepositoryBase<Document>.
+
+DocumentRepository
+A repository implementation for managing Document entities. Provides CRUD operations by extending RepositoryBase<Document> and interacting with the InSyncContext.
+
+IPageRepository
+An interface for repository operations specific to the Page entity. Inherits generic CRUD operations from IRepositoryBase<Page>.
+
+PageRepository
+A repository implementation for managing Page entities. Inherits from RepositoryBase<Page> and uses the InSyncContext for database interactions.
+
+IProjectRepository
+An interface for repository operations specific to the Project entity. Includes a method to delete a project by its ID in addition to the generic repository operations.
+
+ProjectRepository
+A repository implementation for managing Project entities. Extends RepositoryBase<Project> and provides logic to delete a project by ID. It uses the InSyncContext for database interactions.
+
+IScenarioRepository
+An interface for repository operations specific to the Scenario entity. Inherits the basic CRUD operations from IRepositoryBase<Scenario>.
+
+ScenarioRepository
+A repository implementation for managing Scenario entities. Extends RepositoryBase<Scenario> to interact with the InSyncContext.
+
+ISubscriptionPlanRepository
+An interface for repository operations specific to the SubscriptionPlan entity. Includes a method to delete a subscription plan by its ID in addition to generic repository functionality.
+
+SubscriptionPlanRepository
+A repository implementation for managing SubscriptionPlan entities. Inherits from RepositoryBase<SubscriptionPlan> and provides logic to delete a subscription plan by ID.
+
+IUserRepository
+An interface for repository operations specific to the User entity. Inherits CRUD operations from IRepositoryBase<User>.
+
+UserRepository
+A repository implementation for managing User entities. Extends RepositoryBase<User> to interact with the InSyncContext.
+
+IUserSubscriptionRepository
+An interface for repository operations specific to the UserSubscription entity. Inherits basic CRUD operations from IRepositoryBase<UserSubscription>.
+
+UserSubscriptionRepository
+A repository implementation for managing UserSubscription entities. Extends RepositoryBase<UserSubscription> and interacts with the InSyncContext.
