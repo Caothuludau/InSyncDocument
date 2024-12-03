@@ -18,10 +18,11 @@ alt If Permission Granted
     AssetFragment -> CameraOverlay : showOverlay()
     activate CameraOverlay
     User -> CameraOverlay : Press Capture Button
-    CameraOverlay -> AssetFragment : captureImage()
+    CameraOverlay --> AssetFragment : captureImage()
     
 else If Permission Denied
     AssetFragment --> User : Show Permission Denied Message
+    deactivate AssetFragment
 end
 
 User -> CameraOverlay : Close Overlay

@@ -13,7 +13,7 @@ skinparam sequenceMessageAlign center
     SignOutScreen -> Service: signOut(userId)
     activate Service
 
-    Service -> UserActor: ConfirmDialog()
+    Service --> UserActor: ConfirmDialog()
     UserActor -> Service: Confirm Sign Out
     Service -> SessionMgr: remove(sessionName)
     activate SessionMgr

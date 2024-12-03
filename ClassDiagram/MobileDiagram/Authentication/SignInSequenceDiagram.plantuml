@@ -19,7 +19,7 @@ participant "GoogleOAuth" as GO
 ' Người dùng đăng nhập vào Google
 U -> GO : Enter Google credentials
 activate GO
-GO -> U : Redirect back with GoogleUserInfo (id, email, fullName)
+GO --> U : Redirect back with GoogleUserInfo (id, email, fullName)
 deactivate GO
 
 ' Hệ thống nhận mã xác thực từ Google
@@ -32,10 +32,10 @@ U -> CS : ValidatePasswordRequest()
 
 
 alt User exists
-    CS -> U : Return existing user
-    CS -> U : Sign-in successful
+    CS --> U : Return existing user
+    CS --> U : Sign-in successful
 else User does not exist
-    CS -> U : No user found, regirect to Login with Error Message.
+    CS --> U : No user found, regirect to Login with Error Message.
     
 end
 

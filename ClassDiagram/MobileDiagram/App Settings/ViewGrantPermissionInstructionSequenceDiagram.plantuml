@@ -9,7 +9,7 @@ MainActivity -> PermissionManager : checkPermission()
 activate PermissionManager
 PermissionManager -> PermissionDialog : showDialog()
 activate PermissionDialog
-PermissionDialog -> User : Display Permission Dialog
+PermissionDialog --> User : Display Permission Dialog
 deactivate PermissionDialog
 
 User -> PermissionDialog : Click Guide Button
@@ -19,13 +19,13 @@ activate ViewGrantPermissionInstruction
 ViewGrantPermissionInstruction -> InstructionNavigation : nextInstruction()
 ViewGrantPermissionInstruction -> InstructionNavigation : previousInstruction()
 activate InstructionNavigation
-InstructionNavigation -> ViewGrantPermissionInstruction : Instruction Displayed
+InstructionNavigation --> ViewGrantPermissionInstruction : Instruction Displayed
 deactivate InstructionNavigation
 deactivate ViewGrantPermissionInstruction
 
 User -> InstructionNavigation : Click Close Instruction
 activate InstructionNavigation
-InstructionNavigation -> ViewGrantPermissionInstruction : closeInstruction()
+InstructionNavigation --> ViewGrantPermissionInstruction : closeInstruction()
 deactivate InstructionNavigation
 deactivate ViewGrantPermissionInstruction
 deactivate PermissionDialog

@@ -7,7 +7,6 @@ participant ViewScenarioActivity
 participant APIScenario
 participant ScenarioAdapter
 participant ScenarioViewHolder
-participant Scenario
 skinparam SequenceMessageAlignment center
 
 User -> ViewScenarioActivity : Launch Activity

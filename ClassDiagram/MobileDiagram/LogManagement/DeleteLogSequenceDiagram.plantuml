@@ -21,24 +21,25 @@ deactivate APIService
 
 LogFragment --> LogAdapter : setLogs(logList)
 activate LogAdapter
-activate RecyclerView
-RecyclerView -> LogAdapter : onCreateViewHolder()
 
+RecyclerView -> LogAdapter : onCreateViewHolder()
+activate RecyclerView
 LogAdapter -> LogViewHolder : Create ViewHolder
 activate LogViewHolder
 LogViewHolder --> LogFragment : Return view
 
 User -> RecyclerView : Scroll through logs
 RecyclerView -> LogAdapter : onBindViewHolder()
+deactivate RecyclerView
 LogAdapter -> LogViewHolder : bind(logItem)
 deactivate LogAdapter
 LogViewHolder --> LogFragment : Return view
 deactivate LogViewHolder
-deactivate RecyclerView
+
 
 User -> LogViewHolder : Click Delete Button
 activate LogViewHolder
-LogViewHolder -> LogFragment : deleteLog(logId)
+LogViewHolder --> LogFragment : deleteLog(logId)
 deactivate LogViewHolder
 'activate LogFragment
 LogFragment -> APIService : deleteLog(logId)

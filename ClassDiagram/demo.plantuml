@@ -1,35 +1,66 @@
-@startuml ScenarioLogSequenceDiagram
-skinparam SequenceMessageAlignment center
-title Sequence Diagram - Fetch Scenario Log (Next.js with Firebase)
+@startuml ManageProjectSequenceDiagram
+Title Manage Projects Sequence Diagram
 
-actor "User" as U
-participant "ScenarioLogPage" as Page
-participant "ScenarioService" as Service
-participant "FirebaseClient" as Client
-database "Firebase Database" as DB
+actor User
 
-U -> Page : Access the Scenario Log page
-activate Page
+participant "ProjectFragment" as Fragment
+participant "ProjectViewModel" as ViewModel
+participant "Project" as ProjectModel
 
-Page -> Service : fetchScenarioById(id)
-activate Service
+== View Projects Flow ==
+User -> Fragment: Clicks on "View Projects"
+activate Fragment
+Fragment -> ViewModel: getProjects()
+activate ViewModel
+ViewModel -> ProjectModel: Fetch list of projects
+activate ProjectModel
+ProjectModel --> ViewModel: Return project list
+deactivate ProjectModel
+ViewModel --> Fragment: Return project list
+deactivate ViewModel
+Fragment -> User: Display project list
+deactivate Fragment
 
-Service -> Client : getDocument("scenarios", id)
-activate Client
+== Search Projects Flow ==
+User -> Fragment: Inputs search criteria
+activate Fragment
+Fragment -> ViewModel: searchProjects(criteria)
+activate ViewModel
+ViewModel -> ProjectModel: Filter projects by criteria
+activate ProjectModel
+ProjectModel --> ViewModel: Return filtered list
+deactivate ProjectModel
+ViewModel --> Fragment: Return filtered list
+deactivate ViewModel
+Fragment -> User: Display search results
+deactivate Fragment
 
-Client -> DB : Query document by ID
-activate DB
-DB --> Client : Return document data
-deactivate DB
+== Update Project Flow ==
+User -> Fragment: Clicks on "Update" button
+activate Fragment
+Fragment -> ViewModel: updateProject(projectId, newDetails)
+activate ViewModel
+ViewModel -> ProjectModel: Update project with newDetails
+activate ProjectModel
+ProjectModel --> ViewModel: Return success/failure status
+deactivate ProjectModel
+ViewModel --> Fragment: Notify success/failure
+deactivate ViewModel
+Fragment -> User: Display update confirmation
+deactivate Fragment
 
-Client --> Service : Return raw data
-deactivate Client
-
-Service -> Service : Map data to ScenarioModel
-Service --> Page : Return ScenarioModel
-deactivate Service
-
-Page -> U : Render scenario log
-deactivate Page
+== Delete Project Flow ==
+User -> Fragment: Clicks on "Delete" button
+activate Fragment
+Fragment -> ViewModel: deleteProject(projectId)
+activate ViewModel
+ViewModel -> ProjectModel: Remove project by projectId
+activate ProjectModel
+ProjectModel --> ViewModel: Return success/failure status
+deactivate ProjectModel
+ViewModel --> Fragment: Notify success/failure
+deactivate ViewModel
+Fragment -> User: Display deletion confirmation
+deactivate Fragment
 
 @enduml

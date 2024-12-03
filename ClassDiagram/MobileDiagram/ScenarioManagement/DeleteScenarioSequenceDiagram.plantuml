@@ -6,11 +6,17 @@ participant APIClient
 participant Services
 
 User -> ViewScenarioActivity : Click "Delete" button
+activate ViewScenarioActivity
 ViewScenarioActivity -> APIClient : Call DELETE /scenarios
+activate APIClient
 APIClient -> Services : Forward request
+activate Services
 Services -> Services : Process deletion logic
 Services --> APIClient : Response with success
+deactivate Services
 APIClient --> ViewScenarioActivity : Return success response
+deactivate APIClient
 ViewScenarioActivity -> User : Display success message
+deactivate ViewScenarioActivity
 
 @enduml

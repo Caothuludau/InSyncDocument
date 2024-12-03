@@ -45,7 +45,7 @@ User -> ImageDetailsActivity : View Image
 User -> ImageDetailsActivity : Delete Image
 ImageDetailsActivity --> APIService : deleteImage()
 activate APIService
-APIService --> ImageDetailsActivity : return deleteStatus
+APIService -> ImageDetailsActivity : return deleteStatus
 deactivate APIService
 ImageDetailsActivity --> ManageAssetsFragment : Dismiss Activity
 

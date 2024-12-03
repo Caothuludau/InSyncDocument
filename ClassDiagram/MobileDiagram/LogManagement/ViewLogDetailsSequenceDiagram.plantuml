@@ -27,7 +27,7 @@ activate APIService
 APIService --> LogDetailActivity : return logSessions
 deactivate APIService
 
-LogDetailActivity --> LogSessionAdapter : setLogSessions(logSessions)
+LogDetailActivity -> LogSessionAdapter : setLogSessions(logSessions)
 activate LogSessionAdapter
 LogSessionAdapter -> LogSessionAdapter : Initialize with logSessions
 

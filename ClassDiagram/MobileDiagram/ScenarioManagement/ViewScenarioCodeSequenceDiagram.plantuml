@@ -5,7 +5,7 @@ skinparam sequenceMessageAlign center
 
 actor User
 participant ViewScenarioActivity
-participant Scenario
+participant "Scenario Service" as Scenario
 participant ViewScenarioCodeActivity
 
 
@@ -15,6 +15,6 @@ ViewScenarioActivity -> Scenario : Get Scenario Details
 activate Scenario
 Scenario -> ViewScenarioCodeActivity : displayScenarioDetails(scenarioId)
 
-ViewScenarioCodeActivity -> User : Display Scenario Details
+ViewScenarioCodeActivity --> User : Display Scenario Details
 
 @enduml

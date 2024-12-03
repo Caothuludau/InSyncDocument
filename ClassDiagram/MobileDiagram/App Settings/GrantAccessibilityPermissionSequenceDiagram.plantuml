@@ -3,17 +3,25 @@ Title GrantAccessibilityPermission Sequence Diagram
 
 actor User
 
-
-
 User -> MainActivity : Start App
+activate MainActivity
 MainActivity -> PermissionManager : checkPermission()
+activate PermissionManager
 PermissionManager -> PermissionDialog : showDialog()
-PermissionDialog -> User : Display Permission Dialog
+deactivate PermissionManager
+activate PermissionDialog
+PermissionDialog --> User : Display Permission Dialog
 User -> PermissionDialog : Confirm/Reject
-PermissionDialog -> PermissionManager : Return User Response
-PermissionManager -> MainActivity : Permission Granted/Denied
+PermissionDialog --> PermissionManager : Return User Response
+deactivate PermissionDialog
+activate PermissionManager
+PermissionManager --> MainActivity : Permission Granted/Denied
+deactivate PermissionManager
 MainActivity -> AccessibilityServiceHandler : requestPermission()
-AccessibilityServiceHandler -> MainActivity : Permission Status
-MainActivity -> User : Allow user action to the app
+activate AccessibilityServiceHandler
+AccessibilityServiceHandler --> MainActivity : Permission Status
+deactivate AccessibilityServiceHandler
+MainActivity --> User : Allow user action to the app
+deactivate MainActivity
 
 @enduml
