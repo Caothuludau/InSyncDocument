@@ -14,10 +14,11 @@ activate ViewScenarioCodeActivity
 ViewScenarioCodeActivity -> ViewScenarioCodeActivity : onCreate()
 ViewScenarioCodeActivity -> ViewScenarioCodeActivity : initializeOverlay()
 
-activate ActionOverlay
+
 
 alt Program Run Normally
     ViewScenarioCodeActivity -> ActionOverlay : showOverlay()
+    activate ActionOverlay
     ActionOverlay -> ExecuteService : Trigger Scenario Execution
     activate ExecuteService
 
@@ -32,10 +33,12 @@ alt Program Run Normally
     ExecuteService -> Scenario : Stop Execution
     Scenario --> ExecuteService : Execution Stopped
     ExecuteService --> ActionOverlay : Execution Complete
+    deactivate ActionOverlay
     deactivate Scenario
     deactivate ExecuteService
 else User Presses Stop Button
     ViewScenarioCodeActivity -> ActionOverlay : showOverlay()
+    activate ActionOverlay
     User -> ActionOverlay : Press Stop Button
     ActionOverlay -> ExecuteService : Cancel Execution
     activate ExecuteService
