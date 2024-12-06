@@ -39,11 +39,20 @@ alt Program Run Normally
 else User Presses Stop Button
     ViewScenarioCodeActivity -> ActionOverlay : showOverlay()
     activate ActionOverlay
+    ActionOverlay -> ExecuteService : Trigger Scenario Execution
+    activate ExecuteService
+
+    ExecuteService -> Scenario : execute()
+    activate Scenario
+
+    ExecuteService -> UserDevice : Interact with Device
+    activate UserDevice
+    ExecuteService -> ExecuteService : logExecutionDetails(scenario)
+    UserDevice --> ExecuteService : Action Complete
+    deactivate UserDevice
     User -> ActionOverlay : Press Stop Button
     ActionOverlay -> ExecuteService : Cancel Execution
-    activate ExecuteService
     ExecuteService --> Scenario : Stop Execution
-    activate Scenario
     Scenario --> ExecuteService : Execution Stopped
     deactivate Scenario
     ExecuteService --> ActionOverlay : Execution Stopped
