@@ -16,21 +16,20 @@ package "pkgExecuteActionCode" {
     }
 
     class ActionOverlay {
-        + showOverlay(): void
         + hideOverlay(): void
-        + initializeButton(action: String): void
     }
 
     class ExecuteService {
         + executeScenario(scenario: Scenario): void
         + logExecutionDetails(scenario: Scenario): void
+        + showOverlay(): void
     }
 }
 
 ' Relationships
-ExecuteService --> Scenario : "Executes"
+ExecuteService ..> Scenario
 Scenario --> ViewScenarioCodeActivity : "Details"
-ViewScenarioCodeActivity --> ActionOverlay : "Initializes"
-ActionOverlay --> ExecuteService : "Triggers"
+ViewScenarioCodeActivity --* ExecuteService : "Initializes"
+ActionOverlay <-- ExecuteService : "Show"
 
 @enduml

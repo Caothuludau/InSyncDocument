@@ -4,27 +4,34 @@ title Create Asset Class Diagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 
-package pkgFragmentAssets{
-class AssetFragment {
-    + onCreateView()
-    + onClickCreateAssetButton()
-    + onCaptureButtonClick()
-    + onCloseOverlay()
+package pkgFragmentAssets {
+
+    ' Main Fragment
+    class AssetFragment {
+        + onCreateView(): void
+        + onClickCreateAssetButton(): void
+        + onCaptureButtonClick(): void
+        + onCloseOverlay(): void
+        + startPermissionService(): void
+    }
+
+    ' Permission Management Service
+    class AssetService {
+        + requestRecordingPermission(): void
+        + activateOverlay(): void
+    }
+
+    ' Camera Overlay Logic
+    class CameraOverlay {
+        + showOverlay(): void
+        + hideOverlay(): void
+        + captureImage(): void
+    }
 }
 
-class PermissionService {
-    + requestRecordingPermission()
-    + isPermissionGranted(): Boolean
-}
+' Relationships
+AssetFragment --> AssetService
+AssetService --*CameraOverlay 
 
-class CameraOverlay {
-    + showOverlay()
-    + hideOverlay()
-    + captureImage()
-}
-}
-AssetFragment --> PermissionService : requests
-AssetFragment --> CameraOverlay : displays
-CameraOverlay --> AssetFragment : notify
 
 @enduml
