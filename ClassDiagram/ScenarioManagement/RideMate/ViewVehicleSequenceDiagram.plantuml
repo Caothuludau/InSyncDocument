@@ -1,0 +1,40 @@
+@startuml ViewVehiclesSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+User -> App : 1: Navigate to Profile Screen
+activate App
+
+App -> App : 1.1: Display Profile Screen
+
+User -> App : 2: Select Vehicle Management button
+App -> Backend : 2.1: Fetch Vehicle List for User (userID)
+activate Backend
+
+Backend -> DB : 2.1.1: Query Registered Vehicles by userID
+activate DB
+DB --> Backend : 2.1.1.1: Return Vehicle List
+deactivate DB
+
+Backend --> App : 2.2: Send Vehicle List Data
+deactivate Backend
+
+App -> User : 2.3: Display Vehicle Management Screen with Vehicle List
+
+deactivate App
+
+@enduml

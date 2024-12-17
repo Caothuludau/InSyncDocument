@@ -1,0 +1,151 @@
+@startuml AcceptJourneyMatchRequest
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgAcceptJourneyMatchRequest <<Frame>>{
+
+  
+        class MatchRequestView {
+            + displayMatchRequests(): void
+            + acceptMatchRequest(matchId: Long): void
+        }
+
+        class MatchRequestController {
+            - matchRequests: List<JourneyMatch>
+            + fetchMatchRequests(): void
+            + acceptMatchRequest(matchId: Long): void
+        }
+   
+        class DriverJourneyController {
+            + acceptMatchRequest(journeyMatchIdRequestDto: JourneyMatchIdRequestDto): ResponseEntity<ResponseWrapper<JourneyMatchResponseDto>>
+        }
+    
+        class JourneyMatchService {
+            + acceptMatchRequest(matchId: Long): JourneyMatch
+        }
+
+        class JourneyMatchRepository {
+            + findById(matchId: Long): Optional<JourneyMatch>
+            + save(journeyMatch: JourneyMatch): JourneyMatch
+        }
+    
+        class JourneyMatchIdRequestDto {
+            - matchId: Long
+        }
+
+        class JourneyMatchResponseDto {
+            - matchId: Long
+            - driverJourney: DriverJourneyResponseDto
+            - passengerJourney: PassengerJourneyResponseDto
+            - matchPrice: double
+            - matchStatus: String
+            - matchDepartureTime: LocalDateTime
+            - passengerCheckinTime: LocalDateTime
+        }
+
+        class DriverJourneyResponseDto {
+            - journeyId: Long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class PassengerJourneyResponseDto {
+            - journeyId: Long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+   
+        class JourneyMatch {
+            - matchId: long
+            - driverJourney: DriverJourney
+            - passengerJourney: PassengerJourney
+            - matchPrice: double
+            - matchStatus: String
+            - matchDepartureTime: LocalDateTime
+            - passengerCheckinTime: LocalDateTime
+        }
+
+        class DriverJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+        }
+
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+    
+
+    MatchRequestView --> MatchRequestController
+    MatchRequestController --> DriverJourneyController
+    DriverJourneyController --> JourneyMatchService
+    JourneyMatchService --> JourneyMatchRepository
+    JourneyMatchService --> JourneyMatchIdRequestDto
+    JourneyMatchService --> JourneyMatchResponseDto
+    DriverJourneyController --> ResponseWrapper
+    JourneyMatchService --> JourneyMatch
+    JourneyMatchRepository --> JourneyMatch
+    JourneyMatch --> DriverJourney
+    JourneyMatch --> PassengerJourney
+    DriverJourney --> User
+    DriverJourney --> Location
+    PassengerJourney --> User
+    PassengerJourney --> Location
+
+}
+
+@enduml

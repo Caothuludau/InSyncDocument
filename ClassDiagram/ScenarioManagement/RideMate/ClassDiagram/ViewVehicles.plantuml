@@ -1,0 +1,91 @@
+@startuml ViewVehicle
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgViewVehicle <<Frame>>{
+
+        class VehicleManagementView {
+            + displayVehicles(): void
+        }
+
+        class VehicleManagementController {
+            - vehicles: List<Vehicle>
+            + fetchVehicles(): void
+            + deleteVehicle(vehicleId: int): void
+        }
+        class UserController {
+            + getVehicleList(): ResponseEntity<ResponseWrapper<List<VehicleResponseDto>>>
+        }
+ 
+        class VehicleService {
+            + getVehicleList(): List<Vehicle>
+            + deleteVehicle(vehicleId: Long): void
+        }
+
+        class VehicleRepository {
+            + findByUserId(userId: Long): List<Vehicle>
+            + deleteById(vehicleId: Long): void
+        }
+   
+        class VehicleResponseDto {
+            - vehicleId: long
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+ 
+        class Vehicle {
+            - vehicleId: long
+            - user: User
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addUserRole(userRole: UserRole): void
+            + removeUserRole(userRole: UserRole): void
+            + addFcmToken(fcmToken: FCMToken): void
+            + removeFcmToken(fcmToken: FCMToken): void
+        }
+    
+
+    VehicleManagementView --> VehicleManagementController
+    VehicleManagementController --> UserController
+    UserController --> VehicleService
+    VehicleService --> VehicleRepository
+    UserController --> VehicleResponseDto
+    UserController --> ResponseWrapper
+    VehicleService --> Vehicle
+    VehicleRepository --> Vehicle
+    Vehicle --> User
+
+}
+
+@enduml

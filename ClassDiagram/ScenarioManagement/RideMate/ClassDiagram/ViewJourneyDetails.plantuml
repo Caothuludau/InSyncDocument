@@ -1,0 +1,98 @@
+@startuml ViewJourneyDetails
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgViewJourneyDetails <<Frame>>{
+
+ 
+        class JourneyDetailView {
+            + displayJourneyDetails(): void
+        }
+
+        class JourneyDetailController {
+            - journeyId: int
+            - journeyDetail: JourneyDetail
+            + fetchJourneyDetails(): void
+        }
+ 
+        class JourneyController {
+            + getJourneyDetail(journeyId: int): ResponseEntity<ResponseWrapper<JourneyDetailResponseDto>>
+        }
+
+        class JourneyService {
+            + getJourneyDetail(journeyId: int): Journey
+        }
+
+        class JourneyRepository {
+            + findById(journeyId: int): Optional<Journey>
+        }
+
+        class JourneyDetailResponseDto {
+            - journeyId: long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+            - user: UserResponseDto
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class Journey {
+            - journeyId: long
+            - user: User
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addJourney(journey: Journey): void
+            + removeJourney(journey: Journey): void
+        }
+
+
+    JourneyDetailView --> JourneyDetailController
+    JourneyDetailController --> JourneyController
+    JourneyController --> JourneyService
+    JourneyService --> JourneyRepository
+    JourneyController --> JourneyDetailResponseDto
+    JourneyController --> ResponseWrapper
+    JourneyService --> Journey
+    JourneyRepository --> Journey
+    Journey --> User
+
+}
+
+@enduml

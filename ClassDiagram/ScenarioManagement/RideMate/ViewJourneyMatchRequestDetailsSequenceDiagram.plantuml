@@ -1,0 +1,45 @@
+@startuml ViewJourneyMatchRequestDetailSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Select Journey Match Request
+activate App
+
+App -> Backend : 1.1: Request Match Request Detail for Selected Journey
+activate Backend
+
+Backend -> DB : 1.2: Query Journey Match Request Details by Match ID
+activate DB
+DB --> Backend : 1.2.1: Return Match Request Detail
+deactivate DB
+
+Backend --> App : 2: Send Match Request Details
+deactivate Backend
+
+App -> Driver : 3: Display Journey Match Request Detail
+deactivate App
+
+alt Cannot Connect to Server
+    App -> Driver : 4: Display MSG01 (Connection Error)
+end
+
+alt Match Not Found / Invalid Data
+    App -> Driver : 5: Display MSG46/MSG47 (Invalid Match Data)
+    App -> App : 6: Return to Previous Screen (Schedule List)
+end
+
+@enduml

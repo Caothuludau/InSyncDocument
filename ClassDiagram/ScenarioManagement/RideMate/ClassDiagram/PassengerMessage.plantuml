@@ -1,0 +1,141 @@
+@startuml MessagePassenger
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgMessagePassenger <<Frame>>{
+
+
+        class MessageView {
+            + displayMessages(): void
+            + sendMessage(message: String): void
+        }
+
+        class MessageController {
+            - messages: List<Message>
+            + fetchMessages(): void
+            + sendMessage(message: String): void
+        }
+
+        class MessageController {
+            + sendMessage(messageRequestDto: MessageRequestDto): ResponseEntity<ResponseWrapper<MessageResponseDto>>
+        }
+ 
+        class MessageService {
+            + sendMessage(messageRequestDto: MessageRequestDto): Message
+        }
+
+        class MessageRepository {
+            + save(message: Message): Message
+            + findByJourneyMatchId(journeyMatchId: Long): List<Message>
+        }
+
+        class MessageRequestDto {
+            - journeyMatchId: Long
+            - senderId: Long
+            - message: String
+        }
+
+        class MessageResponseDto {
+            - messageId: Long
+            - journeyMatchId: Long
+            - senderId: Long
+            - message: String
+            - timestamp: LocalDateTime
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class Message {
+            - messageId: long
+            - journeyMatch: JourneyMatch
+            - sender: User
+            - message: String
+            - timestamp: LocalDateTime
+        }
+
+        class JourneyMatch {
+            - matchId: long
+            - driverJourney: DriverJourney
+            - passengerJourney: PassengerJourney
+            - matchPrice: double
+            - matchStatus: String
+            - matchDepartureTime: LocalDateTime
+            - passengerCheckinTime: LocalDateTime
+        }
+
+        class DriverJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+        }
+
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+    
+
+    MessageView --> MessageController
+    MessageController --> MessageController
+    MessageController --> MessageService
+    MessageService --> MessageRepository
+    MessageService --> MessageRequestDto
+    MessageService --> MessageResponseDto
+    MessageController --> ResponseWrapper
+    MessageService --> Message
+    MessageRepository --> Message
+    Message --> JourneyMatch
+    JourneyMatch --> DriverJourney
+    JourneyMatch --> PassengerJourney
+    DriverJourney --> User
+    DriverJourney --> Location
+    PassengerJourney --> User
+    PassengerJourney --> Location
+
+}
+
+@enduml

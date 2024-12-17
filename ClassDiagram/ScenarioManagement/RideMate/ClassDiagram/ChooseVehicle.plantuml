@@ -1,0 +1,96 @@
+@startuml ChooseVehicle
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgChooseVehicle <<Frame>>{
+
+        class VehicleSelectionView {
+            + displayVehicles(): void
+            + selectVehicle(vehicleId: Long): void
+        }
+
+        class VehicleSelectionController {
+            - vehicles: List<Vehicle>
+            + fetchVehicles(): void
+            + selectVehicle(vehicleId: Long): void
+   
+        class VehicleController {
+            + getVehicles(driverId: Long): ResponseEntity<ResponseWrapper<List<VehicleResponseDto>>>
+            + selectVehicle(vehicleSelectionRequestDto: VehicleSelectionRequestDto): ResponseEntity<ResponseWrapper<VehicleResponseDto>>
+        }
+   
+        class VehicleService {
+            + getVehicles(driverId: Long): List<Vehicle>
+            + selectVehicle(vehicleSelectionRequestDto: VehicleSelectionRequestDto): Vehicle
+        }
+
+        class VehicleRepository {
+            + findByDriverId(driverId: Long): List<Vehicle>
+            + findById(vehicleId: Long): Optional<Vehicle>
+            + save(vehicle: Vehicle): Vehicle
+        }
+   
+        class VehicleSelectionRequestDto {
+            - vehicleId: Long
+            - driverId: Long
+        }
+
+        class VehicleResponseDto {
+            - vehicleId: Long
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+  
+        class Vehicle {
+            - vehicleId: long
+            - user: User
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+        }
+    
+
+    VehicleSelectionView --> VehicleSelectionController
+    VehicleSelectionController --> VehicleController
+    VehicleController --> VehicleService
+    VehicleService --> VehicleRepository
+    VehicleService --> VehicleSelectionRequestDto
+    VehicleService --> VehicleResponseDto
+    VehicleController --> ResponseWrapper
+    VehicleService --> Vehicle
+    VehicleRepository --> Vehicle
+    Vehicle --> User
+
+}
+
+@enduml

@@ -1,0 +1,91 @@
+@startuml ViewUserProfile
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgViewUserProfile <<Frame>>{
+
+        class UserProfileView {
+            - userId: int
+            + displayUserProfile(): void
+        }
+
+        class UserProfileController {
+            - userId: int
+            - userProfile: UserProfile
+            + fetchUserProfile(): void
+        }
+
+        class UserController {
+            + getUserProfile(userId: int): ResponseEntity<ResponseWrapper<UserProfileResponseDto>>
+        }
+    
+        class UserService {
+            + getUserProfile(userId: int): User
+        }
+
+        class UserRepository {
+            + findById(userId: int): Optional<User>
+        }
+
+        class UserProfileResponseDto {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - trustPoints: int
+            - rating: double
+            - profilePicture: byte[]
+            - createdDate: LocalDateTime
+            - userRoles: List<UserRoleResponseDto>
+            - vehicles: List<VehicleDto>
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+    
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - trustPoints: int
+            - rating: double
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            - favoriteVehicle: Vehicle
+            + addUserRole(userRole: UserRole): void
+            + removeUserRole(userRole: UserRole): void
+            + addFcmToken(fcmToken: FCMToken): void
+            + removeFcmToken(fcmToken: FCMToken): void
+        }
+    
+
+    UserProfileView --> UserProfileController
+    UserProfileController --> UserController
+    UserController --> UserService
+    UserService --> UserRepository
+    UserController --> UserProfileResponseDto
+    UserController --> ResponseWrapper
+    UserService --> User
+    UserRepository --> User
+
+}
+
+@enduml

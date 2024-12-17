@@ -1,0 +1,79 @@
+@startuml DriverSendsMessageToPassengerSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Click on Schedule Navigation Bar
+activate App
+
+App -> Backend : 1.1: Fetch Journey Matches for Driver (userID)
+activate Backend
+
+Backend -> DB : 1.1.1: Query Journey Matches by userID
+activate DB
+DB --> Backend : 1.1.1.1: Return Journey Match List
+deactivate DB
+
+Backend --> App : 1.2: Send Journey Match Data
+deactivate Backend
+
+App -> Driver : 1.3: Display Schedule List Screen
+
+Driver -> App : 2: Click on a Journey Match Request
+App -> Backend : 2.1: Fetch Journey Match Details (matchID)
+activate Backend
+
+Backend -> DB : 2.1.1: Query Match Details by matchID
+activate DB
+DB --> Backend : 2.1.1.1: Return Match Details
+deactivate DB
+
+Backend --> App : 2.2: Send Match Details
+deactivate Backend
+
+App -> Driver : 2.3: Display Journey Match Detail Screen
+
+Driver -> App : 3: Click on Message Icon
+App -> Backend : 3.1: Open Chat Screen and Fetch Previous Messages (matchID)
+activate Backend
+
+Backend -> DB : 3.1.1: Query Messages by matchID
+activate DB
+DB --> Backend : 3.1.1.1: Return Message List
+deactivate DB
+
+Backend --> App : 3.2: Send Previous Messages to App
+deactivate Backend
+
+App -> Driver : 3.3: Display Message Screen
+
+Driver -> App : 4: Send Message
+App -> Backend : 4.1: Deliver Message to Passenger
+activate Backend
+
+Backend -> DB : 4.1.1: Save Message in Database
+activate DB
+DB --> Backend : 4.1.1.1: Confirm Message Saved
+deactivate DB
+
+Backend --> App : 4.2: Confirm Message Delivered
+deactivate Backend
+
+App -> Driver : 4.3: Display Sent Message in Chat Screen
+
+deactivate App
+
+@enduml

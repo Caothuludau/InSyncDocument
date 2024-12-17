@@ -1,0 +1,132 @@
+@startuml Register
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgRegister <<Frame>>{
+
+    class RegisterView {
+        - fullnameInputController: TextEditingController
+        - phoneInputController: TextEditingController
+        - passwordController: TextEditingController
+        - rePasswordController: TextEditingController
+        - errorUser: RxString
+        - errorPhoneNumber: RxString
+        - errorPassword: RxString
+        - fullname: RxString
+        - phone: RxString
+        - password: RxString
+        - confirmPassword: RxString
+        - passwordVisible: RxBool
+        + buildView(context: BuildContext): Widget
+    }
+
+    class RegisterController {
+        - fullnameInputController: TextEditingController
+        - phoneInputController: TextEditingController
+        - passwordController: TextEditingController
+        - rePasswordController: TextEditingController
+        - errorUser: RxString
+        - errorPhoneNumber: RxString
+        - errorPassword: RxString
+        - fullname: RxString
+        - phone: RxString
+        - password: RxString
+        - confirmPassword: RxString
+        - passwordVisible: RxBool
+        + registerToOTP(): void
+    }
+
+
+    class UserController {
+        + register(userRegisterRequestDto: UserRegisterRequestDto, code: String): ResponseEntity<ResponseWrapper<UserJwtTokenResponseDto>>
+    }
+
+
+    class UserService {
+        + saveDefaultUser(user: User): String
+        + checkVerificationCode(phoneNumber: String, code: String): String
+    }
+
+    class UserRepository {
+        + save(user: User): User
+        + findByPhoneNumber(phoneNumber: String): Optional<User>
+    }
+
+    class JwtService {
+        + generateToken(user: User): String
+    }
+
+
+    class UserRegisterRequestDto {
+        - name: String
+        - phoneNumber: String
+        - password: String
+    }
+
+    class UserJwtTokenResponseDto {
+        - token: String
+        - user: User
+    }
+
+    class ResponseWrapper<T> {
+        - responseCode: int
+        - message: String
+        - data: T
+    }
+
+
+
+    class User {
+        - userId: long
+        - name: String
+        - phoneNumber: String
+        - password: String
+        - trustPoints: int
+        - rating: double
+        - profilePicture: byte[]
+        - isActive: boolean
+        - isLocked: boolean
+        - createdDate: LocalDateTime
+        - tokenVersion: long
+        - favoriteVehicle: Vehicle
+        + addUserRole(userRole: UserRole): void
+        + removeUserRole(userRole: UserRole): void
+        + addFcmToken(fcmToken: FCMToken): void
+        + removeFcmToken(fcmToken: FCMToken): void
+    }
+
+
+    class JwtService {
+        + generateToken(user: User): String
+        + validateToken(token: String): boolean
+        + extractAllClaims(token: String): Claims
+        + getSignInKey(): Key
+    }
+
+
+RegisterView --> RegisterController
+RegisterController --> UserController
+UserController --> UserService
+UserService --> UserRepository
+UserService --> JwtService
+UserController --> UserRegisterRequestDto
+UserController --> UserJwtTokenResponseDto
+UserController --> ResponseWrapper
+UserService --> User
+UserRepository --> User
+JwtService --> User
+
+}
+
+@enduml

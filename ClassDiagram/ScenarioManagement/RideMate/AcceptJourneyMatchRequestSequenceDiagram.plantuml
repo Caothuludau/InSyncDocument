@@ -1,0 +1,89 @@
+@startuml AcceptJourneyMatchRequestSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+participant "Notification Service" as NotificationService
+
+Driver -> App : 1: Click on Schedule Navigation Bar
+activate App
+
+App -> App : 1.1: Display Driver Commute Schedule List Screen
+
+Driver -> App : 2: Click on View Match Request Button
+App -> Backend : 2.1: Request Match Request List
+activate Backend
+
+Backend -> DB : 2.2: Query Pending Match Requests for Driver
+activate DB
+DB --> Backend : 2.2.1: Return Match Request List
+deactivate DB
+
+Backend --> App : 3: Send Match Request List Data
+deactivate Backend
+
+App -> Driver : 4: Display Match Request List
+
+Driver -> App : 5: Click on a Match Request
+App -> Backend : 5.1: Request Match Request Detail for Selected Request
+activate Backend
+
+Backend -> DB : 5.2: Query Match Request Details by Match ID
+activate DB
+DB --> Backend : 5.2.1: Return Match Request Details
+deactivate DB
+
+Backend --> App : 6: Send Match Request Details
+deactivate Backend
+
+App -> Driver : 7: Display Match Request Detail Screen
+
+Driver -> App : 8: Click on Accept Button
+App -> Backend : 8.1: Send Accept Match Request
+activate Backend
+
+Backend -> DB : 8.2: Update Match Status to "Matched" in Database
+activate DB
+DB --> Backend : 8.2.1: Confirm Match Status Update
+deactivate DB
+
+Backend --> NotificationService : 9: Send Notification to Passenger
+activate NotificationService
+
+NotificationService -> DB : 9.1: Log Notification for Passenger
+NotificationService --> Backend : 9.2: Confirm Notification Logged
+deactivate NotificationService
+
+Backend --> App : 10: Return Updated Match Request List
+deactivate Backend
+
+App -> Driver : 11: Display MSG41 (Match Accepted)
+deactivate App
+
+alt Cannot Connect to Server
+    App -> Driver : 12: Display MSG01 (Connection Error)
+end
+
+alt Match Not Found / Unauthorized User
+    App -> Driver : 13: Display MSG39 / MSG40 (Unauthorized or Invalid Match)
+    App -> App : 14: Return to Match Request List
+end
+
+alt Invalid Status to Accept
+    App -> Driver : 15: Display MSG42 / MSG43 (Invalid Status)
+    App -> App : 16: Return to Match Request Detail Screen
+end
+
+@enduml

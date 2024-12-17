@@ -1,0 +1,44 @@
+@startuml ViewUpcomingMatchSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver/Passenger" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+User -> App : 1: Clicks on the Journey on Home Screen
+activate App
+
+App -> Backend : 1.1: Fetch Upcoming Journey Match (userID)
+activate Backend
+
+Backend -> DB : 1.1.1: Query Nearest Match with Matched Status for User
+activate DB
+DB --> Backend : 1.1.1.1: Return Match Details
+deactivate DB
+
+alt Valid Match Found
+    Backend --> App : 2: Send Journey Match Details
+    deactivate Backend
+
+    App -> User : 2.1: Display Journey Detail Screen
+else Invalid Authorization or No Match
+    Backend --> App : 2.2: Return Authorization Error or No Match Found
+    App -> User : 2.3: Display MSG51/MSG52 (Error Message)
+    App -> App : Restart from Step 2
+    deactivate Backend
+end
+
+deactivate App
+
+@enduml

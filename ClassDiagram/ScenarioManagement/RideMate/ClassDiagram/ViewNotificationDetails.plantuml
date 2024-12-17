@@ -1,0 +1,97 @@
+@startuml ViewNotificationDetails
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgViewNotificationDetails <<Frame>>{
+
+        class NotificationDetailView {
+            - notificationId: int
+            + displayNotificationDetails(): void
+        }
+
+        class NotificationDetailController {
+            - notificationId: int
+            - notificationDetail: NotificationDetail
+            + fetchNotificationDetails(): void
+        }
+   
+        class NotificationController {
+            + getNotificationDetail(notificationId: int): ResponseEntity<ResponseWrapper<NotificationDetailResponseDto>>
+        }
+  
+        class NotificationService {
+            + getNotificationDetail(notificationId: int): Notification
+        }
+
+        class NotificationRepository {
+            + findById(notificationId: int): Optional<Notification>
+        }
+  
+        class NotificationDetailResponseDto {
+            - notificationId: long
+            - title: String
+            - body: String
+            - isRead: boolean
+            - createdAt: LocalDateTime
+            - action: String
+            - actionData: Map<String, String>
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class Notification {
+            - notificationId: long
+            - user: User
+            - title: String
+            - body: String
+            - isRead: boolean
+            - createdAt: LocalDateTime
+            - action: String
+            - actionData: Map<String, String>
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addUserRole(userRole: UserRole): void
+            + removeUserRole(userRole: UserRole): void
+            + addFcmToken(fcmToken: FCMToken): void
+            + removeFcmToken(fcmToken: FCMToken): void
+        }
+    
+
+    NotificationDetailView --> NotificationDetailController
+    NotificationDetailController --> NotificationController
+    NotificationController --> NotificationService
+    NotificationService --> NotificationRepository
+    NotificationController --> NotificationDetailResponseDto
+    NotificationController --> ResponseWrapper
+    NotificationService --> Notification
+    NotificationRepository --> Notification
+    Notification --> User
+
+}
+
+@enduml

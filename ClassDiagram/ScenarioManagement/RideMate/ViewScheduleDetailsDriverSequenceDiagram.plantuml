@@ -1,0 +1,39 @@
+@startuml ViewScheduleDetailsSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Open Upcoming Schedule
+activate App
+
+App -> App : 1.1: Display List of Upcoming Schedules
+
+Driver -> App : 2: Select Specific Schedule to View Details
+App -> Backend : 2.1: Request Details for Selected Schedule
+activate Backend
+
+Backend -> DB : 2.2: Query Schedule Details by Schedule ID
+activate DB
+DB --> Backend : 2.2.1: Return Schedule Details
+deactivate DB
+
+Backend --> App : 3: Send Schedule Details Data
+deactivate Backend
+
+App -> Driver : 4: Display Schedule Details
+deactivate App
+
+@enduml

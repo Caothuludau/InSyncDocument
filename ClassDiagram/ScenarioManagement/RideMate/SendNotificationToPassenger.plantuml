@@ -1,0 +1,49 @@
+@startuml SendNotificationToPassengerSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+participant "Notification Service" as NotificationService
+actor "Passenger" as User
+
+Driver -> App : 1: Create or Delete Journey/Schedule
+activate App
+
+App -> Backend : 1.1: Submit Journey/Schedule Details (userID, journeyID)
+activate Backend
+
+Backend -> DB : 1.1.1: Save Journey/Schedule to Database
+activate DB
+DB --> Backend : 1.1.1.1: Confirm Save Success
+deactivate DB
+
+Backend -> Backend : 1.2: Check for Matching Passengers
+alt Passenger Found
+    Backend -> NotificationService : 1.2.1: Trigger Notification for Matched Passenger
+    NotificationService -> DB : 1.2.1.1: Log Notification Data
+    DB --> NotificationService : 1.2.1.1.1: Confirm Notification Logged
+    NotificationService --> Backend : 1.2.1.2: Notification Sent
+    Backend --> App : 1.3: Confirm Match Notification Sent
+else No Passenger Found
+    Backend --> App : 1.3: Return No Match Found
+end
+
+App -> Driver : 1.4: Display Notification Status
+deactivate Backend
+deactivate App
+
+NotificationService -> User : 2: Display Notification to Passenger
+
+@enduml

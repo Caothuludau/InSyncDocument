@@ -1,0 +1,39 @@
+@startuml DriverViewRatingFromPassengerSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Open Journey History or Receive Notification
+activate App
+
+App -> App : 1.1: Display Journey History Screen or Notification
+
+Driver -> App : 2: Select Journey to View Rating
+App -> Backend : 2.1: Request Rating Data for Journey
+activate Backend
+
+Backend -> DB : 2.2: Retrieve Rating from Database
+activate DB
+DB --> Backend : 2.2.1: Return Passenger's Rating
+deactivate DB
+
+Backend --> App : 3: Send Rating Data to App
+deactivate Backend
+
+App -> Driver : 4: Display Passenger's Rating
+deactivate App
+
+@enduml

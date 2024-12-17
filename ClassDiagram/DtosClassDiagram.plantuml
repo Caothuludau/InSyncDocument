@@ -44,7 +44,7 @@ package dtos <<Frame>> {
     }
     !endsub
 
-    !startsub ActionAssetResponse
+    !startsub A
     class ActionAssetResponse  <<dto>>  {
         + Id : Guid
         + Message: string

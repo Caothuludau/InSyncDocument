@@ -1,0 +1,64 @@
+@startuml EditUsernameSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Passenger/Driver" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+User -> App : 1: Open the App
+activate App
+
+App -> App : 1.1: Display Home Screen
+
+User -> App : 2: Select Account navigation
+App -> App : 2.1: Display Account Navigation Screen
+
+User -> App : 3: Select User Information
+App -> Backend : 3.1: Fetch User Profile (userID)
+activate Backend
+
+Backend -> DB : 3.1.1: Query User Information by userID
+activate DB
+DB --> Backend : 3.1.1.1: Return User Profile Data
+deactivate DB
+
+Backend --> App : 4: Send User Profile Data
+deactivate Backend
+
+App -> User : 5: Display User Information
+
+User -> App : 6: Select Edit icon to update username
+App -> App : 6.1: Validate Input (new username)
+
+App -> Backend : 6.2: Submit Updated Username (userID, newUsername)
+activate Backend
+
+Backend -> DB : 6.2.1: Update User Information in Database
+activate DB
+DB --> Backend : 6.2.1.1: Return Update Success/Failure
+deactivate DB
+
+alt Update Successful
+    Backend --> App : 7: Return Success Confirmation
+    App -> User : 8: Display Updated Username in UI
+else Update Failed
+    Backend --> App : 7.1: Return Update Error
+    App -> User : 8.1: Display MSG0 (Error Message)
+    App -> App : 8.2: Restart from Step 5
+end
+
+deactivate Backend
+deactivate App
+
+@enduml

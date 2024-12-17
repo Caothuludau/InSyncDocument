@@ -1,0 +1,96 @@
+@startuml AddVehicle
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgAddVehicle <<Frame>>{
+
+        class VehicleAddView {
+            + displayAddVehicleForm(): void
+            + submitVehicleForm(): void
+        }
+
+        class VehicleAddController {
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+            + handleSubmit(): void
+        }
+
+        class VehicleController {
+            + addVehicle(vehicleRequestDto: VehicleRequestDto): ResponseEntity<ResponseWrapper<VehicleResponseDto>>
+ }
+        class VehicleService {
+            + addVehicle(vehicleRequestDto: VehicleRequestDto): Vehicle
+        }
+
+        class VehicleRepository {
+            + save(vehicle: Vehicle): Vehicle
+        }
+
+        class VehicleRequestDto {
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class VehicleResponseDto {
+            - vehicleId: long
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class Vehicle {
+            - vehicleId: long
+            - user: User
+            - vehicleType: String
+            - licensePlate: String
+            - color: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addVehicle(vehicle: Vehicle): void
+            + removeVehicle(vehicle: Vehicle): void
+        }
+    
+
+    VehicleAddView --> VehicleAddController
+    VehicleAddController --> VehicleController
+    VehicleController --> VehicleService
+    VehicleService --> VehicleRepository
+    VehicleController --> VehicleRequestDto
+    VehicleController --> VehicleResponseDto
+    VehicleController --> ResponseWrapper
+    VehicleService --> Vehicle
+    VehicleRepository --> Vehicle
+    Vehicle --> User
+
+}
+
+@enduml

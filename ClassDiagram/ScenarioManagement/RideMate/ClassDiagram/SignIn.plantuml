@@ -1,0 +1,111 @@
+@startuml Sign In
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgSignIn <<Frame>>{
+
+class LoginView {
+  - phoneNumberInput: String
+  - passwordInput: String
+  - loginButton: Button
+  + buildView(): void
+  + _avatar(): void
+}
+
+class LoginController {
+  - phoneNumberInput: String
+  - passwordInput: String
+  - passwordVisible: boolean
+  - tokenFCM: String
+  + login(): void
+  + togglePasswordVisibility(): void
+  + navigateToRegister(): void
+}
+
+class AuthService {
+  - loginUrl: String
+  - _isLoggedIn: boolean
+  - _userData: UserDTO
+  + login(phoneNumber: String, password: String, fcmToken: String): UserDTO
+  + getDataUser(): UserDTO
+  + getVehicle(): VehicleDTO
+}
+
+class HttpUserRequest {
+  - loginUrl: String
+  - _isLoggedIn: boolean
+  - _userData: UserDTO
+  + login(phoneNumber: String, password: String, fcmToken: String): UserDTO
+  + logout(): void
+  + logoutAll(): void
+}
+
+class LoginPayLoad {
+  - phoneNumber: String
+  - password: String
+  - fcmToken: String
+  - deviceInfo: String
+  + toJson(): String
+  + fromJson(json: String): LoginPayLoad
+}
+
+class JwtService {
+  - SECRET_KEY: String
+  + generateToken(user: UserDTO): String
+  + validateToken(token: String): boolean
+  + extractAllClaims(token: String): Claims
+  + getSignInKey(): Key
+}
+
+class UserDTO {
+  + id: String
+  + email: String
+  + fullName: String
+  + isVerified: boolean
+}
+
+class VehicleDTO {
+  + id: String
+  + type: String
+  + color: String
+  + licensePlate: String
+}
+
+class UserRepository {
+  + findByPhoneNumber(phoneNumber: String): User
+  + save(user: User): User
+}
+
+class User {
+  + id: String
+  + phoneNumber: String
+  + password: String
+  + email: String
+  + fullName: String
+  + isVerified: boolean
+}
+
+LoginView --> LoginController
+LoginController --> AuthService
+AuthService --> HttpUserRequest
+LoginController --> LoginPayLoad
+JwtService --> UserDTO
+AuthService --> UserDTO
+AuthService --> VehicleDTO
+HttpUserRequest --> UserRepository
+UserRepository --> User
+}
+
+@enduml

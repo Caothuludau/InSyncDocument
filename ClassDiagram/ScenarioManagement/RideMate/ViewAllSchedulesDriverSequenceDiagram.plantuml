@@ -1,0 +1,39 @@
+@startuml ViewAllSchedulesSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Open the App
+activate App
+
+App -> App : 1.1: Display Home Screen
+
+Driver -> App : 2: Navigate to All Schedules
+App -> Backend : 2.1: Request All Schedules for Driver
+activate Backend
+
+Backend -> DB : 2.2: Query All Schedules (Past & Upcoming)
+activate DB
+DB --> Backend : 2.2.1: Return List of All Schedules
+deactivate DB
+
+Backend --> App : 3: Send All Schedules Data
+deactivate Backend
+
+App -> Driver : 4: Display All Schedules (Past & Upcoming)
+deactivate App
+
+@enduml

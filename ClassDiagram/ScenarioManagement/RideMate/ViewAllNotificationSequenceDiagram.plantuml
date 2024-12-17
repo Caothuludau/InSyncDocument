@@ -1,0 +1,51 @@
+@startuml ViewAllNotificationsSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver/Passenger" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+User -> App : 1: Clicks on the bell button
+activate App
+
+App -> Backend : 1.1: Fetch All Notifications (userID)
+activate Backend
+
+Backend -> DB : 1.1.1: Query Notifications for User
+activate DB
+DB --> Backend : 1.1.1.1: Return List of Notifications
+deactivate DB
+
+Backend --> App : 2: Send Notification Data
+deactivate Backend
+
+App -> User : 2.1: Display Notification Screen
+
+User -> App : 3: Clicks on a Notification
+App -> Backend : 3.1: Mark Notification as Read (notificationID)
+activate Backend
+
+Backend -> DB : 3.1.1: Update Notification Status in Database
+activate DB
+DB --> Backend : 3.1.1.1: Return Update Success/Failure
+deactivate DB
+
+Backend --> App : 4: Confirm Notification Read Status
+deactivate Backend
+
+App -> User : 4.1: Update UI to Mark Notification as Read
+
+deactivate App
+
+@enduml

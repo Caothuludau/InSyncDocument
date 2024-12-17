@@ -1,0 +1,44 @@
+@startuml ScanQRCodeForDriverSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Click on Scan QR Code
+activate App
+
+App -> App : 1.1: Display QR Code Scanner
+
+Driver -> App : 2: Scan Passenger QR Code
+App -> Backend : 2.1: Submit Scanned QR Code Data (Match ID, Passenger Phone)
+activate Backend
+
+Backend -> DB : 2.2: Query Match ID and Validate Passenger Details
+activate DB
+DB --> Backend : 2.2.1: Return Match Validation Result
+deactivate DB
+
+Backend -> App : 3: Send QR Code Validation Result (Valid/Invalid)
+deactivate Backend
+
+alt Valid Match
+    App -> Driver : 4: Display Match Confirmation
+else Invalid Match
+    App -> Driver : 4: Display Invalid Match Error (MSG48/MSG49)
+end
+
+deactivate App
+
+@enduml

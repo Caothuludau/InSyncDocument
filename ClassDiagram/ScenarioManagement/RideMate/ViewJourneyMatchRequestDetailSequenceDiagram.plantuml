@@ -1,0 +1,51 @@
+@startuml ViewJourneyMatchRequestDetailSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver/Passenger" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+User -> App : 1: Click on All Schedules Navigation
+activate App
+
+App -> Backend : 1.1: Fetch Match History for User (userID)
+activate Backend
+
+Backend -> DB : 1.1.1: Query Match History by userID
+activate DB
+DB --> Backend : 1.1.1.1: Return Match History List
+deactivate DB
+
+Backend --> App : 1.2: Send Match History Data
+deactivate Backend
+
+App -> User : 1.3: Display Match History Screen
+
+User -> App : 2: Click on a Specific Match Request
+App -> Backend : 2.1: Fetch Match Request Details (matchID)
+activate Backend
+
+Backend -> DB : 2.1.1: Query Match Request Details by matchID
+activate DB
+DB --> Backend : 2.1.1.1: Return Match Request Details
+deactivate DB
+
+Backend --> App : 2.2: Send Match Request Details
+deactivate Backend
+
+App -> User : 2.3: Display Match Request Details Screen
+
+deactivate App
+
+@enduml

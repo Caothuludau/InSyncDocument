@@ -2,7 +2,7 @@
 Title Signin Google Clerk Class Diagram
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-' Lớp chính xử lý sign-in
+
 package pkgSigninGoogleClerk <<Frame>>{
 
 class ClerkSignIn  {
@@ -11,7 +11,6 @@ class ClerkSignIn  {
   + verifyUser(user: User): boolean
 }
 
-' Quá trình xác thực OAuth
 class OAuthSession  {
   + id: string
   + provider: SocialProvider
@@ -22,7 +21,6 @@ class OAuthSession  {
   + receiveAuthCode(authCode: string): boolean
 }
 
-' Các trạng thái OAuth
 class OAuthStatus  {
   <<enumeration>>
   + PENDING
@@ -30,7 +28,6 @@ class OAuthStatus  {
   + FAILED
 }
 
-' Các nhà cung cấp OAuth
 class SocialProvider  {
   <<enumeration>>
   + Google
@@ -39,7 +36,6 @@ class SocialProvider  {
   + Apple
 }
 
-' Thông tin người dùng
 class User  {
   + id: string
   + email: string
@@ -47,20 +43,18 @@ class User  {
   + isVerified: boolean
 }
 
-' Lớp Google OAuth xử lý mã xác thực
+
 class GoogleOAuth  {
   + exchangeAuthCode(authCode: string): AccessToken
   + getUserInfo(accessToken: AccessToken): GoogleUserInfo
 }
 
-' Thông tin AccessToken
 class AccessToken  {
   + token: string
   + expiresIn: int
   + scope: string
 }
 
-' Thông tin Google User
 class GoogleUserInfo  {
   + id: string
   + email: string
@@ -68,7 +62,6 @@ class GoogleUserInfo  {
   + profilePicture: string
 }
 
-' Các quan hệ
 ClerkSignIn --> OAuthSession
 OAuthSession --> OAuthStatus
 OAuthSession --> SocialProvider

@@ -1,0 +1,110 @@
+@startuml RealTimeTracking
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgRealTimeTracking <<Frame>>{
+
+
+        class RealTimeTrackingView {
+            + displayCurrentLocation(): void
+            + updateLocationOnMap(): void
+        }
+
+        class RealTimeTrackingController {
+            - currentLocation: Location
+            + fetchCurrentLocation(): void
+            + updateLocation(): void
+        }
+ 
+        class JourneyTrackingController {
+            + getCurrentLocation(journeyId: int): ResponseEntity<ResponseWrapper<LocationResponseDto>>
+            + updateLocation(journeyId: int, locationUpdateDto: LocationUpdateDto): ResponseEntity<ResponseWrapper<LocationResponseDto>>
+        }
+ 
+        class JourneyTrackingService {
+            + getCurrentLocation(journeyId: int): Location
+            + updateLocation(journeyId: int, locationUpdateDto: LocationUpdateDto): Location
+        }
+
+        class JourneyRepository {
+            + findById(journeyId: int): Optional<Journey>
+            + save(journey: Journey): Journey
+        }
+
+        class LocationResponseDto {
+            - latitude: double
+            - longitude: double
+            - timestamp: DateTime
+        }
+
+        class LocationUpdateDto {
+            - latitude: double
+            - longitude: double
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+ 
+        class Journey {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - currentLocation: Location
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+        }
+
+        class Location {
+            - latitude: double
+            - longitude: double
+            - timestamp: DateTime
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addJourney(journey: Journey): void
+            + removeJourney(journey: Journey): void
+        }
+
+
+    RealTimeTrackingView --> RealTimeTrackingController
+    RealTimeTrackingController --> JourneyTrackingController
+    JourneyTrackingController --> JourneyTrackingService
+    JourneyTrackingService --> JourneyRepository
+    JourneyTrackingService --> LocationResponseDto
+    JourneyTrackingService --> LocationUpdateDto
+    JourneyTrackingController --> ResponseWrapper
+    JourneyTrackingService --> Journey
+    JourneyRepository --> Journey
+    Journey --> Location
+    Journey --> User
+
+}
+
+@enduml

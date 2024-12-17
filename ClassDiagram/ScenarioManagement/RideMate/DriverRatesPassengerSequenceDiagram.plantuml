@@ -1,0 +1,48 @@
+@startuml DriverRatesPassengerSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+participant "Notification Module" as Notification
+actor "Passenger" as User
+
+Driver -> App : 1: Open Journey History or Receive Notification
+activate App
+
+App -> App : 1.1: Display Journey History Screen or Notification
+
+Driver -> App : 2: Select Passenger to Rate
+App -> App : 2.1: Display Rating Interface
+
+Driver -> App : 3: Submit Rating for Passenger
+App -> Backend : 3.1: Send Rating Data (Rating Value)
+activate Backend
+
+Backend -> DB : 3.2: Save Rating in Database
+activate DB
+DB --> Backend : 3.2.1: Return Confirmation of Saved Rating
+deactivate DB
+
+Backend --> App : 4: Confirm Rating Submission
+deactivate Backend
+
+App -> Driver : 5: Display Confirmation (Rating Submitted)
+deactivate App
+
+Notification -> Backend : 6: Notify Passenger about Rating
+Backend -> Notification : 6.1: Send Rating Notification to Passenger
+Notification -> User : 6.2: Display Rating Notification to Passenger
+
+@enduml

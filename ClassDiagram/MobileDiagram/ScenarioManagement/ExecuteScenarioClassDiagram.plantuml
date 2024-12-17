@@ -6,9 +6,8 @@ skinparam linetype ortho
 
 package "pkgExecuteActionCode" {
 
-    ' Base Scenario Class
     !includesub ../../MobileModelClassDiagram.plantuml!Scenario
-    ' UI Layer
+
     class ViewScenarioCodeActivity {
         + onCreate(): void
         + displayScenarioDetails(scenarioId: String): void
@@ -16,14 +15,12 @@ package "pkgExecuteActionCode" {
         + onOverlayButtonClick(): void
     }
 
-    ' Overlay Action Logic
     class ActionOverlay {
         + showOverlay(): void
         + hideOverlay(): void
         + initializeButton(action: String): void
     }
 
-    ' Action Execution Layer
     class ExecuteService {
         + executeScenario(scenario: Scenario): void
         + logExecutionDetails(scenario: Scenario): void

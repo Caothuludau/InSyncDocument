@@ -1,0 +1,108 @@
+@startuml PostJourney
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgPostJourney <<Frame>>{
+
+        class JourneyPostView {
+            + displayJourneyForm(): void
+            + submitJourneyForm(): void
+        }
+
+        class JourneyPostController {
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            + handleSubmit(): void
+        }
+ 
+        class PassengerJourneyController {
+            + createJourney(passengerJourneyRequestDto: PassengerJourneyRequestDto): ResponseEntity<ResponseWrapper<PassengerJourneyResponseDto>>
+        }
+   
+        class PassengerJourneyService {
+            + savePassengerJourney(passengerJourneyRequestDto: PassengerJourneyRequestDto): PassengerJourney
+        }
+
+        class PassengerJourneyRepository {
+            + save(passengerJourney: PassengerJourney): PassengerJourney
+        }
+  
+        class PassengerJourneyRequestDto {
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class PassengerJourneyResponseDto {
+            - journeyId: long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addJourney(journey: PassengerJourney): void
+            + removeJourney(journey: PassengerJourney): void
+        }
+
+    JourneyPostView --> JourneyPostController
+    JourneyPostController --> PassengerJourneyController
+    PassengerJourneyController --> PassengerJourneyService
+    PassengerJourneyService --> PassengerJourneyRepository
+    PassengerJourneyController --> PassengerJourneyRequestDto
+    PassengerJourneyController --> PassengerJourneyResponseDto
+    PassengerJourneyController --> ResponseWrapper
+    PassengerJourneyService --> PassengerJourney
+    PassengerJourneyRepository --> PassengerJourney
+    PassengerJourney --> User
+
+}
+
+@enduml

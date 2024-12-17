@@ -1,0 +1,95 @@
+@startuml ViewAllJourneys
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgViewAllJourneys <<Frame>>{
+
+        class JourneyListView {
+            + displayJourneys(): void
+        }
+
+        class JourneyListController {
+            - journeys: List<Journey>
+            + fetchJourneys(): void
+        }
+   
+        class PassengerJourneyController {
+            + viewAllJourneys(): ResponseEntity<ResponseWrapper<List<PassengerJourneyItemResponseDto>>>
+        }
+   
+        class PassengerJourneyService {
+            + viewAllJourneys(userId: Long): List<PassengerJourney>
+        }
+
+        class PassengerJourneyRepository {
+            + findByUserId(userId: Long): List<PassengerJourney>
+        }
+   
+        class PassengerJourneyItemResponseDto {
+            - journeyId: long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+  
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addJourney(journey: PassengerJourney): void
+            + removeJourney(journey: PassengerJourney): void
+        }
+    
+
+    JourneyListView --> JourneyListController
+    JourneyListController --> PassengerJourneyController
+    PassengerJourneyController --> PassengerJourneyService
+    PassengerJourneyService --> PassengerJourneyRepository
+    PassengerJourneyController --> PassengerJourneyItemResponseDto
+    PassengerJourneyController --> ResponseWrapper
+    PassengerJourneyService --> PassengerJourney
+    PassengerJourneyRepository --> PassengerJourney
+    PassengerJourney --> User
+
+}
+
+@enduml

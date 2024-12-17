@@ -1,0 +1,62 @@
+@startuml ViewJourneyMatchRequestSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Click on Schedule Navigation
+activate App
+
+App -> App : 1.1: Display Schedule List Screen
+
+Driver -> App : 2: Select a Schedule
+App -> Backend : 2.1: Request Schedule Details
+activate Backend
+
+Backend -> DB : 2.2: Query Schedule Details by Schedule ID
+activate DB
+DB --> Backend : 2.2.1: Return Schedule Details
+deactivate DB
+
+Backend --> App : 3: Send Schedule Details Data
+deactivate Backend
+
+App -> Driver : 4: Display Schedule Detail Screen
+
+Driver -> App : 5: Click on Journey Match Request
+App -> Backend : 5.1: Request Journey Match Request Details
+activate Backend
+
+Backend -> DB : 5.2: Query Journey Match Request by Schedule ID
+activate DB
+DB --> Backend : 5.2.1: Return Journey Match Request Data
+deactivate DB
+
+Backend --> App : 6: Send Journey Match Request Data
+deactivate Backend
+
+App -> Driver : 7: Display Journey Match Request Detail Screen
+deactivate App
+
+alt Cannot Connect to Server
+    App -> Driver : 8: Display MSG01 (Connection Error)
+end
+
+alt Match Not Found / Invalid QR Code
+    App -> Driver : 9: Display MSG46/MSG47 (Match Not Found)
+    App -> App : 10: Return to Schedule List Screen
+end
+
+@enduml

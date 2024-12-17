@@ -1,0 +1,60 @@
+@startuml SelectRouteSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Passenger/Driver" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Google Maps API" as MapsAPI
+participant "Database" as DB
+
+User -> App : 1: Navigate to Create Journey/Schedule
+activate App
+
+App -> MapsAPI : 1.1: Fetch Map and Location Suggestions
+activate MapsAPI
+MapsAPI --> App : 1.1.1: Return Location Suggestions
+deactivate MapsAPI
+
+User -> App : 2: Select Starting Point
+App -> Backend : 2.1: Validate and Save Starting Point
+activate Backend
+
+Backend -> DB : 2.1.1: Save Starting Point
+activate DB
+DB --> Backend : 2.1.1.1: Confirm Save Success
+deactivate DB
+deactivate Backend
+
+User -> App : 3: Select Endpoint
+App -> Backend : 3.1: Validate and Save Endpoint
+activate Backend
+Backend -> DB : 3.1.1: Save Endpoint
+activate DB
+DB --> Backend : 3.1.1.1: Confirm Save Success
+deactivate DB
+deactivate Backend
+
+User -> App : 4: Add Stops (Optional)
+App -> Backend : 4.1: Validate and Save Stops
+activate Backend
+Backend -> DB : 4.1.1: Save Stops
+activate DB
+DB --> Backend : 4.1.1.1: Confirm Save Success
+deactivate DB
+deactivate Backend
+
+App -> User : 5: Display Selected Route and Confirm
+
+deactivate App
+
+@enduml

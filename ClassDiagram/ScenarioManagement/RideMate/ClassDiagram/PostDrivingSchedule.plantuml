@@ -1,0 +1,111 @@
+@startuml PostDrivingSchedule
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgPostDrivingSchedule <<Frame>>{
+
+        class SchedulePostView {
+            + displayScheduleForm(): void
+            + submitSchedule(): void
+        }
+
+        class SchedulePostController {
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+            + submitSchedule(): void
+        }
+
+        class DriverJourneyController {
+            + createSchedule(driverJourneyRequestDto: DriverJourneyRequestDto): ResponseEntity<ResponseWrapper<DriverJourneyResponseDto>>
+        }
+    
+        class DriverJourneyService {
+            + createSchedule(driverJourneyRequestDto: DriverJourneyRequestDto): DriverJourney
+        }
+
+        class DriverJourneyRepository {
+            + save(driverJourney: DriverJourney): DriverJourney
+        }
+   
+        class DriverJourneyRequestDto {
+            - startLocation: String
+            - endLocation: String
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class DriverJourneyResponseDto {
+            - journeyId: Long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+    
+        class DriverJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+        }
+
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+    
+
+    SchedulePostView --> SchedulePostController
+    SchedulePostController --> DriverJourneyController
+    DriverJourneyController --> DriverJourneyService
+    DriverJourneyService --> DriverJourneyRepository
+    DriverJourneyService --> DriverJourneyRequestDto
+    DriverJourneyService --> DriverJourneyResponseDto
+    DriverJourneyController --> ResponseWrapper
+    DriverJourneyService --> DriverJourney
+    DriverJourneyRepository --> DriverJourney
+    DriverJourney --> User
+    DriverJourney --> Location
+
+}
+
+@enduml

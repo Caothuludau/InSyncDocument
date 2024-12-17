@@ -1,0 +1,134 @@
+@startuml PassengerViewRatingFromDriver
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgPassengerViewRatingFromDriver <<Frame>>{
+
+        class RatingView {
+            + displayRatings(): void
+        }
+
+        class RatingController {
+            - ratings: List<Rating>
+            + fetchRatings(): void
+        }
+
+        class PassengerJourneyController {
+            + getDriverRatings(passengerId: Long): ResponseEntity<ResponseWrapper<List<RatingResponseDto>>>
+        }
+  
+        class RatingService {
+            + getDriverRatings(passengerId: Long): List<Rating>
+        }
+
+        class RatingRepository {
+            + findByRatedUser(user: User): List<Rating>
+        }
+   
+        class RatingResponseDto {
+            - ratingId: Long
+            - journeyMatchId: Long
+            - rating: int
+            - comment: String
+            - timestamp: LocalDateTime
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class Rating {
+            - ratingId: long
+            - journeyMatch: JourneyMatch
+            - ratingUser: User
+            - ratedUser: User
+            - rating: int
+            - comment: String
+            - timestamp: LocalDateTime
+        }
+
+        class JourneyMatch {
+            - matchId: long
+            - passengerJourney: PassengerJourney
+            - driverJourney: DriverJourney
+            - matchStatus: String
+            - matchDepartureTime: LocalDateTime
+            - passengerExpectedArrivalTime: LocalDateTime
+            - driverExpectedArrivalTime: LocalDateTime
+            - matchPrice: double
+        }
+
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+        }
+
+        class DriverJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - licensePlate: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+        }
+
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+    
+
+    RatingView --> RatingController
+    RatingController --> PassengerJourneyController
+    PassengerJourneyController --> RatingService
+    RatingService --> RatingRepository
+    RatingService --> RatingResponseDto
+    PassengerJourneyController --> ResponseWrapper
+    RatingService --> Rating
+    RatingRepository --> Rating
+    Rating --> JourneyMatch
+    JourneyMatch --> PassengerJourney
+    JourneyMatch --> DriverJourney
+    PassengerJourney --> User
+    PassengerJourney --> Location
+    DriverJourney --> User
+    DriverJourney --> Location
+
+}
+
+@enduml

@@ -1,0 +1,68 @@
+@startuml DriverDeleteCommuteScheduleSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Click on Schedule Navigation Bar
+activate App
+
+App -> App : 1.1: Display Driver Commute Schedule List Screen
+
+Driver -> App : 2: Click on Commute Schedule Delete Button
+App -> App : 2.1: Display Confirm Pop-Up
+
+Driver -> App : 3: Click Confirm to Delete Schedule
+App -> Backend : 3.1: Request Schedule Deletion (scheduleID)
+activate Backend
+
+Backend -> DB : 3.2: Query Schedule by scheduleID
+activate DB
+DB --> Backend : 3.2.1: Return Schedule Data
+deactivate DB
+
+Backend -> DB : 3.3: Mark Schedule as Deleted in Database
+activate DB
+DB --> Backend : 3.3.1: Confirm Schedule Deletion
+deactivate DB
+
+Backend -> DB : 3.4: Set Match Status to Cancelled for Related Matches
+activate DB
+DB --> Backend : 3.4.1: Confirm Match Status Update
+deactivate DB
+
+Backend -> DB : 3.5: Set Passenger Journey Status to Cancelled
+activate DB
+DB --> Backend : 3.5.1: Confirm Passenger Journey Status Update
+deactivate DB
+
+Backend --> App : 4: Send Deletion Confirmation
+deactivate Backend
+
+App -> Driver : 5: Display MSG38 (Schedule Deleted)
+deactivate App
+
+App -> App : 6: Return to Home Screen
+
+alt Cannot Connect to Server
+    App -> Driver : 7: Display MSG01 (Connection Error)
+end
+
+alt Journey Not Found / Unauthorized
+    App -> Driver : 8: Display MSG35 / MSG37 (Unauthorized or Invalid Schedule)
+    App -> App : 9: Return to Commute Schedule List
+end
+
+@enduml

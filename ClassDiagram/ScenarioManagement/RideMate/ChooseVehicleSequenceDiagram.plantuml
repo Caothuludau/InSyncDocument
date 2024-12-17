@@ -1,0 +1,54 @@
+@startuml ChooseVehicleForJourneySequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Driver" as Driver
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+Driver -> App : 1: Click on Vehicle Management
+activate App
+
+App -> App : 1.1: Display Vehicle Management Screen
+
+Driver -> App : 2: Select Registered Vehicle for Journey
+App -> Backend : 2.1: Fetch Registered Vehicles for Driver
+activate Backend
+
+Backend -> DB : 2.2: Query Registered Vehicles by Driver ID
+activate DB
+DB --> Backend : 2.2.1: Return List of Registered Vehicles
+deactivate DB
+
+Backend --> App : 3: Send Registered Vehicle Data
+deactivate Backend
+
+App -> Driver : 4: Display List of Registered Vehicles
+
+Driver -> App : 5: Select a Vehicle for the Journey
+App -> Backend : 5.1: Request Vehicle Selection for Journey
+activate Backend
+
+Backend -> DB : 5.2: Save Selected Vehicle for Journey in Database
+activate DB
+DB --> Backend : 5.2.1: Confirm Vehicle Selection Saved
+deactivate DB
+
+Backend --> App : 6: Confirm Vehicle Selection
+deactivate Backend
+
+App -> Driver : 7: Display Confirmation (Vehicle Selected for Journey)
+
+deactivate App
+
+@enduml

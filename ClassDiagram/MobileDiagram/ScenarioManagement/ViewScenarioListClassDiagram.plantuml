@@ -8,14 +8,12 @@ package "pkgViewScenarioMobile" {
 
     !includesub ../../MobileModelClassDiagram.plantuml!Scenario
     
-    ' UI Layer
     class ViewScenarioActivity {
         + onCreate(): void
         + displayScenarioDetails(): void
         + handleUserInteraction(): void
     }
 
-    ' Adapter Layer
     class ScenarioAdapter {
         + setScenarioList(scenarios: List<Scenario>): void
         + onBindViewHolder(holder: ScenarioViewHolder, position: int): void
@@ -26,13 +24,11 @@ package "pkgViewScenarioMobile" {
         + bind(scenario: Scenario): void
     }
 
-    ' API Layer
     class APIScenario {
         + fetchScenarios(): List<Scenario>
     }
 }
 
-' Relationships
 Scenario --> ViewScenarioActivity
 ScenarioAdapter --> Scenario : "Uses"
 ViewScenarioActivity --> ScenarioAdapter : "Manages"

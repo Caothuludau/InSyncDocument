@@ -1,7 +1,8 @@
 @startuml DeleteScenarioClassDiagram
 
 title Delete Scenario Class Diagram (Mobile)
-
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
 ' Main System
 package "pkgViewScenarioMobile" {
 

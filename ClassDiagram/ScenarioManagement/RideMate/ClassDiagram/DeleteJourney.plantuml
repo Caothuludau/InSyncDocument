@@ -1,0 +1,120 @@
+@startuml DeleteJourney
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgDeleteJourney <<Frame>>{
+
+
+        class JourneyDetailView {
+            + displayJourneyDetails(): void
+            + deleteJourney(): void
+        }
+
+        class JourneyDetailController {
+            - journeyId: int
+            + fetchJourneyDetails(): void
+            + deleteJourney(): void
+        }
+   
+        class PassengerJourneyController {
+            + deleteJourney(passengerJourneyIdRequestDto: PassengerJourneyIdRequestDto): ResponseEntity<ResponseWrapper<String>>
+        }
+    
+        class PassengerJourneyService {
+            + deletePassengerJourney(journeyId: Long): void
+        }
+
+        class PassengerJourneyRepository {
+            + findById(journeyId: Long): Optional<PassengerJourney>
+            + deletePassengerJourneyByJourneyId(journeyId: Long): void
+        }
+
+        class JourneyMatchService {
+            + deleteJourneyMatch(matchId: Long): void
+        }
+    
+        class PassengerJourneyIdRequestDto {
+            - journeyId: Long
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+            - status: String
+            - journeyMatches: List<JourneyMatch>
+        }
+
+        class JourneyMatch {
+            - matchId: long
+            - passengerJourney: PassengerJourney
+            - driverJourney: DriverJourney
+            - matchStatus: String
+            - matchDepartureTime: LocalDateTime
+            - passengerExpectedArrivalTime: LocalDateTime
+            - driverExpectedArrivalTime: LocalDateTime
+            - matchPrice: double
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addJourney(journey: Journey): void
+            + removeJourney(journey: Journey): void
+        }
+
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+    
+
+    JourneyDetailView --> JourneyDetailController
+    JourneyDetailController --> PassengerJourneyController
+    PassengerJourneyController --> PassengerJourneyService
+    PassengerJourneyService --> PassengerJourneyRepository
+    PassengerJourneyService --> JourneyMatchService
+    PassengerJourneyService --> PassengerJourneyIdRequestDto
+    PassengerJourneyController --> ResponseWrapper
+    PassengerJourneyService --> PassengerJourney
+    PassengerJourneyRepository --> PassengerJourney
+    PassengerJourney --> JourneyMatch
+    JourneyMatch --> DriverJourney
+    JourneyMatch --> PassengerJourney
+    PassengerJourney --> User
+    PassengerJourney --> Location
+
+}
+
+@enduml

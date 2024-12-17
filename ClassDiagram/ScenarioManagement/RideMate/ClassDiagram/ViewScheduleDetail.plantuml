@@ -1,0 +1,98 @@
+@startuml ViewScheduleDetail
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgViewScheduleDetail <<Frame>>{
+
+  
+        class ScheduleDetailView {
+            + displayScheduleDetail(): void
+        }
+
+        class ScheduleDetailController {
+            - scheduleId: int
+            - scheduleDetail: ScheduleDetail
+            + fetchScheduleDetail(): void
+        }
+ 
+        class DriverJourneyController {
+            + getScheduleDetail(scheduleId: Long): ResponseEntity<ResponseWrapper<DriverJourneyResponseDto>>
+    }
+        class DriverJourneyService {
+            + getScheduleDetail(scheduleId: Long): DriverJourney
+        }
+
+        class DriverJourneyRepository {
+            + findById(scheduleId: Long): Optional<DriverJourney>
+        }
+    
+        class DriverJourneyResponseDto {
+            - journeyId: Long
+            - startLocation: String
+            - endLocation: String
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+   
+        class DriverJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: Location
+            - endLocation: Location
+            - departureTime: LocalDateTime
+            - vehicleType: String
+            - specialNotes: String
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+        }
+
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+    
+
+    ScheduleDetailView --> ScheduleDetailController
+    ScheduleDetailController --> DriverJourneyController
+    DriverJourneyController --> DriverJourneyService
+    DriverJourneyService --> DriverJourneyRepository
+    DriverJourneyService --> DriverJourneyResponseDto
+    DriverJourneyController --> ResponseWrapper
+    DriverJourneyService --> DriverJourney
+    DriverJourneyRepository --> DriverJourney
+    DriverJourney --> User
+    DriverJourney --> Location
+
+}
+
+@enduml

@@ -1,0 +1,180 @@
+@startuml DriverMessage
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgDriverMessage <<Frame>>{
+
+        class JourneyMatchView {
+            + displayJourneyMatches(): void
+            + displayJourneyMatchDetails(matchId: int): void
+            + displayMessageScreen(matchId: int): void
+            + sendMessage(message: String): void
+        }
+
+        class JourneyMatchController {
+            - journeyMatches: List<JourneyMatch>
+            - matchDetails: JourneyMatchDetail
+            - messages: List<Message>
+            + fetchJourneyMatches(): void
+            + fetchMatchDetails(matchId: int): void
+            + fetchMessages(matchId: int): void
+            + sendMessage(matchId: int, message: String): void
+        }
+ 
+        class JourneyMatchController {
+            + getJourneyMatches(userId: int): ResponseEntity<ResponseWrapper<List<JourneyMatchResponseDto>>>
+            + getMatchDetails(matchId: int): ResponseEntity<ResponseWrapper<JourneyMatchDetailResponseDto>>
+            + getMessages(matchId: int): ResponseEntity<ResponseWrapper<List<MessageResponseDto>>>
+            + sendMessage(messageRequestDto: MessageRequestDto): ResponseEntity<ResponseWrapper<MessageResponseDto>>
+        }
+ 
+        class JourneyMatchService {
+            + getJourneyMatches(userId: int): List<JourneyMatchResponseDto>
+            + getMatchDetails(matchId: int): JourneyMatchDetailResponseDto
+            + getMessages(matchId: int): List<MessageResponseDto>
+            + sendMessage(messageRequestDto: MessageRequestDto): MessageResponseDto
+        }
+
+        class JourneyMatchRepository {
+            + findByUserId(userId: int): List<JourneyMatch>
+            + findById(matchId: int): Optional<JourneyMatch>
+        }
+
+        class MessageRepository {
+            + findByMatchId(matchId: int): List<Message>
+            + save(message: Message): Message
+        }
+
+        class JourneyMatchResponseDto {
+            - matchId: long
+            - matchStatus: String
+            - matchDepartureTime: DateTime
+            - passengerExpectedArrivalTime: DateTime
+            - driverExpectedArrivalTime: DateTime
+            - matchPrice: double
+            - driverJourney: DriverJourneyResponseDto
+            - passengerJourney: PassengerJourneyResponseDto
+        }
+
+        class JourneyMatchDetailResponseDto {
+            - matchId: long
+            - matchStatus: String
+            - matchDepartureTime: DateTime
+            - passengerExpectedArrivalTime: DateTime
+            - driverExpectedArrivalTime: DateTime
+            - matchPrice: double
+            - driverJourney: DriverJourneyResponseDto
+            - passengerJourney: PassengerJourneyResponseDto
+            - messages: List<MessageResponseDto>
+        }
+
+        class MessageRequestDto {
+            - matchId: long
+            - senderId: long
+            - message: String
+        }
+
+        class MessageResponseDto {
+            - messageId: long
+            - matchId: long
+            - senderId: long
+            - message: String
+            - timestamp: DateTime
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class JourneyMatch {
+            - matchId: long
+            - user: User
+            - matchStatus: String
+            - matchDepartureTime: DateTime
+            - passengerExpectedArrivalTime: DateTime
+            - driverExpectedArrivalTime: DateTime
+            - matchPrice: double
+            - driverJourney: DriverJourney
+            - passengerJourney: PassengerJourney
+            - messages: List<Message>
+        }
+
+        class DriverJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - licensePlate: String
+        }
+
+        class PassengerJourney {
+            - journeyId: long
+            - user: User
+            - startLocation: String
+            - endLocation: String
+            - departureTime: DateTime
+            - vehicleType: String
+            - budget: double
+            - specialNotes: String
+        }
+
+        class Message {
+            - messageId: long
+            - matchId: long
+            - senderId: long
+            - message: String
+            - timestamp: DateTime
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addJourney(journey: Journey): void
+            + removeJourney(journey: Journey): void
+        }
+    
+
+    JourneyMatchView --> JourneyMatchController
+    JourneyMatchController --> JourneyMatchService
+    JourneyMatchService --> JourneyMatchRepository
+    JourneyMatchService --> MessageRepository
+    JourneyMatchService --> JourneyMatchResponseDto
+    JourneyMatchService --> JourneyMatchDetailResponseDto
+    JourneyMatchService --> MessageRequestDto
+    JourneyMatchService --> MessageResponseDto
+    JourneyMatchService --> ResponseWrapper
+    JourneyMatchService --> JourneyMatch
+    JourneyMatchService --> Message
+    JourneyMatchRepository --> JourneyMatch
+    MessageRepository --> Message
+    JourneyMatch --> DriverJourney
+    JourneyMatch --> PassengerJourney
+    JourneyMatch --> Message
+    DriverJourney --> User
+    PassengerJourney --> User
+
+}
+
+@enduml

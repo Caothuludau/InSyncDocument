@@ -1,0 +1,101 @@
+@startuml SelectRoute
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgSelectRoute <<Frame>>{
+
+
+        class RouteSelectionView {
+            + displayMap(): void
+            + displayLocationSuggestions(): void
+            + displaySelectedRoute(): void
+        }
+
+        class RouteSelectionController {
+            - startLocation: Location
+            - endLocation: Location
+            - stops: List<Location>
+            + selectStartLocation(location: Location): void
+            + selectEndLocation(location: Location): void
+            + addStop(location: Location): void
+            + confirmRoute(): void
+        }
+    
+        class RouteController {
+            + validateAndSaveStartLocation(locationDto: LocationDto): ResponseEntity<ResponseWrapper<LocationResponseDto>>
+            + validateAndSaveEndLocation(locationDto: LocationDto): ResponseEntity<ResponseWrapper<LocationResponseDto>>
+            + validateAndSaveStops(stopDtos: List<LocationDto>): ResponseEntity<ResponseWrapper<List<LocationResponseDto>>>
+        }
+    
+        class RouteService {
+            + validateAndSaveStartLocation(locationDto: LocationDto): Location
+            + validateAndSaveEndLocation(locationDto: LocationDto): Location
+            + validateAndSaveStops(stopDtos: List<LocationDto>): List<Location>
+        }
+
+        class RouteRepository {
+            + save(location: Location): Location
+            + saveAll(locations: List<Location>): List<Location>
+        }
+    
+        class LocationDto {
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+
+        class LocationResponseDto {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+  
+        class Location {
+            - locationId: long
+            - address: String
+            - latitude: double
+            - longitude: double
+        }
+
+        class Route {
+            - routeId: long
+            - startLocation: Location
+            - endLocation: Location
+            - stops: List<Location>
+            - createdAt: LocalDateTime
+            - updatedAt: LocalDateTime
+        }
+    
+
+    RouteSelectionView --> RouteSelectionController
+    RouteSelectionController --> RouteController
+    RouteController --> RouteService
+    RouteService --> RouteRepository
+    RouteService --> LocationDto
+    RouteService --> LocationResponseDto
+    RouteController --> ResponseWrapper
+    RouteService --> Location
+    RouteRepository --> Location
+    Route --> Location
+
+}
+
+@enduml

@@ -1,0 +1,91 @@
+@startuml ChangeUsername
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+skinparam BackgroundColor #ffffff
+skinparam class {
+    BackgroundColor #c6f8ff
+    BorderColor #000000
+}
+
+skinparam package {
+    BackgroundColor #ffffff
+    BorderColor #000000
+}
+
+package pkgChangeUsername <<Frame>>{
+
+        class UserInformationView {
+            - userId: int
+            + displayUserProfile(): void
+            + editUsername(): void
+        }
+
+        class UserInformationController {
+            - userId: int
+            - userProfile: UserProfile
+            + fetchUserProfile(): void
+            + updateUsername(newUsername: String): void
+        }
+
+        class UserController {
+            + updateUser(userNameUpdateRequestDto: UserNameUpdateRequestDto): ResponseEntity<ResponseWrapper<UserProfileResponseDto>>
+        }
+
+        class UserService {
+            + updateUser(user: User): void
+        }
+
+        class UserRepository {
+            + findById(userId: int): Optional<User>
+            + save(user: User): User
+        }
+
+
+        class UserNameUpdateRequestDto {
+            - userName: String
+        }
+
+        class UserProfileResponseDto {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - profilePicture: byte[]
+        }
+
+        class ResponseWrapper<T> {
+            - responseCode: int
+            - message: String
+            - data: T
+        }
+
+        class User {
+            - userId: long
+            - name: String
+            - phoneNumber: String
+            - password: String
+            - profilePicture: byte[]
+            - isActive: boolean
+            - isLocked: boolean
+            - createdDate: LocalDateTime
+            - tokenVersion: long
+            + addUserRole(userRole: UserRole): void
+            + removeUserRole(userRole: UserRole): void
+            + addFcmToken(fcmToken: FCMToken): void
+            + removeFcmToken(fcmToken: FCMToken): void
+        }
+
+
+    UserInformationView --> UserInformationController
+    UserInformationController --> UserController
+    UserController --> UserService
+    UserService --> UserRepository
+    UserController --> UserNameUpdateRequestDto
+    UserController --> UserProfileResponseDto
+    UserController --> ResponseWrapper
+    UserService --> User
+    UserRepository --> User
+
+}
+
+@enduml

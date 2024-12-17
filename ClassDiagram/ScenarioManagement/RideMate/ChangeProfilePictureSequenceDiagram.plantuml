@@ -1,0 +1,68 @@
+@startuml ProfilePictureUploadSequenceDiagram
+skinparam BackgroundColor #ffffff
+skinparam sequence {
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #7acff5
+    ParticipantBackgroundColor #7acff5
+    ParticipantBorderColor #000000
+    ActorBackgroundColor #7acff5
+    ActorBorderColor #000000
+    ArrowColor #000000
+    SequenceBoxBackgroundColor #7acff5
+}
+
+actor "Passenger/Driver" as User
+participant "Android App" as App
+participant "Backend Module" as Backend
+participant "Database" as DB
+
+User -> App : 1: Open the App
+activate App
+
+App -> App : 1.1: Display Home Screen
+
+User -> App : 2: Select Account navigation
+App -> App : 2.1: Display Account Navigation Screen
+
+User -> App : 3: Select User Information
+App -> Backend : 3.1: Fetch User Profile (userID)
+activate Backend
+
+Backend -> DB : 3.1.1: Query User Information by userID
+activate DB
+DB --> Backend : 3.1.1.1: Return User Profile Data
+deactivate DB
+
+Backend --> App : 4: Send User Profile Data
+deactivate Backend
+
+App -> User : 5: Display User Information
+
+User -> App : 6: Select Profile Picture to upload
+
+activate Backend
+
+App -> Backend : 6.1: Validate Image (file type, size, content)
+
+alt Valid Image
+    Backend --> App : 6.1.1: Validation Passed
+    App -> Backend : 6.2: Submit Profile Picture (userID, image)
+
+    Backend -> DB : 6.2.1: Store Image in Database
+    activate DB
+    DB --> Backend : 6.2.1.1: Return Success Response
+    deactivate DB
+
+    Backend --> App : 7: Confirm Upload Success
+
+    App -> User : 8: Display Updated Profile Picture in UI
+else Invalid Image
+    Backend --> App : 6.1.1: Validation Failed
+    deactivate Backend
+    App -> User : 6.1.2: Display MSG0 (Invalid Image Error)
+    App -> App : Restart from Step 6
+end
+
+deactivate App
+
+@enduml
